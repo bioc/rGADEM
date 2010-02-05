@@ -1,0 +1,11 @@
+useDynLib(rGADEM)
+
+importClassesFrom(IRanges, RangedData)
+importClassesFrom(Biostrings)
+
+import(methods)
+importFrom(graphics, plot)
+
+export(GADEM)
+exportClasses(parameters, align, gadem, motif)
+exportMethods(length, dim, names, consensus, parameters,viewPWM,startPos,endPos)
