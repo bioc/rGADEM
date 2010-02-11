@@ -50,7 +50,6 @@ SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SE
 	const char *parametre[1];
 	char *bFileName;
 
-
 	SEXP ResultsGadem;
 	SEXP RSpwm;
 	PROTECT (ResultsGadem=NEW_LIST(100));
@@ -218,10 +217,8 @@ SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SE
 	startPWMfound=INTEGER_VALUE(RstartPWMfound);
 	bOrder=INTEGER_VALUE(RbOrder);
 	const char *tempRbFileName[1];
-		tempRbFileName[0]=CHAR(STRING_ELT(RbFileName,0));
-		
+	tempRbFileName[0]=CHAR(STRING_ELT(RbFileName,0));
 
- strcpy(bFileName,tempRbFileName[0]);
 	if (size>MAX_NUM_SEQ)
 	{
 		printf("Error: maximal number of seqences reached! \n");
@@ -229,10 +226,7 @@ SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SE
 		exit(0);
 	}
 
-
-	//strcpy(oFileName,"gadem.txt"); 
-	//strcpy(pwmFileName,"observedPWMs.txt"); 
-
+	strcpy(bFileName,tempRbFileName[0]);
 	back=alloc_background();
 
 	ChIPScore=alloc_double(MAX_NUM_SEQ);
@@ -285,20 +279,11 @@ SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SE
 
 	else if (GET_LENGTH(RListPWM)!= 0)
 	{
-		printf("\n|------------------------------------------------------------------|\n");
-		printf("|                                                                  |\n");
-		printf("|               *** Running a seeded analysis ***                  |\n");
-		printf("|                                                                  |\n");
-		printf("|------------------------------------------------------------------|\n\n");
-		populationSize=FIXED_POPULATION; 
-		dyad  =alloc_chrs(populationSize,4);
-		sdyad =alloc_char_char(populationSize,MAX_PWM_LENGTH+1);
-		pwm=alloc_double_double_double(populationSize,MAX_PWM_LENGTH,4);	
+
 		startPWMfound=1; 
 	}
 
 	else { }
-
 
 // check for input parameters
 	if (numGeneration<1)  { printf("\nError: numbe of generaton < 1.\n"); exit(0); }
@@ -357,20 +342,8 @@ SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SE
 	if (pgf!=0 && pgf!=1)   { printf("\nError: -pgf can only take 0 or 1.\n"); exit(0); }
 
 // memory callocations
-	if (!startPWMfound) {
-		printf("\n|------------------------------------------------------------------|\n");
-		printf("|                                                                  |\n");
-		printf("|              *** Running an unseeded analysis ***                |\n");
-		printf("|                                                                  |\n");
-		printf("|------------------------------------------------------------------|\n\n");
-		dyad  =alloc_chrs(populationSize,4);
-		pwm   =alloc_double_double_double(populationSize,MAX_PWM_LENGTH,4);
-		pwmLen=alloc_int(populationSize);
-		sdyad =alloc_char_char(populationSize,MAX_PWM_LENGTH+1);
-		word  =alloc_word(numWordGroup,maxWordSize);
-	}
+
 	Iseq  =alloc_char(numSeq+1); 
-	opwm  =alloc_double_double_double(populationSize,MAX_PWM_LENGTH,4);
 	opwm2 =alloc_double_double(MAX_PWM_LENGTH,4);
 	t1pwm =alloc_double_double(MAX_PWM_LENGTH,4);
 	t2pwm =alloc_double_double(MAX_PWM_LENGTH,4);
@@ -378,16 +351,11 @@ SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SE
 	logpwm=alloc_double_double(MAX_PWM_LENGTH,4);
 	score =alloc_double_double(numSeq,maxSeqLen);
 	rscore=alloc_double_double(numSeq,maxSeqLen);
-	epwm=alloc_double_double_double(populationSize,MAX_PWM_LENGTH,4);
 	logepwm=alloc_double_double(MAX_PWM_LENGTH,4);
-	wheel =alloc_wheel(populationSize);
 	siteEM=alloc_site(MAX_SITES);
-	fitness=alloc_fitness(populationSize);
 	emSeqLen=alloc_int(numSeqEM);
-	maxpFactor=alloc_double(populationSize);
-	pwmConsensus=alloc_char_char(populationSize,MAX_PWM_LENGTH+1);
-	uniqMotif=alloc_char(populationSize+1);
-	scoreCutoff=alloc_int(populationSize);
+	scoreCutoff=alloc_int(1000);
+	//scoreCutoff=alloc_int(populationSize);
 	llrDist=alloc_distr(MAX_DIMENSION);
 	posWeight=alloc_double_double(numSeq,maxSeqLen);
 	bscore=alloc_double_double(numSeq,maxSeqLen);
@@ -396,7 +364,6 @@ SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SE
 	empDist=alloc_double((int)(numSeq*2*maxSeqLen*numBackgSets/4));
 	pseq=alloc_char_char(MAX_NUM_SEQ,maxSeqLen+1);
 	rpseq=alloc_char_char(MAX_NUM_SEQ,maxSeqLen+1);
-
 	bfreq=base_frequency(numSeq,seq,seqLen);
 
 // if minN not specified, set the defaults accordingly
@@ -415,7 +382,7 @@ SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SE
 	else {
 		sample_without_replacement(Iseq,numSeqEM,numSeq);
 	}
-/*-------------------- end of selection --------------------------*/
+	/*-------------------- end of selection --------------------------*/
 
 	if (!userBackgModel) {
 		if (!pgf && userMarkovOrder!=0 && aveSeqLen<=500) {
@@ -441,7 +408,7 @@ SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SE
 	//fprintf(fp,"pwm score p-value cutoff for declaring binding site:\t%e\n",pvalueCutoff);
 
 
-	printf("==============================================================================================\n");
+		printf("==============================================================================================\n");
 	printf("input sequence file:  %s\n",mFileName);
 	printf("number of sequences and average length:\t\t\t\t%d %5.1f\n",numSeq,aveSeqLen);
 
@@ -510,20 +477,42 @@ SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SE
 		printf("          -posWt 0 for others\n\n");
 		exit(0);
 	}
+	/*	if (startPWMfound) minminSites=minsites;
+	else               minminSites=(int)(0.40*minsitesEM);*/
 
-
-
-	if (startPWMfound) minminSites=minsites;
-	else               minminSites=(int)(0.40*minsitesEM);
-
-	//fq=fopen(oFileName,"w");
-	//fpwm=fopen(pwmFileName,"w");
-	motifCn=0; noMotifFound=0; numCycle=0; numCycleNoMotif=0; 
+		motifCn=0; noMotifFound=0; numCycle=0; numCycleNoMotif=0; 
 	int compt=0;
-	int lengthList;
+	int lengthList=GET_LENGTH(RListPWM);
 
 	do {
 		if (!startPWMfound) {
+
+			printf("\n|------------------------------------------------------------------|\n");
+			printf("|                                                                  |\n");
+			printf("|              *** Running an unseeded analysis ***                |\n");
+			printf("|                                                                  |\n");
+			printf("|------------------------------------------------------------------|\n\n");
+			populationSize=INTEGER_VALUE(RpopulationSize);
+			numGeneration=INTEGER_VALUE(RnumGeneration);
+			dyad  =alloc_chrs(populationSize,4);
+			wheel =alloc_wheel(populationSize);
+			fitness=alloc_fitness(populationSize);
+			maxpFactor=alloc_double(populationSize);
+			uniqMotif=alloc_char(populationSize+1);
+			opwm  =alloc_double_double_double(populationSize,MAX_PWM_LENGTH,4);
+			epwm=alloc_double_double_double(populationSize,MAX_PWM_LENGTH,4);
+			pwmConsensus=alloc_char_char(populationSize,MAX_PWM_LENGTH+1);
+			pwm   =alloc_double_double_double(populationSize,MAX_PWM_LENGTH,4);
+			pwmLen=alloc_int(populationSize);
+			sdyad =alloc_char_char(populationSize,MAX_PWM_LENGTH+1);
+			word  =alloc_word(numWordGroup,maxWordSize);
+			minminSites=(int)(0.40*minsitesEM);
+
+			//printf("Population size %d \n",populationSize);
+			//printf("####################################\n");
+			//printf("####################################\n");
+
+
 		// identify top-ranked k-mers (k=3,4,5) for spaced dyads
 			printf("\nGADEM cycle %2d: enumerate and count k-mers...   ",numCycle+1);
 			numWordGroup=word_for_dyad(word,seq,rseq,numSeq,seqLen,bfreq,&numTop3mer,&numTop4mer,&numTop5mer);
@@ -534,14 +523,32 @@ SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SE
 			initialisation(dyad,populationSize,numWordGroup,word,minSpaceWidth,maxSpaceWidth,maxpFactor);
 			printf("done.\n\n");
 		}
-		else {
+		else {			
+			printf("\n|------------------------------------------------------------------|\n");
+			printf("|                                                                  |\n");
+			printf("|               *** Running a seeded analysis ***                  |\n");
+			printf("|                                                                  |\n");
+			printf("|------------------------------------------------------------------|\n\n");
+			populationSize=FIXED_POPULATION; 
+			dyad  =alloc_chrs(populationSize,4);
+			pwm=alloc_double_double_double(populationSize,MAX_PWM_LENGTH,4);
+			pwmLen=alloc_int(populationSize);
+			maxpFactor=alloc_double(populationSize);
+			uniqMotif=alloc_char(populationSize+1);
+			opwm  =alloc_double_double_double(populationSize,MAX_PWM_LENGTH,4);
+			epwm=alloc_double_double_double(populationSize,MAX_PWM_LENGTH,4);
+			pwmConsensus=alloc_char_char(populationSize,MAX_PWM_LENGTH+1);
+			sdyad =alloc_char_char(populationSize,MAX_PWM_LENGTH+1);
+			word  =alloc_word(numWordGroup,maxWordSize);
+			wheel =alloc_wheel(populationSize);
+			fitness=alloc_fitness(populationSize);
+			minminSites=minsites;
+			int lengthMatrix;
 
-			int lengthMatrix;		
 			lengthMatrix=GET_LENGTH(VECTOR_ELT(RListPWM,compt));
 			RSpwm=allocMatrix(REALSXP,4,(lengthMatrix/4));
 			RSpwm=VECTOR_ELT(RListPWM,compt);
 
-			pwmLen=alloc_int(populationSize);
 
 			pwmLen[0]=read_pwm0(RSpwm,pwm[0],lengthMatrix);
 
@@ -550,39 +557,34 @@ SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SE
 					for (k=0; k<4; k++) {pwm[i][j][k]=pwm[0][j][k];} 
 				}
 				pwmLen[i]=pwmLen[0]; 
-
 			}
-		
-		
-
 			for (i=0; i<populationSize; i++) 	
 			{				
 				maxpFactor[i]=FIXED_MAXPF*(i+1); 
 				standardize_pwm(pwm[i],pwmLen[i]);
-
-
 				consensus_pwm(pwm[i],pwmLen[i],pwmConsensus[i]);		
 				strcpy(sdyad[i],pwmConsensus[i]); 
 			}					 
 		}
 		generationNoMotif=0;
 
-
 		for (jjj=0; jjj<numGeneration; jjj++) {		
 		// convert spaced dyads to letter probability matrix
 			if (!startPWMfound) dyad_to_pwm(word,populationSize,dyad,pwm,pwmLen);
-
 			for (ii=0; ii<populationSize; ii++) {
 
 			// to see from which spaced dyad a motif is derived
-				if (!startPWMfound) pwm_profile(pwm[ii],pwmLen[ii],sdyad[ii]);
+			//	for (int kkk=0;kkk<10;kkk++)//{		
+					//printf("Longeur %d \n",pwmLen[20]);//}
 
+				if (!startPWMfound) {pwm_profile(pwm[ii],pwmLen[ii],sdyad[ii]);}			 	
 			// make a copy and then subject the copy to EM
 				copy_pwm(pwm[ii],t1pwm,pwmLen[ii]);
-		// standarize pwm
+
+			// standarize pwm
 				standardize_pwm(t1pwm,pwmLen[ii]);
 			// EM on randomly selected sequences
-				maxp=(int)(maxpFactor[ii]*numSeqEM); 
+				maxp=(int)(maxpFactor[ii]*numSeqEM); 							
 
 				for (jj=0; jj<numEM; jj++) {
 					log_pwm(t1pwm,logpwm,pwmLen[ii]);
@@ -602,11 +604,12 @@ SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SE
 				}
 
 				copy_pwm(t1pwm,epwm[ii],pwmLen[ii]); // from to
+
+
 				log_ratio_to_int(epwm[ii],ipwm,pwmLen[ii],bfreq);
 			// compute score distribution of the (int)PWM using Staden's method 
 				llrDim=pwm_score_dist(ipwm,pwmLen[ii],llrDist,bfreq);
-
-				scoreCutoff[ii]=determine_cutoff(llrDist,llrDim,pvalueCutoff);
+				scoreCutoff[ii]=determine_cutoff(llrDist,llrDim,pvalueCutoff);				
 
 			// test each w-mer to see if a motif site - test statistic: ll, distribution: Staden method, cutoff: user-specified
 				nsitesEM=scan_em_seq_ptable(llrDist,llrDim,siteEM,numSeq,seq,rseq,seqLen,ipwm,pwmLen[ii],scoreCutoff[ii],bfreq,Iseq);
@@ -618,6 +621,7 @@ SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SE
 					standardize_pwm(opwm[ii],pwmLen[ii]);
 					consensus_pwm(opwm[ii],pwmLen[ii],pwmConsensus[ii]);
 			// compute E-value of the relative entroy score of each motif, use it as fitness
+
 					fitness[ii].value=E_value(opwm[ii],nsitesEM,bfreq,pwmLen[ii],numSeqEM,emSeqLen);
 				}
 				else {
@@ -638,6 +642,7 @@ SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SE
 			}
 			if (populationSize>1) sort_fitness(fitness,populationSize);
 
+
 		/*-----------------------------------------------------------------------------
 		printf("generation %3d top %d:\n", jjj+1, populationSize);
 		for (i=0; i<populationSize; i++) 
@@ -645,8 +650,14 @@ SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SE
 		printf("\n");  
 		-----------------------------------------------------------------------------*/
 
-			numUniq=check_pwm_uniqueness_dist(opwm,pwmLen,populationSize,fitness,pwmDistCutoff,E_valueCutoff,uniqMotif,slideWinPWM);
+		/*	for (j=0; j<4; j++) {
+		for (i=0; i<pwmLen; i++) {
+		if (i<pwmLen[ii]-1) printf("%5.2f ", opwm[i][j]);
+		else               printf("%5.2f\n",opwm[i][j]);
+		}
+		}*/
 
+			numUniq=check_pwm_uniqueness_dist(opwm,pwmLen,populationSize,fitness,pwmDistCutoff,E_valueCutoff,uniqMotif,slideWinPWM);
 		printf("\nGADEM cycle[%3d] generation[%3d] number of unique motif: %d\n",numCycle+1,jjj+1,numUniq);
 		for (i=0; i<populationSize; i++) {
 			if (uniqMotif[i]=='1') {
@@ -660,14 +671,15 @@ SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SE
 		printf("\n"); //fprintf(fp,"\n"); 
 		//fflush(fp);
 
+
 		if (jjj<numGeneration-1) {
 
 			// fitness based selection with replacement 
 			roulett_wheel_fitness(fitness,populationSize,wheel);
 
+
 			// mutation and crossover operations
 			if (populationSize>1) {
-
 				testrand=runif(0,1);
 				if (testrand>=0.5) {
 					mutation (dyad,numWordGroup,word,minSpaceWidth,maxSpaceWidth,wheel,populationSize,fitness,uniqMotif,
@@ -689,11 +701,16 @@ SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SE
 	{	
 		compt++;
 	}
+	else
+	{
+		startPWMfound=0; 		
+	}
 	numCycle++;
+
 
 	site  =alloc_site_site(numUniq+1,MAX_SITES);
 	nsites=alloc_int(numUniq+1);
-	pwmnewLen=alloc_int(numUniq+1); // after base extension and trimming
+	pwmnewLen=alloc_int(numUniq+1); // after base extension and trimming	
 	seqCn=alloc_int(MAX_NUM_SEQ);
 	bseqCn=alloc_int(MAX_NUM_SEQ);
 
@@ -701,8 +718,7 @@ SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SE
 	motifCn2=0; // motifCn per GADEM cycle
 	for (ii=0; ii<populationSize; ii++) {
 
-		id=fitness[ii].index;
-
+		id=fitness[ii].index;		
 		if (uniqMotif[ii]=='0') continue;
 
 		MarkovOrder=min(pwmLen[id]-1,userMarkovOrder);
@@ -714,7 +730,11 @@ SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SE
 
 			// compute score distribution of the (int)PWM using Staden's method 
 			llrDim=pwm_score_dist(ipwm,pwmLen[id],llrDist,bfreq);
+
+			//printf("Avant ScoreCutoff %d \n",scoreCutoff[id]);
 			scoreCutoff[id]=determine_cutoff(llrDist,llrDim,pvalueCutoff);
+			//printf("Apres ScoreCutoff %d \n",scoreCutoff[id]);
+
 			if (fullScan) {
 				nsites[motifCn2]=scan_llr_pgf(llrDist,llrDim,site[motifCn2],numSeq,oseq,orseq,seqLen,ipwm,
 					pwmLen[id],scoreCutoff[id],bfreq);
@@ -724,10 +744,10 @@ SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SE
 					pwmLen[id],scoreCutoff[id],bfreq);
 			}
 		}
+
 	// determine the null llr distribution using background sequences
 		else {
 			log_pwm(epwm[id],logepwm,pwmLen[id]);
-
 			/* -----------------compute the null distribtion------------------------------------*/
 			// this generates N*(L-w+1)*numBackgSets w-mers compared to N*(L-w+1) in input data
 
@@ -765,7 +785,6 @@ SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SE
 					llrCutoff,empDist,numTopWmerInB,empDim);
 			}
 		}
-
 		if (nsites[motifCn2]>=max(2,minsites)) {
 			for (j=0; j<numSeq; j++) seqCn[j]=0;
 			for (j=0; j<nsites[motifCn2]; j++) seqCn[site[motifCn2][j].seq]++;
@@ -777,7 +796,6 @@ SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SE
 				if (seqCn[j]==2) cn[2]++;
 				if (seqCn[j]>2)  cn[3]++;
 			}
-
 			totalSitesInput=nsites[motifCn2];
 			if (extTrim) {
 				if (fullScan) {
@@ -796,25 +814,24 @@ SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SE
 				align_sites_count(site[motifCn2],seq,rseq,nsites[motifCn2],pwmnewLen[motifCn2],opwm2);
 			}
 			standardize_pwm(opwm2,pwmnewLen[motifCn2]);
-
 			logev=E_value(opwm2,nsites[motifCn2],bfreq,pwmnewLen[motifCn2],numSeq,seqLen);
+
 			if (logev<=E_valueCutoff) {
 				consensus_pwm(opwm2,pwmnewLen[motifCn2],pwmConsensus[id]);
 				if (fullScan) {
-
 					SET_VECTOR_ELT(ResultsGadem,increment,print_result_2(site[motifCn2],nsites[motifCn2],numSeq,oseq,orseq,seqLen,geneID,logev,opwm2,pwmnewLen[motifCn2],
 						motifCn+1,sdyad[id],pwmConsensus[id],numCycle,pvalueCutoff,maxpFactor[id],fq,fpwm));
 					increment++;           
 					print_motif(site[motifCn2],nsites[motifCn2],oseq,orseq,seqLen,pwmnewLen[motifCn2],motifCn+1,opwm2);
 				}
 				else {
-
 					SET_VECTOR_ELT(ResultsGadem,increment,print_result_2(site[motifCn2],nsites[motifCn2],numSeq,seq,rseq,seqLen,geneID,logev,opwm2,pwmnewLen[motifCn2],
 						motifCn+1,sdyad[id],pwmConsensus[id],numCycle,pvalueCutoff,maxpFactor[id],fq,fpwm));
 					increment++;
 					print_motif(site[motifCn2],nsites[motifCn2],seq,rseq,seqLen,pwmnewLen[motifCn2],motifCn+1,opwm2);
 
 				}
+
 				mask_sites(nsites[motifCn2],seq,rseq,seqLen,site[motifCn2],pwmnewLen[motifCn2]);
 
 				/* ----------------------compute the average number of sites in background sequences ----------------------*/
@@ -848,11 +865,11 @@ SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SE
 					//fprintf(fq,"background set[%2d] Seqs with 0,1,2,>2 sites: %d %d %d %d\n",i+1,bcn[0],bcn[1],bcn[2],bcn[3]);
 					avebnsites+=nsites[motifCn2]; avebnsiteSeq+=(numSeq-bcn[0]);
 				} 
-
 				avebnsites/=numBackgSets; avebnsiteSeq/=numBackgSets;
 				/* -----------------end compute the average number of sites in background sequences ----------------------*/
 				motifCn++; motifCn2++; numCycleNoMotif=0;
-			} 
+			}
+
 		}
 
 	}
@@ -861,10 +878,10 @@ SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SE
 		mask_sites(nsites[i],seq,rseq,seqLen,site[i],pwmnewLen[i]); 
 	}
 
-//      if (site[0])   { free(site[0]);   site[0]=NULL;   }
-//      if (site)      { free(site);      site=NULL;      }
-//      if (nsites)    { free(nsites);    nsites=NULL;    }
-//      if (pwmnewLen) { free(pwmnewLen); pwmnewLen=NULL; }
+	if (site[0])   { free(site[0]);   site[0]=NULL;   }
+	if (site)      { free(site);      site=NULL;      }
+	if (nsites)    { free(nsites);    nsites=NULL;    }
+	if (pwmnewLen) { free(pwmnewLen); pwmnewLen=NULL; }
 
 	if (motifCn2==0) numCycleNoMotif++;   
 	if (numCycleNoMotif==stopCriterion) noMotifFound=1;
@@ -872,12 +889,13 @@ SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SE
 
 } while (!noMotifFound);
 
+
 // fclose(fp);
-if (!startPWMfound) {  
-	if (dyad[0])      { free(dyad[0]);         dyad[0]=NULL;    }
-	if (dyad)         { free(dyad);            dyad=NULL;       }
-}
-if (seqLen)          { free(seqLen);          seqLen=NULL;     }
+/*if (!startPWMfound) {  
+if (dyad[0])      { free(dyad[0]);         dyad[0]=NULL;    }
+if (dyad)         { free(dyad);            dyad=NULL;       }
+}*/
+	if (seqLen)          { free(seqLen);          seqLen=NULL;     }
 if (pwm[0][0])       { free(pwm[0][0]);       pwm[0][0]=NULL;  }
 if (pwm[0])          { free(pwm[0]);          pwm[0]=NULL;     }
 if (pwm)             { free(pwm);             pwm=NULL;        }
@@ -920,7 +938,7 @@ if (sdyad)           { free(sdyad);           sdyad=NULL;      }
 if (siteEM)          { free(siteEM);          siteEM=NULL;     }
 if (pwmConsensus[0]) { free(pwmConsensus[0]); pwmConsensus[0]=NULL; }
 if (pwmConsensus)    { free(pwmConsensus);    pwmConsensus=NULL;    }
-if (!startPWMfound && word) destroy_word(word,numWordGroup);
+//if (!startPWMfound && word) destroy_word(word,numWordGroup);
 
 PutRNGstate(); 
 unprotect(1);
