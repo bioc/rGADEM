@@ -188,7 +188,7 @@ SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SE
 	minsites=-1; 
 
 
-	verbose=INTEGER_VALUE(Rverbose);
+	verbose=LOGICAL_VALUE(Rverbose);
 	numWordGroup=INTEGER_VALUE(RnumWordGroup);
 	numTop3mer=INTEGER_VALUE(RnumTop3mer);
 	numTop4mer=INTEGER_VALUE(RnumTop4mer);
