@@ -18,7 +18,7 @@ function(x, i, j=ANY, ..., exact=TRUE, drop=FALSE){
     {selected <- (1:length(x))[-selected]}
     for (l in unique(selected))
     {
-        selectedMatch <- c(selectedMatch, new("motif", alignList=x@motifList[[l]]@alignList, consensus=x@motifList[[l]]@consensus, pwm=x@motifList[[l]]@pwm, name=x@motifList[[l]]@name))           
+        selectedMatch <- c(selectedMatch, new("motif", alignList=x@motifList[[l]]@alignList ,consensus=x@motifList[[l]]@consensus, pwm=x@motifList[[l]]@pwm, name=x@motifList[[l]]@name))          
     }        
     if (!is.null(selectedMatch))
     {        res <- new("gadem", motifList=selectedMatch,parameters=x@parameters)

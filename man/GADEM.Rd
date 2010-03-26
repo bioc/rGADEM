@@ -5,8 +5,9 @@
 \description{It is an R implementation of GADEM, a powerful computational tools for de novo motif discovery.}
 
 \usage{
+
 gadem<-GADEM(FastaXtring,RD,seed,verbose=1,numWordGroup=3,numTop3mer=20,numTop4mer=40,numTop5mer=60,numGeneration=5,
-	populationSize=100,pvalueCutoff=0.0002,E_valueCutoff=0.0,extTrim=1,minSpaceWidth=0,maxSpaceWidth=10,useChIPscore=0,numEM=40,fEM=0.5,widthWt=80,fullScan=0,userBackgModel=0,slideWinPWM=6,stopCriterion="NUM_NO_MOTIF",MarkovOrder=0,userMarkovOrder=0,numBackgSets=10,weightType=0,pgf=1,startPWMfound=0,bOrder=-1,bFileName="NULL",Spwm="NULL")}
+	populationSize=100,pValue=0.0002,eValue=0.0,extTrim=1,minSpaceWidth=0,maxSpaceWidth=10,useChIPscore=0,numEM=40,fEM=0.5,widthWt=80,fullScan=0,userBackgModel=0,slideWinPWM=6,stopCriterion="NUM_NO_MOTIF",MarkovOrder=0,userMarkovOrder=0,numBackgSets=10,weightType=0,pgf=1,startPWMfound=0,bOrder=-1,bFileName="NULL",Spwm="NULL")}
 
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -20,8 +21,8 @@ gadem<-GADEM(FastaXtring,RD,seed,verbose=1,numWordGroup=3,numTop3mer=20,numTop4m
 	\item{numTop5mer}{Number of top-ranked pentamers for spaced dyads (default: 60).}
 	\item{numGeneration}{Number of genetic algorithm (GA) generations (default: 5).}
 	\item{populationSize}{GA population size (default: 100).  Both default settings should work well for most datasets (ChIP-chip and ChIP-seq).  The above two arguments are ignored in a seeded analysis, because spaced dyads and GA are no longer needed (-gen is set to 1 and -pop is set to 10 internally, corresponding to the 10 maxp choices).}
-	\item{pvalueCutoff}{P-value cutoff for declaring BINDING SITES (default: 0.0002). Depending on data size and the motif, you might want to assess more than one value. For ChIP-seq data (e.g., 10 thousand +/-200-bp max-center peak cores), p=0.0002 often seems appropriate. However, short motifs may require a less stringent setting.}
-	\item{E_valueCutoff}{ln(E-value) cutoff for selecting MOTIFS (default: 0.0). If a seeded analysis fails to identify the expected motif, run GADEM with  -verbose 1 to show motif ln(E-value)s on screen, then rerun with a larger ln(E-value) cutoff. This can help in identifying short and/or low abundance motifs, for which the default E-value threshold may be too low.}
+	\item{pValue}{P-value cutoff for declaring BINDING SITES (default: 0.0002). Depending on data size and the motif, you might want to assess more than one value. For ChIP-seq data (e.g., 10 thousand +/-200-bp max-center peak cores), p=0.0002 often seems appropriate. However, short motifs may require a less stringent setting.}
+	\item{eValue}{ln(E-value) cutoff for selecting MOTIFS (default: 0.0). If a seeded analysis fails to identify the expected motif, run GADEM with  -verbose 1 to show motif ln(E-value)s on screen, then rerun with a larger ln(E-value) cutoff. This can help in identifying short and/or low abundance motifs, for which the default E-value threshold may be too low.}
 	\item{extTrim}{Base extension and trimming (1 -yes, 0 -no) (default: 1).}
 	\item{minSpaceWidth}{Minimal number of unspecified nucleotides in spaced dyads (default: 0).}
 	\item{maxSpaceWidth}{Maximal number of unspecified nucleotides in spaced dyads (default: 10). -mingap and -maxgap control the lengths of spaced dyads, and, with -extrim, control motif lengths. Longer motifs can be discovered by setting -maxgap to larger values (e.g. 50).}
@@ -32,7 +33,7 @@ gadem<-GADEM(FastaXtring,RD,seed,verbose=1,numWordGroup=3,numTop3mer=20,numTop4m
 	\item{fullScan}{GADEM keeps two copies of the input sequences internally: one (D) for discovering PWMs and one (S) for scanning for binding sites using the PWMs Once a motif is identified, its instances in set D are always masked by Ns. However, masking motif instances in set S is optional, and scanning unmasked equences allows sites of discovered motifs to overlap.}
 	 \item{userBackgModel}{To run analysis in background (default : 0).}
 	 \item{slideWinPWM}{sliding window for comparing pwm similarity (default : 6).}
- 	 \item{stopCriterion}{}
+ 	 \item{stopCriterion}{Stop analysis.}
 	\item{MarkovOrder}{Background Markov order,user-specified order highest order available in user-specified background indicator (default : 0).}
 	\item{userMarkovOrder}{Background Markov order,user-specified order highest order available in user-specified background indicator (default : 0).}
 	\item{numBackgSets}{Number of sets of background sequences (default: 10). The background sequences are simulated using the [a,c,g,t] frequencies in the input sequences, with length matched between the two sets. The background sequences are used as the random sequences for assessing motif enrichment in the input data. Another set (same default: 10) of background sequences is independently generated to approximate the empirical llr score distribution when -pgf is set to 0.}
@@ -46,22 +47,17 @@ gadem<-GADEM(FastaXtring,RD,seed,verbose=1,numWordGroup=3,numTop3mer=20,numTop4m
 
 \author{Arnaud Droit \email{arnaud.droit@ircm.qc.ca}}
 
-\references{Liu, X., Milo, M., Lawrence, N.D. and Rattray, M. (2005)
-  Probe-level variances improve accuracy in detecting differential 
-  gene expression, technical report available upon request.}
-
 \examples{
 
 	library(BSgenome.Hsapiens.UCSC.hg18)
-	pwd <- "" #INPUT FILES- BedFiles, FASTA, etc.
-	path <- system.file("extdata/Test_100.bed",package="rGADEM")
-	BedFile <- paste(pwd,path,sep="")
-	BED <- read.table(BedFile,header=FALSE,sep="\t")
-	BED <- data.frame(chr=as.factor(BED[,1]),
-         	          start=as.numeric(BED[,2]), end=as.numeric(BED[,3])) 
+	pwd<-"" #INPUT FILES- BedFiles, FASTA, etc.
+	path<- system.file("extdata/Test_100.bed",package="rGADEM")
+	BedFile<-paste(pwd,path,sep="")
+	BED<-read.table(BedFile,header=FALSE,sep="\t")
+	BED<-data.frame(chr=as.factor(BED[,1]),start=as.numeric(BED[,2]),end=as.numeric(BED[,3]))
 	#Create RD files 
-	rgBED <- IRanges(start=BED[,2], end=BED[,3])
-	Sequences <- RangedData(rgBED, space=BED[,1])
+	rgBED<-IRanges(start=BED[,2],end=BED[,3])
+	Sequences<-RangedData(rgBED,space=BED[,1])
 	
 	
 gadem<-GADEM(Sequences,verbose=1,genome=Hsapiens)

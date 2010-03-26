@@ -19,8 +19,8 @@ Objects can be created by calls of the form \code{new("motif_gadem", ...)}.
 	\item{numTop5mer}{:Number of top-ranked pentamers for spaced dyads (default: 60).}
 	\item{numGeneration}{:Number of genetic algorithm (GA) generations (default: 5).}
 	\item{populationSize}{:GA population size (default: 100).}
-	\item{pvalue}{:P-value cutoff for declaring BINDING SITES (default: 0.0002). }
-	\item{EValue}{:ln(E-value) cutoff for selecting MOTIFS (default: 0.0).}
+	\item{pValue}{:P-value cutoff for declaring BINDING SITES (default: 0.0002). }
+	\item{eValue}{:ln(E-value) cutoff for selecting MOTIFS (default: 0.0).}
 	\item{extTrim}{:Base extension and trimming (1 -yes, 0 -no) (default: 1).}
 	\item{minSpaceWidth}{:Minimal number of unspecified nucleotides in spaced dyads (default: 0).}
 	\item{maxSpaceWidth}{:Maximal number of unspecified nucleotides in spaced dyads (default: 10).}
@@ -46,7 +46,7 @@ Objects can be created by calls of the form \code{new("motif_gadem", ...)}.
   }
 }
 
-\author{Arnaud Droit <\email{arnaud.droit@ircm.qc.ca}>}
+\author{Arnaud Droit \email{arnaud.droit@ircm.qc.ca}}
 
 \seealso{
 	 \code{\linkS4class{gadem}} , \code{\linkS4class{align}}, \code{\linkS4class{motif}}

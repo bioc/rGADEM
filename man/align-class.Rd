@@ -23,7 +23,7 @@ Objects can be created by calls of the form \code{new("align", ...)}.
 	
   }
 }
-\author{Arnaud Droit <\email{arnaud.droit@ircm.qc.ca}>}
+\author{Arnaud Droit \email{arnaud.droit@ircm.qc.ca}}
 
 \seealso{
 	 \code{\linkS4class{gadem}} , \code{\linkS4class{motif}}, \code{\linkS4class{parameters}}

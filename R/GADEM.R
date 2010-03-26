@@ -1,6 +1,6 @@
 
 GADEM<- function (Sequences,seed=1,genome=NULL,verbose=0,numWordGroup=3,numTop3mer=20,numTop4mer=40,numTop5mer=60,numGeneration=5,
-	populationSize=100,pvalue=0.0002,EValue=0.0,extTrim=1,minSpaceWidth=0,maxSpaceWidth=10,useChIPscore=0,numEM=40,fEM=0.5,widthWt=80,
+	populationSize=100,pValue=0.0002,eValue=0.0,extTrim=1,minSpaceWidth=0,maxSpaceWidth=10,useChIPscore=0,numEM=40,fEM=0.5,widthWt=80,
 	fullScan=0,userBackgModel=0,slideWinPWM=6,stopCriterion="NUM_NO_MOTIF",MarkovOrder=0,userMarkovOrder=0,numBackgSets=10,weightType=0,pgf=1,startPWMfound=0,bOrder=-1,
 	bFileName="NULL",Spwm=NULL) 
 	{
@@ -46,7 +46,7 @@ GADEM<- function (Sequences,seed=1,genome=NULL,verbose=0,numWordGroup=3,numTop3m
 	
 		# Calling C code with .Call
 		obj<-.Call("GADEM_Analysis",sequenceFasta,Lengthfasta,accession,verbose,numWordGroup,numTop3mer,numTop4mer,numTop5mer,numGeneration,populationSize,
-		pvalue,EValue,extTrim,minSpaceWidth,maxSpaceWidth,useChIPscore,numEM,fEM,widthWt,fullScan,userBackgModel,slideWinPWM,stopCriterion,
+		pValue,eValue,extTrim,minSpaceWidth,maxSpaceWidth,useChIPscore,numEM,fEM,widthWt,fullScan,userBackgModel,slideWinPWM,stopCriterion,
 		MarkovOrder,userMarkovOrder,numBackgSets,weightType,pgf,startPWMfound,bOrder,bFileName,Spwm)
 
 		i<-1
@@ -54,7 +54,7 @@ GADEM<- function (Sequences,seed=1,genome=NULL,verbose=0,numWordGroup=3,numTop3m
 		
 		parameter=list()
 		parameter[[1]]<-new("parameters",numWordGroup=numWordGroup,numTop3mer=numTop3mer,verbose=verbose,numTop4mer=numTop4mer,numTop5mer=numTop5mer,numGeneration=numGeneration,
-		populationSize=populationSize,pvalue=pvalue,EValue=EValue,extTrim=extTrim,minSpaceWidth=minSpaceWidth,maxSpaceWidth=maxSpaceWidth,useChIPscore=useChIPscore,
+		populationSize=populationSize,pValue=pValue,eValue=eValue,extTrim=extTrim,minSpaceWidth=minSpaceWidth,maxSpaceWidth=maxSpaceWidth,useChIPscore=useChIPscore,
 		numEM=numEM,fEM=fEM,widthWt=widthWt,fullScan=fullScan,userBackgModel=userBackgModel,slideWinPWM=slideWinPWM,stopCriterion=stopCriterion,MarkovOrder=MarkovOrder,
 		userMarkovOrder=userMarkovOrder,numBackgSets=numBackgSets,weightType=weightType,pgf=pgf,startPWMfound=startPWMfound,bOrder=bOrder,bFileName=bFileName)
 		

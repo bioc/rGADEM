@@ -20,7 +20,6 @@
 
 #include "defines.h"
 #include "evalue_meme.h"
-#include <Rinternals.h>
 #include <Rdefines.h>
 
 // last modification 9/07/2009
@@ -40,8 +39,9 @@
 //  12) fixed a bug in computing marginal probabilities for subsequences containing non-[a,c,g,t]
 //  13) allow motif to overlap as an option
 
+
 SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq,SEXP accession,SEXP Rverbose,SEXP RnumWordGroup,SEXP RnumTop3mer,SEXP RnumTop4mer,SEXP RnumTop5mer,SEXP RnumGeneration,SEXP RpopulationSize,
-	SEXP RpvalueCutoff,SEXP RE_valueCutoff,SEXP RextTrim,SEXP RminSpaceWidth,SEXP RmaxSpaceWidth,SEXP RuseChIPscore,SEXP RnumEM,SEXP RfEM,SEXP RwidthWt,SEXP RfullScan,SEXP RuserBackgModel,
+	SEXP RpValue,SEXP ReValue,SEXP RextTrim,SEXP RminSpaceWidth,SEXP RmaxSpaceWidth,SEXP RuseChIPscore,SEXP RnumEM,SEXP RfEM,SEXP RwidthWt,SEXP RfullScan,SEXP RuserBackgModel,
 SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SEXP RnumBackgSets,SEXP RweightType,SEXP Rpgf,SEXP RstartPWMfound,SEXP RbOrder,SEXP RbFileName,SEXP RListPWM) {
 
 	register int jjj,ii,jj,i,j,k;
@@ -195,8 +195,8 @@ SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SE
 	numTop5mer=INTEGER_VALUE(RnumTop5mer);
 	numGeneration=INTEGER_VALUE(RnumGeneration);
 	populationSize=INTEGER_VALUE(RpopulationSize);
-	pvalueCutoff=NUMERIC_VALUE(RpvalueCutoff);
-	E_valueCutoff=NUMERIC_VALUE(RE_valueCutoff);
+	pvalueCutoff=NUMERIC_VALUE(RpValue);
+	E_valueCutoff=NUMERIC_VALUE(ReValue);
 	extTrim=INTEGER_VALUE(RextTrim);
 	minSpaceWidth=INTEGER_VALUE(RminSpaceWidth);
 	maxSpaceWidth=INTEGER_VALUE(RmaxSpaceWidth);
