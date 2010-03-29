@@ -820,13 +820,13 @@ SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SE
 				consensus_pwm(opwm2,pwmnewLen[motifCn2],pwmConsensus[id]);
 				if (fullScan) {
 					SET_VECTOR_ELT(ResultsGadem,increment,print_result_2(site[motifCn2],nsites[motifCn2],numSeq,oseq,orseq,seqLen,geneID,logev,opwm2,pwmnewLen[motifCn2],
-						motifCn+1,sdyad[id],pwmConsensus[id],numCycle,pvalueCutoff,maxpFactor[id],fq,fpwm));
+						motifCn+1,sdyad[id],pwmConsensus[id],numCycle,pvalueCutoff,maxpFactor[id]));
 					increment++;           
 					print_motif(site[motifCn2],nsites[motifCn2],oseq,orseq,seqLen,pwmnewLen[motifCn2],motifCn+1,opwm2);
 				}
 				else {
 					SET_VECTOR_ELT(ResultsGadem,increment,print_result_2(site[motifCn2],nsites[motifCn2],numSeq,seq,rseq,seqLen,geneID,logev,opwm2,pwmnewLen[motifCn2],
-						motifCn+1,sdyad[id],pwmConsensus[id],numCycle,pvalueCutoff,maxpFactor[id],fq,fpwm));
+						motifCn+1,sdyad[id],pwmConsensus[id],numCycle,pvalueCutoff,maxpFactor[id]));
 					increment++;
 					print_motif(site[motifCn2],nsites[motifCn2],seq,rseq,seqLen,pwmnewLen[motifCn2],motifCn+1,opwm2);
 

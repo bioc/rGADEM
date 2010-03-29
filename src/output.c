@@ -105,7 +105,7 @@ void print_motif(Sites *site,int nsites,char **seq,char **rseq,int *seqLen,int p
 
 SEXP print_result_2(Sites *site,int nsites,int numSeq,char **seq,char **rseq,int *seqLen,char **geneID,
    double logev,double **opwm,int pwmLen,int id,char *sdyad,char *pwmConsensus,int numCycle,
-   double pvalueCutoff,double maxpFactor,FILE *fq,FILE *fpwm) {
+   double pvalueCutoff,double maxpFactor) {
 
    register int i,j;
    int cn[4],maxHeaderLen;
@@ -286,7 +286,5 @@ for (int aa=0;aa<pwmLen;aa++)
 	UNPROTECT(13);
 	return (returnData);
 
-   fflush(fq);
-   fflush(fpwm);
 }
 
