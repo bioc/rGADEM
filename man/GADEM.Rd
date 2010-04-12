@@ -6,14 +6,14 @@
 
 \usage{
 
-gadem<-GADEM(FastaXtring,RD,seed,verbose=TRUE,numWordGroup=3,numTop3mer=20,numTop4mer=40,numTop5mer=60,numGeneration=5,
+gadem<-GADEM(Sequences,seed=1,genome=NULL,verbose=TRUE,numWordGroup=3,numTop3mer=20,numTop4mer=40,numTop5mer=60,numGeneration=5,
 	populationSize=100,pValue=0.0002,eValue=0.0,extTrim=1,minSpaceWidth=0,maxSpaceWidth=10,useChIPscore=0,numEM=40,fEM=0.5,widthWt=80,fullScan=0,userBackgModel=0,slideWinPWM=6,stopCriterion="NUM_NO_MOTIF",MarkovOrder=0,userMarkovOrder=0,numBackgSets=10,weightType=0,pgf=1,startPWMfound=0,bOrder=-1,bFileName="NULL",Spwm="NULL")}
 
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-	\item{FastaXtring}{Sequences from BED or FASTA file are converted into XString object view}
-	\item{RD}{Range DataFile which include motif location on chrmosome, start and end position for the motif enrichment}
+	\item{Sequences}{Sequences from BED or FASTA file are converted into XString object view}
 	\item{seed}{When a seed is specified, the run results are deterministic}
+	\item{genome}{Specify the genome}
 	\item{verbose}{Print immediate results on screen [TRUE-yes (default), FALSE-no]. These results include the motif consensus sequence, number of sites (in sequences subjected  to EM optimization, see -fEM, above), and ln(E-value).}
 	\item{numWordGroup}{number of non-zero k-mer groups}
 	\item{numTop3mer}{Number of top-ranked trimers for spaced dyads (default: 20).}
