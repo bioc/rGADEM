@@ -1,0 +1,9 @@
+PKG_LIBS+=-lws2_32 -L$(GSL_LIB) -lgsl -lgslcblas -lm
+
+PKG_CPPFLAGS=\
+-Ifusion_sdk\
+ -D_USE_MEM_MAPPING_\
+ -D_MSC_VER\
+-I$(RHOME)/src/include -I$(GSL_INC)
+
+
