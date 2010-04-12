@@ -4,7 +4,12 @@ GADEM<- function (Sequences,seed=1,genome=NULL,verbose=FALSE,numWordGroup=3,numT
 	fullScan=0,userBackgModel=0,slideWinPWM=6,stopCriterion="NUM_NO_MOTIF",MarkovOrder=0,userMarkovOrder=0,numBackgSets=10,weightType=0,pgf=1,startPWMfound=0,bOrder=-1,
 	bFileName="NULL",Spwm=NULL) 
 	{
-
+		
+		if(is.null(genome))
+		  {
+		stop("The genome must be specified")	
+		}
+		
 		if(is(Sequences,"RangedData"))
 		{
 			spSeq<-space(Sequences)
