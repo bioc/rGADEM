@@ -19,9 +19,7 @@ void standardize_pwm(double **pwm,int pwmLen) {
       else { 
          for (j=0; j<4; j++) pwm[i][j]  =0.25; 
       } 
-
    }
-
 }
 
 void log_pwm(double **pwm,double **logpwm,int pwmLen){

@@ -12,6 +12,8 @@
 \alias{endPos,gadem-method}
 \alias{parameters,gadem-method}
 \alias{consensus}
+\alias{nOccurences}
+\alias{nMotifs}
 \alias{viewPWM}
 \alias{startPos}
 \alias{endPos}

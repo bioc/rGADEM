@@ -3,6 +3,9 @@
 \docType{class}
 \alias{motif}
 \alias{motif-class}
+\alias{nOccurences}
+\alias{nMotifs}
+\alias{plot}
 
 
 \title{Class "motif" }

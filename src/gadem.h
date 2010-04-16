@@ -134,7 +134,7 @@ void enumerate_kmers(char **,char **,char **);
 int word_for_dyad(Words *,char **,char **,int ,int *,double *,int *,int *,int *);
 void sample_without_replacement(char *,int ,int );
 void sample_without_replacement2(int *,int ,int );
-SEXP print_result_2(Sites *,int ,int ,char **,char **,int *,char **,double ,double **,int ,int ,char *,char *,int ,double ,double);
+SEXP print_result_2(Sites *,int ,int ,char **,char **,int *,double ,double **,int ,int ,char *,char *,int ,double ,double);
 void print_motif(Sites *,int ,char **,char **,int *,int ,int ,double **);
 void pwm_profile(double **,int ,char *);
 void consensus_pwm(double **,int ,char *);

@@ -50,13 +50,29 @@ setMethod("[[","gadem",
 setMethod("length",
 "gadem",
 function(x){
+  .Deprecated("nMotifs", package="rGADEM")
 length(x@motifList)
 })
 
 setMethod("dim",
 "gadem",
 function(x){
+  .Deprecated("nOccurrences", package="rGADEM")
 sapply(x@motifList,function(x){length(x@alignList)})
+})
+
+setGeneric("nOccurrences",function(x) standardGeneric("nOccurrences"))
+setMethod("nOccurrences",
+"gadem",
+function(x){
+sapply(x@motifList,function(x){length(x@alignList)})
+})
+
+setGeneric("nMotifs",function(x) standardGeneric("nMotifs"))
+setMethod("nMotifs",
+"gadem",
+function(x){
+length(x@motifList)
 })
 
 setMethod("names",
@@ -64,10 +80,6 @@ setMethod("names",
 function(x){
   sapply(x@motifList,function(x){x@name})
 })
-
-
-
-
 
 
 setGeneric("consensus",function(x) standardGeneric("consensus"))
@@ -78,19 +90,17 @@ function(x){
 })
 
 setGeneric("parameters",function(x) standardGeneric("parameters"))
-
 setMethod("parameters",
 "gadem",
 function(x){
-	variable=NULL
-	variable=c(variable,x@parameters)		
-	return(variable[[1]])
+x@parameters
 })
 
 setGeneric("viewPWM",function(x) standardGeneric("viewPWM"))
 setMethod("viewPWM",
 "gadem",
 function(x){
+  .Deprecated("nOccurrences", package="rGADEM")
   	ListPWM <- list()
     for (i in seq(length(x)))
     {
@@ -102,6 +112,28 @@ function(x){
 
 })
 
+setGeneric("getPWM",function(x) standardGeneric("getPWM"))
+setMethod("getPWM",
+"motif",
+function(x){
+  pwm<-x@pwm
+return(pwm)
+})
+
+setMethod("getPWM",
+"gadem",
+function(x){
+  pwm<-sapply(x@motifList,"getPWM")
+  names(pwm)<-names(x)
+return(pwm)
+})
+
+setMethod("plot",
+"motif",
+function(x,...){
+pwm<-makePWM(getPWM(x))
+plot(pwm,...)
+})
 
 setGeneric("startPos", function(x) standardGeneric("startPos"))
 

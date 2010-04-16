@@ -5,34 +5,31 @@ GADEM<- function (Sequences,seed=1,genome=NULL,verbose=FALSE,numWordGroup=3,numT
 	bFileName="NULL",Spwm=NULL) 
 	{
 		
-		if(is.null(genome))
-		  {
-		stop("The genome must be specified")	
-		}
-		
-		if(is(Sequences,"RangedData"))
-		{
-			spSeq<-space(Sequences)
-			stSeq<-start(Sequences)
-			edSeq<-end(Sequences)
-			FastaSeq<-getSeq(genome,spSeq,start=stSeq,end=edSeq)
-			FastaXstring <- XStringViews(FastaSeq,subjectClass="DNAString")
-		}
+    if(is(Sequences,"RangedData") & is.null(genome))
+    {
+      stop("You have specified a RangedData object but no genome is specified")
+    }
 
-		else if(is(Sequences,"XStringViews"))
-		{
-			FastaXstring<-Sequences
-		}
-		
-		else if(is(Sequences,"DNAStringSet"))
-		{
-		FastaXstring<-Sequences	
-		}
-
-		else
-		{
-			stop("Object 'Sequences' should be of type 'XStringViews', 'DNAStringSet' or 'RangedData'")
-		}
+    if(is(Sequences,"RangedData"))
+    {
+      spSeq<-space(Sequences)
+      stSeq<-start(Sequences)
+      edSeq<-end(Sequences)
+      FastaSeq<-getSeq(genome,spSeq,start=stSeq,end=edSeq)
+      FastaXstring<-XStringViews(FastaSeq,subjectClass="DNAString")
+    }
+    else if(is(Sequences,"XStringViews"))
+    {
+      FastaXstring<-Sequences
+    }
+    else if(is(Sequences,"DNAStringSet"))
+    {
+      FastaXstring<-Sequences	
+    }
+    else
+    {
+      stop("Object 'Sequences' should be of type 'XStringViews', 'DNAStringSet' or 'RangedData'")
+    }
 
 		FastaSequence<-DNAStringSet(FastaXstring)
 		fastarecords<-XStringSetToFASTArecords(FastaSequence)
@@ -41,16 +38,24 @@ GADEM<- function (Sequences,seed=1,genome=NULL,verbose=FALSE,numWordGroup=3,numT
 
 		Lengthfasta<-length(FastaSequence)
 
-		cat("**Start Programm C **\n")
-
-		if(!is.null(seed))
-		{
-			cat("*******Seed fixe--**********\n")
-			set.seed(seed)	
-		}
-	
+    if(verbose)
+    {
+      message("**Start Programm C **\n")
+    }
+    if(!is.null(seed))
+    {
+      if(verbose)
+      cat("*******Seed fixe**********\n")
+      set.seed(seed)
+      # Here I save the seed, so that I reset the system at the end
+      if(exists(".Random.seed"))
+      {
+        save.seed <- .Random.seed
+      }
+    }
+	  	
 		# Calling C code with .Call
-		obj<-.Call("GADEM_Analysis",sequenceFasta,Lengthfasta,accession,verbose,numWordGroup,numTop3mer,numTop4mer,numTop5mer,numGeneration,populationSize,
+		obj<-.Call("GADEM_Analysis",sequenceFasta,Lengthfasta,accession,as.logical(verbose),numWordGroup,numTop3mer,numTop4mer,numTop5mer,numGeneration,populationSize,
 		pValue,eValue,extTrim,minSpaceWidth,maxSpaceWidth,useChIPscore,numEM,fEM,widthWt,fullScan,userBackgModel,slideWinPWM,stopCriterion,
 		MarkovOrder,userMarkovOrder,numBackgSets,weightType,pgf,startPWMfound,bOrder,bFileName,Spwm)
 
@@ -58,7 +63,7 @@ GADEM<- function (Sequences,seed=1,genome=NULL,verbose=FALSE,numWordGroup=3,numT
 		j<-1
 		
 		parameter=list()
-		parameter[[1]]<-new("parameters",numWordGroup=numWordGroup,numTop3mer=numTop3mer,verbose=verbose,numTop4mer=numTop4mer,numTop5mer=numTop5mer,numGeneration=numGeneration,
+		parameter[[1]]<-new("parameters",numWordGroup=numWordGroup,numTop3mer=numTop3mer,verbose=as.numeric(verbose),numTop4mer=numTop4mer,numTop5mer=numTop5mer,numGeneration=numGeneration,
 		populationSize=populationSize,pValue=pValue,eValue=eValue,extTrim=extTrim,minSpaceWidth=minSpaceWidth,maxSpaceWidth=maxSpaceWidth,useChIPscore=useChIPscore,
 		numEM=numEM,fEM=fEM,widthWt=widthWt,fullScan=fullScan,userBackgModel=userBackgModel,slideWinPWM=slideWinPWM,stopCriterion=stopCriterion,MarkovOrder=MarkovOrder,
 		userMarkovOrder=userMarkovOrder,numBackgSets=numBackgSets,weightType=weightType,pgf=pgf,startPWMfound=startPWMfound,bOrder=bOrder,bFileName=bFileName)
@@ -92,6 +97,14 @@ GADEM<- function (Sequences,seed=1,genome=NULL,verbose=FALSE,numWordGroup=3,numT
 			cat("i");
 			i=i+1
 		}
+		
+		# Reset the seed
+		if(exists("save.seed"))
+		{
+		  .Random.seed<-save.seed
+	  }
+		
+		
 		gadem<-new("gadem",motifList=list2,parameters=parameter)
 		return(gadem)
 	}

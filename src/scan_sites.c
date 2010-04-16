@@ -4,7 +4,7 @@
 #include "gadem.h"
 #include "defines.h"
 
-int scan_em_seq_ptable(Pgfs *scoreDist,int pDimension,Sites *site,int numSeq,char **seq,char **rseq,
+int scan_em_seq_ptable(Pgfs *scoreDist,int pDimension, Sites *site,int numSeq,char **seq,char **rseq,
    int *seqLen,int **ipwm,int pwmLen,int scoreCutoff,double *bfreq,char *Iseq) {
 
    register int ii,i,m,n;
@@ -58,6 +58,7 @@ int scan_em_seq_ptable(Pgfs *scoreDist,int pDimension,Sites *site,int numSeq,cha
                if (siteCn==MAX_SITES) {
                   printf("Error: max sites %d reached!\n",MAX_SITES); 
                   printf(" set <MAX_SITES> in defines.h accordingly\n");
+                  printf(" scan_em_seq_ptable\n");
                   exit(0); 
                }
             }
@@ -74,6 +75,7 @@ int scan_em_seq_ptable(Pgfs *scoreDist,int pDimension,Sites *site,int numSeq,cha
                if (siteCn==MAX_SITES) {
                   printf("Error: max sites %d reached!\n",MAX_SITES); 
                   printf(" set <MAX_SITES> in defines.h accordingly\n");
+                  printf(" scan_em_seq_ptable 2\n");
                   exit(0); 
                }
             }
@@ -174,6 +176,7 @@ int scan_llr_pgf(Pgfs *scoreDist,int pDimension,Sites *site,int numSeq,char **se
                if (siteCn==MAX_SITES) {
                   printf("Error: max sites %d reached!\n",MAX_SITES);
                   printf(" set <MAX_SITES> in defines.h accordingly\n");
+                  printf(" scan_llr_pgf \n");
                   exit(0);
                }
             }
@@ -189,6 +192,7 @@ int scan_llr_pgf(Pgfs *scoreDist,int pDimension,Sites *site,int numSeq,char **se
                if (siteCn==MAX_SITES) {
                   printf("Error: max sites %d reached!\n",MAX_SITES);
                   printf(" set <MAX_SITES> in defines.h accordingly\n");
+                  printf(" scan_llr_pgf 2\n");                  
                   exit(0);
                }
             }
@@ -293,6 +297,7 @@ int scan_llr_empirical(Sites *site,int numSeq,char **seq,char **rseq,int *seqLen
                if (siteCn==MAX_SITES) {
                   printf("Error: max sites %d reached!\n",MAX_SITES); 
                   printf(" set <MAX_SITES> in defines.h accordingly\n");
+                  printf("scan_llr_empirical \n");
                   exit(0); 
                }
             }
@@ -309,6 +314,7 @@ int scan_llr_empirical(Sites *site,int numSeq,char **seq,char **rseq,int *seqLen
                if (siteCn==MAX_SITES) {
                   printf("Error: max sites %d reached!\n",MAX_SITES); 
                   printf(" set <MAX_SITES> in defines.h accordingly\n");
+                  printf("scan_llr_empirical 2\n");
                   exit(0); 
                }
             }

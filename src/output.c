@@ -103,7 +103,7 @@ void print_motif(Sites *site,int nsites,char **seq,char **rseq,int *seqLen,int p
    -----------------------------------------------------------------------*/
 }
 
-SEXP print_result_2(Sites *site,int nsites,int numSeq,char **seq,char **rseq,int *seqLen,char **geneID,
+SEXP print_result_2(Sites *site,int nsites,int numSeq,char **seq,char **rseq,int *seqLen,
    double logev,double **opwm,int pwmLen,int id,char *sdyad,char *pwmConsensus,int numCycle,
    double pvalueCutoff,double maxpFactor) {
 
@@ -146,10 +146,6 @@ SEXP print_result_2(Sites *site,int nsites,int numSeq,char **seq,char **rseq,int
 	int compt=0;
    seqCn=alloc_int(numSeq);
 
-   maxHeaderLen=strlen(geneID[0]);
-   for (i=1; i<numSeq; i++) {
-      if (strlen(geneID[i])>maxHeaderLen) maxHeaderLen=strlen(geneID[i]); 
-   }
    maxHeaderLen=min(maxHeaderLen,MAX_SEQ_HEADER);
 
    for (i=0; i<numSeq; i++) seqCn[i]=0;
@@ -165,7 +161,6 @@ SEXP print_result_2(Sites *site,int nsites,int numSeq,char **seq,char **rseq,int
    if (seqCn) { free(seqCn); seqCn=NULL; }
 
    for (i=0; i<nsites; i++) {
- 	SET_STRING_ELT(AccessionIdent,increment_sequence,mkChar(geneID[site[i].seq]));
       if (site[i].rev=='0') {
          if (site[i].pos<0) {
 				char sequence_conca[100]="";
