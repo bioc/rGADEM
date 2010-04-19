@@ -8,8 +8,8 @@
 
 //int read_pwm0(char *fileName,double **pwm0) {
 int read_pwm0(SEXP RSpwm,double **pwm0,int lengthMatrix) {
-	register int m,n;
-	int numCol,numRow;
+	
+	int numCol; //numRow;
 //FILE *fp;
 
 	numCol=(lengthMatrix/4);
