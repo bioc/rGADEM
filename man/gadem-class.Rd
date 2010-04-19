@@ -21,6 +21,7 @@
 \alias{length,gadem-method}
 \alias{names,gadem-method}
 \alias{names<-,gadem-method}
+\alias{plot}
 
 
 \title{Class "gadem" }

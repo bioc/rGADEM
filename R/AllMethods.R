@@ -130,10 +130,17 @@ return(pwm)
 
 setMethod("plot",
 "motif",
-function(x,...){
+function(x,y="MISSING",...){
 pwm<-makePWM(getPWM(x))
 plot(pwm,...)
 })
+
+setMethod("plot",
+"gadem",
+function(x,y="MISSING",...){
+  x<-lapply(x@motifList,function(x,...){plot(makePWM(x@pwm),...)},...)
+})
+
 
 setGeneric("startPos", function(x) standardGeneric("startPos"))
 
