@@ -64,11 +64,7 @@ void populationCalculationSequential(int maxSeqLen, int numEM, Fitness *fitness,
 
 SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SEXP RnumWordGroup,SEXP RnumTop3mer,SEXP RnumTop4mer,SEXP RnumTop5mer,SEXP RnumGeneration,SEXP RpopulationSize, SEXP RpValue,SEXP ReValue,SEXP RextTrim,SEXP RminSpaceWidth,SEXP RmaxSpaceWidth,SEXP RuseChIPscore,SEXP RnumEM,SEXP RfEM, SEXP RwidthWt,SEXP RfullScan,SEXP RuserBackgModel, SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SEXP RnumBackgSets,SEXP RweightType,SEXP Rpgf,SEXP RstartPWMfound,SEXP RbOrder,SEXP RbFileName,SEXP RListPWM) 
 {
-  double startTime, endTime, elapsed;
-  int jjj,ii,jj,i,j,k;
-  
-  const char *fichierFasta[1];
-  const char *parametre[1];
+  int jjj,ii,i,j,k;  
   char *bFileName;
   
   SEXP ResultsGadem;
@@ -135,7 +131,6 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
   int useChIPscore;                      // indicator for using ChIP-seq score for seq. selection for EM
   int numEM;                             // number of EM steps
   double E_valueCutoff;                  // log E-value cutoff
-  int nsitesEM;                          // number of binding sites in sequences subjected to EM
   int minsitesEM;                        // minimal number of sites in a motif in EM sequences
   Sites *siteEM;                         // binding sites in EM sequences
   int *nsites;                           // number of binding sites in full data
@@ -186,8 +181,6 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
   int numSeqEM;                          // number of sequences subject to EM
   char *Iseq;                            // Indicator if a sequence is used in EM or not
   int *emSeqLen;                         // length of sequences used in EM
-  double pwmDiff;                        // pwm convergence
-  int maxp;                              // initial setting for all motifs maxp=numSeqEM 
   double *maxpFactor;
   
   int numCycle;                          // number of GADEM cycles
@@ -195,11 +188,10 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
   
     // mis.
     //seed_t  seed;                          // random seed
-  int goodArgument,motifCn2,id,numCycleNoMotif,verbose,bOrder,minminSites;
+  int motifCn2,id,numCycleNoMotif,verbose,bOrder,minminSites;
   int startPWMfound,stopCriterion;
-  char *mFileName,*oFileName,*pwmFileName,*ListPWM;
-  FILE *fp,*fq,*fpwm;
-  time_t start,finish;
+  char *mFileName,*oFileName,*pwmFileName;
+  time_t start;
   int cn[4],bcn[4],*seqCn,*bseqCn,avebnsites,avebnsiteSeq,totalSitesInput;
   
   
@@ -486,11 +478,7 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
   }
   
   time(&start);
-  
-    // if (weightType==1 || weightType==3) 
-    //fprintf(fp,"window width of sequence centered on the nucleotides having large weights for PWM optimization: %d\n",widthWt);
-    //fprintf(fp,"pwm score p-value cutoff for declaring binding site:\t%e\n",pvalueCutoff);
-  
+    
   if(verbose)
   {
     printf("==============================================================================================\n");
@@ -997,7 +985,6 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
               if (bseqCn[j]==2) bcn[2]++;
               if (bseqCn[j]>2)  bcn[3]++;
             }
-              //fprintf(fq,"background set[%2d] Seqs with 0,1,2,>2 sites: %d %d %d %d\n",i+1,bcn[0],bcn[1],bcn[2],bcn[3]);
             avebnsites+=nsites[motifCn2]; avebnsiteSeq+=(numSeq-bcn[0]);
           } 
           avebnsites/=numBackgSets; avebnsiteSeq/=numBackgSets;
@@ -1039,9 +1026,7 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
       noMotifFound=1;
   }while (!noMotifFound);
   
-  
-    // fclose(fp);
-  /*if (!startPWMfound) {  
+   /*if (!startPWMfound) {  
    if (dyad[0])      { free(dyad[0]);         dyad[0]=NULL;    }
    if (dyad)         { free(dyad);            dyad=NULL;       }
    }*/
@@ -1224,15 +1209,11 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
 
 void print_ptable(Pgfs *llrDist,int llrDim) {
   
-  FILE *fp;
-  int i;
-  
+ 
 }
 
 void print_empirical(double *empDist,int totalKmer) {
   
-  FILE *fp;
-  int i;
   
 }
 
@@ -1305,9 +1286,7 @@ void select_high_scoring_seq_for_EM (double *ChIPScore,int numSeq,int numSeqEM,c
 
 void print_null(double *empDist,int numTopWmerInB,int empDim)
 {
-  
-  FILE *fp;
-  int i;
+ 
 }
 
 
