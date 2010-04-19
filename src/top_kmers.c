@@ -77,7 +77,7 @@ int word_for_dyad(Words *word,char **seq,char **rseq,int numSeq,int *seqLen,doub
       }
       else *numTop5mer=0;
    }
-   printf("top 3  4, 5-mers: %d %d %d\n",*numTop3mer,*numTop4mer,*numTop5mer);
+   // printf("top 3  4, 5-mers: %d %d %d\n",*numTop3mer,*numTop4mer,*numTop5mer);
 
 #ifdef DEBUG
    fp=fopen("kmer.debug","w");

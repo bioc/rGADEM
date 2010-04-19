@@ -55,7 +55,7 @@ void roulett_wheel_fitness(Fitness *fitness,int populationSize,Wheel *wheel) {
    if ((range<0.0001) || 
        fitness[1].value==DUMMY_FITNESS || 
        fabs(fitness[1].value-fitness[populationSize-1].value)<0.0001) {
-      printf("GA converged ...\n");
+      // printf("GA converged ...\n");
       for (i=0; i<populationSize; i++) {
          wheel[i].index=fitness[i].index;
          wheel[i].start=i;

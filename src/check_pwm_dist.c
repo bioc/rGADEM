@@ -139,7 +139,7 @@ int check_pwm_uniqueness_dist(double ***opwm,int *pwmLen,int populationSize,Fitn
          numUniq++;
       }
    }
-   printf("number of unique: %d\n",numUniq);
+   // printf("number of unique: %d\n",numUniq);
 
    if (uniqID)     { free(uniqID);     uniqID=NULL;     }
    if (rpwm[0][0]) { free(rpwm[0][0]); rpwm[0][0]=NULL; }
