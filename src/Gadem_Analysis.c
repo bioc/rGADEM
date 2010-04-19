@@ -457,7 +457,7 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
   }
   /*-------------------- end of selection --------------------------*/
   
-  if (!userBackgModel & verbose)
+  if (!userBackgModel && verbose)
   {
     if (!pgf && userMarkovOrder!=0 && aveSeqLen<=500)
     {
@@ -470,7 +470,7 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
     generate_background(numSeq,seq,rseq,seqLen,back,userMarkovOrder); 
     printf("done\n\n");
   }
-  if (widthWt<20 & verbose)
+  if (widthWt<20 && verbose)
   {
     printf("\n***Note: the window width of sequence centered on the nucleotides having large weights\n");
     printf("   in EM for PWM optimization is small: %d\n",widthWt);
@@ -525,16 +525,16 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
   
   if (pgf) 
   {
-    if (userMarkovOrder!=0 & verbose) 
+    if (userMarkovOrder!=0 && verbose) 
     {
       printf("\n***The user-specified background Markov order (%d) is ignored when -pgf is set to 1***\n",userMarkovOrder);
     }
-    if (bFileName[0]!='\0' & verbose)
+    if (bFileName[0]!='\0' && verbose)
     {
       printf("\n***The user-specified background models: %s are not used when -pgf is set to 1***\n\n",bFileName);
     }
   }
-  if (startPWMfound && fEM!=1.0  & verbose)
+  if (startPWMfound && fEM!=1.0  && verbose)
   {
     printf("\n***Note: -fEM argument is ignored in a seeded analysis***\n\n");
   }
