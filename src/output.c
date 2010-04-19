@@ -10,7 +10,7 @@
 
 void print_motif(Sites *site,int nsites,char **seq,char **rseq,int *seqLen,int pwmLen,int id,double **opwm) {
 
-   FILE *f1;
+   //FILE *f1;
    char *fileName;
    register int i,j;
 
