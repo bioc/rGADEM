@@ -108,7 +108,7 @@ SEXP print_result_2(Sites *site,int nsites,int numSeq,char **seq,char **rseq,int
    double pvalueCutoff,double maxpFactor) {
 
    register int i,j;
-   int cn[4],maxHeaderLen;
+int cn[4];//maxHeaderLen;
    int *seqCn;
 
 	SEXP PWM;
@@ -146,7 +146,7 @@ SEXP print_result_2(Sites *site,int nsites,int numSeq,char **seq,char **rseq,int
 	int compt=0;
    seqCn=alloc_int(numSeq);
 
-   maxHeaderLen=min(maxHeaderLen,MAX_SEQ_HEADER);
+   //maxHeaderLen=min(maxHeaderLen,MAX_SEQ_HEADER);
 
    for (i=0; i<numSeq; i++) seqCn[i]=0;
    for (i=0; i<nsites; i++) seqCn[site[i].seq]++; 
