@@ -101,7 +101,7 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
   int maxSeqLen,*seqLen;          // sequence info
   double aveSeqLen;                      // sequence info
   char **seq,**rseq;
-	const char **geneID;            // sequence info
+   int *geneID;            // sequence info
   char **oseq,**orseq;                   // copy of the original sequences
   char **pseq,**rpseq;                   // permuted seqs.
   double *bfreq;                         // base frequencies
@@ -222,7 +222,8 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
 //  printf("maxLength=%d",maxSeqLen);
 //  exit(0);
   seq=alloc_char_char(numSeq,maxSeqLen+1);
-  for(incr=1;incr<longueur;incr=incr+2)
+  
+	for(incr=1;incr<longueur;incr=incr+2)
   {	
     for (j=0; j<length(STRING_ELT(sequence,(incr))); j++)
     {
@@ -273,7 +274,7 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
   
   ChIPScore=alloc_double(MAX_NUM_SEQ);
   seqLen=alloc_int(MAX_NUM_SEQ); 
-  geneID=alloc_char_char(MAX_NUM_SEQ,500);
+  geneID=alloc_int(MAX_NUM_SEQ);
 
 //  seq=sequences;
   
@@ -283,8 +284,8 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
   for (i=0; i<numSeq; i++) {
     len=strlen(seq[i]); 
     seqLen[i]=len;
-	geneID[i]=CHAR(STRING_ELT(accession,i));
-  }
+	geneID[i]=INTEGER(accession)[i];
+	  }
 
   aveSeqLen=0; for (i=0; i<numSeq; i++) aveSeqLen +=seqLen[i]; aveSeqLen /=(double)numSeq;
   

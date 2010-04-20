@@ -42,7 +42,7 @@ strand="character", #motif strand
 seqID="numeric", #read number
 pos="numeric", #motif position
 pval="numeric", #pvalue
-fastaHeader="character" #Fasta accession	
+fastaHeader="numeric" #Fasta accession	
 ))
 
 setClass("motif", representation(
