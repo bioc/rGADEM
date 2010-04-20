@@ -15,8 +15,16 @@ GADEM<- function (Sequences,seed=1,genome=NULL,verbose=FALSE,numWordGroup=3,numT
       spSeq<-space(Sequences)
       stSeq<-start(Sequences)
       edSeq<-end(Sequences)
+      if(verbose)
+      {
+        cat("Retrieving sequences... ")
+      }
       FastaSeq<-getSeq(genome,spSeq,start=stSeq,end=edSeq)
       FastaXstring<-XStringViews(FastaSeq,subjectClass="DNAString")
+      if(verbose)
+      {
+        cat("Done.\n")
+      }
     }
     else if(is(Sequences,"XStringViews"))
     {
@@ -40,20 +48,18 @@ GADEM<- function (Sequences,seed=1,genome=NULL,verbose=FALSE,numWordGroup=3,numT
 
     if(verbose)
     {
-      message("**Start Programm C **\n")
+      cat("*** Start C Programm ***\n")
     }
+    
     if(!is.null(seed))
     {
-      if(verbose)
-      cat("*******Seed fixe**********\n")
-      set.seed(seed)
       # Here I save the seed, so that I reset the system at the end
       if(exists(".Random.seed"))
       {
         save.seed <- .Random.seed
       }
+      set.seed(seed)
     }
-	  	
 		# Calling C code with .Call
 		obj<-.Call("GADEM_Analysis",sequenceFasta,Lengthfasta,accession,as.logical(verbose),numWordGroup,numTop3mer,numTop4mer,numTop5mer,numGeneration,populationSize,
 		pValue,eValue,extTrim,minSpaceWidth,maxSpaceWidth,useChIPscore,numEM,fEM,widthWt,fullScan,userBackgModel,slideWinPWM,stopCriterion,
@@ -94,7 +100,6 @@ GADEM<- function (Sequences,seed=1,genome=NULL,verbose=FALSE,numWordGroup=3,numT
 			rownames(matrixPWM)<-c("A","C","G","T")
 			colnames(matrixPWM)<-seq(dim(matrixPWM)[2])
 			list2[[i]]<-new("motif",alignList=list,consensus=obj[[i]][[1]],pwm=matrixPWM,name=obj[[i]][[5]])
-			cat("i");
 			i=i+1
 		}
 		

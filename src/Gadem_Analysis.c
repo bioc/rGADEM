@@ -27,11 +27,11 @@
 #ifdef __MAC_OS_X_VERSION_MIN_REQUIRED
 #if __MAC_OS_X_VERSION_MIN_REQUIRED >= 1060
 #include <dispatch/dispatch.h>
-//#define HAVE_DISPATCH 1
+#define HAVE_DISPATCH 1
 #endif
 #endif
 #endif
-
+ 
 #if (R_VERSION >= R_Version(2,3,0))
 #define R_INTERFACE_PTRS 1
 #define CSTACK_DEFNS 1
@@ -64,7 +64,11 @@ void populationCalculationSequential(int maxSeqLen, int numEM, Fitness *fitness,
 
 SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SEXP RnumWordGroup,SEXP RnumTop3mer,SEXP RnumTop4mer,SEXP RnumTop5mer,SEXP RnumGeneration,SEXP RpopulationSize, SEXP RpValue,SEXP ReValue,SEXP RextTrim,SEXP RminSpaceWidth,SEXP RmaxSpaceWidth,SEXP RuseChIPscore,SEXP RnumEM,SEXP RfEM, SEXP RwidthWt,SEXP RfullScan,SEXP RuserBackgModel, SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SEXP RnumBackgSets,SEXP RweightType,SEXP Rpgf,SEXP RstartPWMfound,SEXP RbOrder,SEXP RbFileName,SEXP RListPWM) 
 {
-  int jjj,ii,i,j,k;  
+  double startTime, endTime, elapsed;
+  int jjj,ii,jj,i,j,k;
+  
+  const char *fichierFasta[1];
+  const char *parametre[1];
   char *bFileName;
   
   SEXP ResultsGadem;
@@ -82,7 +86,6 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
   
   int increment=0;
   
-  GetRNGstate();
   double testrand;
   
     //Number of sequences
@@ -131,6 +134,7 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
   int useChIPscore;                      // indicator for using ChIP-seq score for seq. selection for EM
   int numEM;                             // number of EM steps
   double E_valueCutoff;                  // log E-value cutoff
+  int nsitesEM;                          // number of binding sites in sequences subjected to EM
   int minsitesEM;                        // minimal number of sites in a motif in EM sequences
   Sites *siteEM;                         // binding sites in EM sequences
   int *nsites;                           // number of binding sites in full data
@@ -181,6 +185,8 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
   int numSeqEM;                          // number of sequences subject to EM
   char *Iseq;                            // Indicator if a sequence is used in EM or not
   int *emSeqLen;                         // length of sequences used in EM
+  double pwmDiff;                        // pwm convergence
+  int maxp;                              // initial setting for all motifs maxp=numSeqEM 
   double *maxpFactor;
   
   int numCycle;                          // number of GADEM cycles
@@ -188,12 +194,16 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
   
     // mis.
     //seed_t  seed;                          // random seed
-  int motifCn2,id,numCycleNoMotif,verbose,bOrder,minminSites;
+  int goodArgument,motifCn2,id,numCycleNoMotif,verbose,bOrder,minminSites;
   int startPWMfound,stopCriterion;
-  char *mFileName,*oFileName,*pwmFileName;
-  time_t start;
+  int l,m;
+  char *mFileName,*oFileName,*pwmFileName,*ListPWM;
+  FILE *fp,*fq,*fpwm;
+  time_t start,finish;
   int cn[4],bcn[4],*seqCn,*bseqCn,avebnsites,avebnsiteSeq,totalSitesInput;
   
+  
+  GetRNGstate();
   
   mFileName=alloc_char(500);     mFileName[0]='\0';
   oFileName=alloc_char(500);     oFileName[0]='\0';
@@ -254,9 +264,7 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
     
   if(numSeq>MAX_NUM_SEQ)
   {
-    printf("Error: maximal number of seqences reached! \n");
-    printf("Please reset MAX_NUM_SEQ in gadem.h and rebuild (see installation)\n\n");
-    exit(0);
+    error("Error: maximal number of seqences reached!\nPlease reset MAX_NUM_SEQ in gadem.h and rebuild (see installation)\n");
   }
   
   strcpy(bFileName,tempRbFileName[0]);
@@ -321,45 +329,35 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
     // check for input parameters
   if(numGeneration<1)
   { 
-    printf("\nError: numbe of generaton < 1.\n");
-    exit(0);
+    error("numbe of generaton < 1.\n");
   }
   if(populationSize<1)
   {
-    printf("\nError: population size < 1.\n");
-    exit(0);
+    error("population size < 1.\n");
   }
   if (minSpaceWidth<0)
   { 
-    printf("\nError: minimal number of unspecified bases in spaced dyads <0.\n"); 
-    printf("   check -mingap setting\n\n");
-    exit(0);
+    error("minimal number of unspecified bases in spaced dyads <0.\n"); 
   }
   if (maxSpaceWidth<0)
   { 
-    printf("\nError: maximal number of unspecified bases in spaced dyads <0.\n"); 
-    printf("   check -maxgap setting\n\n");
-    exit(0);
+    error("maximal number of unspecified bases in spaced dyads <0.\n"); 
   }
   if (minSpaceWidth>maxSpaceWidth)
   {
-    printf("\nError: mingap setting must <= to maxgap setting.\n\n"); 
-    exit(0); 
+    error("mingap setting must <= to maxgap setting.\n\n"); 
   }
   if (maxSpaceWidth+12>MAX_PWM_LENGTH)
   {
-    printf("\nError: maxgap setting plus word lengths exceed <MAX_PWM_LENGTH>.\n");
-    printf("   For very long motifs, please set <MAX_PWM_LENGTH> in 'defines.h' accordingly.\n\n");
-    exit(0); 
+    error("maxgap setting plus word lengths exceed <MAX_PWM_LENGTH>.\n");
   }
   if (numEM<0)
   {
-    printf("\nError: number of EM steps is zero.\n");
-    exit(0);
+    error("number of EM steps is zero.\n");
   }
   if (numEM==0)
   {
-    printf("\nNote: number of EM steps = 0, no EM optimization is carried out.\n");
+    error("number of EM steps = 0, no EM optimization is carried out.\n");
   }
   
   if (fullScan!=0 && fullScan!=1)
@@ -374,22 +372,21 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
     // any one, two or three: tetramer, pentamer, hexamer
   if (numTop3mer==0 && numTop4mer==0 && numTop5mer==0)
   {
-    printf("\nError: maxw3, maxw4, and maxw5 all zero - no words for spaced dyads.\n");
-    exit(0);
+    error("maxw3, maxw4, and maxw5 all zero - no words for spaced dyads.\n");
   }
   
-  if (startPWMfound && fEM!=0.5 && fEM!=1.0)
-  {
-    printf("\n***Note: -fEM argument is ignored in a seeded analysis***\n\n");
-  }
+  // if (startPWMfound && fEM!=0.5 && fEM!=1.0 & verbose)
+  // {
+  //   warning("fEM argument is ignored in a seeded analysis\n");
+  // }
   
   if (startPWMfound)
   {
-    if(verbose)
-    {
-      if (populationSize!=10 && populationSize!=100) printf("\n***Note: -pop argument is ignored in a seeded analysis, -pop is set to 10.***\n\n");
-      if (numGeneration!=1 && numGeneration!=5)      printf("\n***Note: -gen argument is ignored in a seeded analysis, -gen is set to 1.***\n\n");
-    }
+    // if(verbose)
+    // {
+    //   if (populationSize!=10 && populationSize!=100) warning("pop argument is ignored in a seeded analysis, -pop is set to 10.\n");
+    //   if (numGeneration!=1 && numGeneration!=5)      warning("gen argument is ignored in a seeded analysis, -gen is set to 1.\n");
+    // }
     fEM=1.0;
     populationSize=FIXED_POPULATION; numGeneration=1; 
   }
@@ -397,15 +394,13 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
     // number of sequences for EM
   if (fEM>1.0 || fEM<=0.0)
   { 
-    printf("\nError: the fraction of sequences subject to EM is %3.2f.\n",fEM);
-    exit(0); 
+    error("The fraction of sequences subject to EM is %3.2f.\n",fEM);
   } 
   numSeqEM=(int)(fEM*numSeq);
   
   if (pgf!=0 && pgf!=1)   
   {
-    printf("\nError: -pgf can only take 0 or 1.\n"); 
-    exit(0); 
+    error("pgf can only take 0 or 1.\n"); 
   }
 
 
@@ -457,28 +452,33 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
   }
   /*-------------------- end of selection --------------------------*/
   
-  if (!userBackgModel && verbose)
+  if (!userBackgModel)
   {
     if (!pgf && userMarkovOrder!=0 && aveSeqLen<=500)
     {
-      printf("\n***Note: it is not recommended to use a non-zero-th Markov model estimated from\n");
-      printf("   the input sequences as the background model, especially for short sequences as\n");
-      printf("   the sequences generated by the resulting background model may be too similar to\n");
-      printf("   the input sequences\n\n"); 
+      warning("It is not recommended to use a non-zero-th Markov model estimated from the input sequences as the background model, especially for short sequences\n");
+      // printf("   the input sequences as the background model, especially for short sequences as\n");
+      // printf("   the sequences generated by the resulting background model may be too similar to\n");
+      // printf("   the input sequences\n\n"); 
     }
-    printf("\nestimating background Markov models using input sequences...\n");
-    generate_background(numSeq,seq,rseq,seqLen,back,userMarkovOrder); 
-    printf("done\n\n");
+    if(verbose)
+    {
+      printf("Estimating background Markov models using input sequences... ");
+      generate_background(numSeq,seq,rseq,seqLen,back,userMarkovOrder); 
+      printf("Done\n");
+    }
   }
-  if (widthWt<20 && verbose)
+  if (widthWt<20)
   {
-    printf("\n***Note: the window width of sequence centered on the nucleotides having large weights\n");
-    printf("   in EM for PWM optimization is small: %d\n",widthWt);
-    printf("   Motif longer than %d will not be discovered\n\n",widthWt); 
+    warning("The window width of sequence centered on the nucleotides having large weights in EM for PWM optimization is small\n Motif longer than %d will not be discovered\n",widthWt);
   }
   
   time(&start);
-    
+  
+    // if (weightType==1 || weightType==3) 
+    //fprintf(fp,"window width of sequence centered on the nucleotides having large weights for PWM optimization: %d\n",widthWt);
+    //fprintf(fp,"pwm score p-value cutoff for declaring binding site:\t%e\n",pvalueCutoff);
+  
   if(verbose)
   {
     printf("==============================================================================================\n");
@@ -487,13 +487,13 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
     
     if (pgf) 
     {
-      printf("\nUse pgf method to approximate llr null distribution\n");
+      printf("Use pgf method to approximate llr null distribution\n");
       printf("background Markov order:\t\t\t\t\t0th\n");
       printf("parameters estimated from sequences in:  %s\n\n",mFileName);
     }
     else 
     {
-      printf("\nUse an empirical approach to approximate llr null using background sequences\n");
+      printf("Use an empirical approach to approximate llr null using background sequences\n");
       printf("Background sequences are simulated using [a,c,g,t] frequencies in input data\n");
       printf("Background Markov order (in llr calculation):\t\t\t\t");
       switch (userMarkovOrder) {
@@ -523,27 +523,21 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
     printf("==============================================================================================\n");
   }
   
-  if (pgf) 
-  {
-    if (userMarkovOrder!=0 && verbose) 
-    {
-      printf("\n***The user-specified background Markov order (%d) is ignored when -pgf is set to 1***\n",userMarkovOrder);
-    }
-    if (bFileName[0]!='\0' && verbose)
-    {
-      printf("\n***The user-specified background models: %s are not used when -pgf is set to 1***\n\n",bFileName);
-    }
-  }
-  if (startPWMfound && fEM!=1.0  && verbose)
-  {
-    printf("\n***Note: -fEM argument is ignored in a seeded analysis***\n\n");
-  }
-  
-//  if(verbose)
-//  {
-//    printf("\nsSarting GADEM... this may take a few hours to complete\n");
-//    printf("type: ctrl/z, then, bg, to run it in background\n\n");
-//  }
+  // if (pgf) 
+  // {
+  //   if (userMarkovOrder!=0 & verbose) 
+  //   {
+  //     warning("The user-specified background Markov order (%d) is ignored when -pgf is set to 1\n",userMarkovOrder);
+  //   }
+  //   if (bFileName[0]!='\0' & verbose)
+  //   {
+  //     warning("The user-specified background models: %s are not used when -pgf is set to 1\n",bFileName);
+  //   }
+  // }
+  // if (startPWMfound && fEM!=1.0  & verbose)
+  // {
+  //   warning("fEM argument is ignored in a seeded analysis\n");
+  // }
   
     // determine seq length by counting only [a,c,g,t], seqLen is used in E-value calculation 
   effect_seq_length(seq,numSeq,seqLen,Iseq,emSeqLen);
@@ -557,10 +551,10 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
   else if (weightType==4) assign_weight_normal(seqLen,numSeq,posWeight);
   else
   {
-    printf("Motif prior probability type not found - please choose: 0, 1, 2, 3, or 4\n");
-    printf("Consider: -posWt 1 for strong central enrichment as in ChIP-seq\n");
-    printf("          -posWt 0 for others\n\n");
-    exit(0);
+    error("Motif prior probability type not found - please choose: 0, 1, 2, 3, or 4\n");
+    // printf("Consider: -posWt 1 for strong central enrichment as in ChIP-seq\n");
+    // printf("          -posWt 0 for others\n\n");
+    // exit(0);
   }
   /*	if (startPWMfound) minminSites=minsites;
    else               minminSites=(int)(0.40*minsitesEM);*/
@@ -576,11 +570,12 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
       
       if(verbose)
       {
-        printf("\n|------------------------------------------------------------------|\n");
-        printf("|                                                                  |\n");
-        printf("|              *** Running an unseeded analysis ***                |\n");
-        printf("|                                                                  |\n");
-        printf("|------------------------------------------------------------------|\n\n");
+        printf("*** Running an unseeded analysis ***\n");
+        // printf("\n|------------------------------------------------------------------|\n");
+        // printf("|                                                                  |\n");
+        // printf("|              *** Running an unseeded analysis ***                |\n");
+        // printf("|                                                                  |\n");
+        // printf("|------------------------------------------------------------------|\n\n");
       }
       populationSize=INTEGER_VALUE(RpopulationSize);
       numGeneration=INTEGER_VALUE(RnumGeneration);
@@ -597,37 +592,35 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
       sdyad =alloc_char_char(populationSize,MAX_PWM_LENGTH+1);
       word  =alloc_word(numWordGroup,maxWordSize);
       minminSites=(int)(0.40*minsitesEM);
-      
-        //printf("Population size %d \n",populationSize);
-        //printf("####################################\n");
-        //printf("####################################\n");
-      
-      
+
         // identify top-ranked k-mers (k=3,4,5) for spaced dyads
       if(verbose)
-        printf("\nGADEM cycle %2d: enumerate and count k-mers...   ",numCycle+1);      
+        printf("GADEM cycle %2d: enumerate and count k-mers... ",numCycle+1);
+        
       numWordGroup=word_for_dyad(word,seq,rseq,numSeq,seqLen,bfreq,&numTop3mer,&numTop4mer,&numTop5mer);
+      
       if(verbose)
-        printf("done.\n");
+        printf("Done.\n");
       
         // generating a "population" of spaced dyads
       if(verbose)
-        printf("\ninitializing GA...   ");
+        printf("Initializing GA... ");
 
       initialisation(dyad,populationSize,numWordGroup,word,minSpaceWidth,maxSpaceWidth,maxpFactor);
       if(verbose)
-        printf("done.\n\n");        
+        printf("Done.\n");
       
     }
     else
     {
       if(verbose)
       {
-        printf("\n|------------------------------------------------------------------|\n");
-        printf("|                                                                  |\n");
-        printf("|               *** Running a seeded analysis ***                  |\n");
-        printf("|                                                                  |\n");
-        printf("|------------------------------------------------------------------|\n\n");
+        printf("*** Running an seeded analysis ***\n");
+        // printf("\n|------------------------------------------------------------------|\n");
+        // printf("|                                                                  |\n");
+        // printf("|               *** Running a seeded analysis ***                  |\n");
+        // printf("|                                                                  |\n");
+        // printf("|------------------------------------------------------------------|\n\n");
       }
       populationSize=FIXED_POPULATION; 
       dyad  =alloc_chrs(populationSize,4);
@@ -682,83 +675,93 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
       }
       
 #if defined(CSTACK_DEFNS) & defined(HAVE_DISPATCH)
+      // PutRNGstate();
+      // printf("Running a parallel version\n");
       R_CheckUserInterrupt();
-      dispatch_apply(populationSize, queue, ^(size_t iiii) {populationCalculation(maxSeqLen, numEM, fitness+iiii, startPWMfound, minminSites, maxpFactor[iiii], numSeq, numSeqEM, seq, rseq, seqLen, Iseq, bfreq, posWeight, weightType, pvalueCutoff, emSeqLen, pwm[iiii], pwmLen[iiii], epwm[iiii], opwm[iiii], pwmConsensus[iiii], scoreCutoff+iiii, sdyad[iiii], iiii);
-      });
+      dispatch_apply(populationSize, queue, ^(size_t iiii) 
+      {
+        populationCalculation(maxSeqLen, numEM, fitness+iiii, startPWMfound, minminSites, maxpFactor[iiii], numSeq, numSeqEM, seq, rseq, seqLen, Iseq, bfreq, posWeight, weightType, pvalueCutoff, emSeqLen, pwm[iiii], pwmLen[iiii], epwm[iiii], opwm[iiii], pwmConsensus[iiii], scoreCutoff+iiii, sdyad[iiii], iiii);
+      }
+      );
+      // GetRNGstate();
 #else
+      // PutRNGstate();
+      // printf("Serial version\n");
       for (ii=0; ii<populationSize; ii++)
       {
-        populationCalculationSequential(maxSeqLen, numEM, fitness, startPWMfound, minminSites, maxpFactor, numSeq, numSeqEM, seq, rseq, seqLen, Iseq, bfreq, posWeight, weightType, llrDist, llrDim, pvalueCutoff, emSeqLen, pwm, pwmLen, epwm, opwm,pwmConsensus,scoreCutoff, sdyad, t1pwm, t2pwm, siteEM, logpwm, score, rscore, ipwm, ii, verbose, jjj, numCycle, maxSpaceWidth);
+        R_CheckUserInterrupt();        
+        populationCalculationSequential(maxSeqLen, numEM, fitness, startPWMfound, minminSites, maxpFactor, numSeq, numSeqEM, seq, rseq, seqLen, Iseq, bfreq, posWeight, weightType, llrDist, llrDim, pvalueCutoff, emSeqLen, pwm, pwmLen, epwm, opwm,pwmConsensus,scoreCutoff, sdyad, t1pwm, t2pwm, siteEM, logpwm, score, rscore, ipwm, ii, verbose, jjj, numCycle, maxSpaceWidth);      
 
-      // if(llrDist)
-      // {
-      //   free(llrDist);
-      //   llrDist=NULL;
-      // }  
-      // if(siteEM)
-      // { 
-      //   free(siteEM);
-      //   siteEM=NULL;
-      // }
-      // if (logpwm[0])
-      // { free(logpwm[0]);
-      //   logpwm[0]=NULL;
-      // }
-      // if (logpwm)
-      // { 
-      //   free(logpwm);
-      //   logpwm=NULL;
-      // }      
-      // if(ipwm[0])
-      // { 
-      //   free(ipwm[0]);
-      //   ipwm[0]=NULL;
-      // }
-      // if (ipwm)
-      // {
-      //   free(ipwm);
-      //   ipwm=NULL;
-      // }
-      // if (score[0])
-      // {
-      //   free(score[0]); 
-      //   score[0]=NULL;
-      // }
-      // if (score)
-      // { 
-      //   free(score);
-      //   score=NULL;
-      // }
-//      if (rscore[0])
-//      { 
-//        free(rscore[0]);
-//        rscore[0]=NULL;
-//      }
-//      if (rscore)
-//      { 
-//        free(rscore);
-//        rscore=NULL;
-//      }
+        free(llrDist);free(siteEM);free(t1pwm[0]);free(t1pwm);free(t2pwm[0]);free(t2pwm);free(logpwm[0]);
+        free(logpwm);free(ipwm[0]);free(ipwm);free(score[0]);free(score);free(rscore[0]);free(rscore);
 
-      // llrDist=alloc_distr(MAX_DIMENSION);
-      // ipwm  =alloc_int_int(MAX_PWM_LENGTH,4);
-      // logpwm=alloc_double_double(MAX_PWM_LENGTH,4);
-      // score =alloc_double_double(numSeq,maxSeqLen);
-//      rscore=alloc_double_double(numSeq,maxSeqLen);
-      // siteEM=alloc_site(MAX_SITES);
-      }
-
+        llrDist=alloc_distr(MAX_DIMENSION);
+        t1pwm =alloc_double_double(MAX_PWM_LENGTH,4);
+        t2pwm =alloc_double_double(MAX_PWM_LENGTH,4);
+        ipwm  =alloc_int_int(MAX_PWM_LENGTH,4);
+        logpwm=alloc_double_double(MAX_PWM_LENGTH,4);
+        score =alloc_double_double(numSeq,maxSeqLen);
+        rscore=alloc_double_double(numSeq,maxSeqLen);
+        siteEM=alloc_site(MAX_SITES);
+    }
+      // GetRNGstate();
 #endif
+      // for (i=0; i<5; i++)
+      // {
+      //   printf("fitness.value=%lf\n",fitness[i].value);
+      //   printf("fitness.index=%d\n",fitness[i].index);
+      //   printf("maxpfactor=%lf\n",maxpFactor[i]);
+      //   printf("scoreCutoff=%d\n",scoreCutoff[i]);
+      //   printf("   spacedDyad: %s\n",sdyad[i]);
+      //   
+      //   for (l=0; l<pwmLen[i]; l++)
+      //   {
+      //     for (m=0; m<4; m++) 
+      //     { 
+      //       printf("opwm[%d][%d][%d]=%lf ",i,l,m,opwm[i][l][m]);
+      //       printf("epwm[%d][%d][%d]=%lf ",i,l,m,epwm[i][l][m]);
+      //       printf("pwm[%d][%d][%d]=%lf ",i,l,m,pwm[i][l][m]);
+      //     }
+      //     printf("\n");
+      //   }
+      //   printf("\n");
+      // }
+      // 
+      // testrand=runif(0,1);
+      // printf("testrand1=%lf\n",testrand);
+      
       if (populationSize>1)
       {
         sort_fitness(fitness,populationSize);
       }
-
-
+      // for (i=0; i<5; i++)
+      // {
+      //   printf("fitness.value=%lf\n",fitness[i].value);
+      //   printf("fitness.index=%d\n",fitness[i].index);
+      // }
       numUniq=check_pwm_uniqueness_dist(opwm,pwmLen,populationSize,fitness,pwmDistCutoff,E_valueCutoff,uniqMotif,slideWinPWM);
+      // for (i=0; i<5; i++)
+      // {
+      //   printf("fitness.value=%lf\n",fitness[i].value);
+      //   printf("fitness.index=%d\n",fitness[i].index);
+      //   printf("maxpfactor=%lf\n",maxpFactor[i]);
+      //   printf("scoreCutoff=%d\n",scoreCutoff[i]);
+      //   printf("   spacedDyad: %s\n",sdyad[i]);
+      //   
+      //   for (l=0; l<pwmLen[i]; l++)
+      //   {
+      //     for (m=0; m<4; m++) 
+      //     { 
+      //       printf("opwm[%d][%d][%d]=%lf",i,l,m,opwm[i][l][m]); 
+      //     }
+      //     printf("\n");
+      //   }
+      //   printf("\n");
+      // }
+      
       if(verbose)
       {
-        printf("\nGADEM cycle[%3d] generation[%3d] number of unique motif: %d\n",numCycle+1,jjj+1,numUniq);
+        printf("GADEM cycle[%3d] generation[%3d] number of unique motif: %d\n",numCycle+1,jjj+1,numUniq);
         for (i=0; i<populationSize; i++)
         {
           if (uniqMotif[i]=='1')
@@ -770,35 +773,35 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
             printf(" %3.2f fitness: %7.2f\n",maxpFactor[fitness[i].index],fitness[i].value);
           }
         }
-        printf("\n"); 
+        printf("\n");
       }
-      
-      
+
+
       if (jjj<numGeneration-1)
       {
           // fitness based selection with replacement 
         roulett_wheel_fitness(fitness,populationSize,wheel);
           // mutation and crossover operations
-        if (populationSize>1) 
+        if (populationSize>1)
         {
           testrand=runif(0,1);
-          if (testrand>=0.5) 
+          if (testrand>=0.5)
           {
-            mutation (dyad,numWordGroup,word,minSpaceWidth,maxSpaceWidth,wheel,populationSize,fitness,uniqMotif,
+            mutation(dyad,numWordGroup,word,minSpaceWidth,maxSpaceWidth,wheel,populationSize,fitness,uniqMotif,
                       maxpFactor,maxpMutationRate); 
           }
-          else 
+          else
           {
             crossover(dyad,numWordGroup,word,minSpaceWidth,maxSpaceWidth,wheel,populationSize,fitness,uniqMotif, maxpFactor,maxpMutationRate); 
           }
         }
         else
         {
-          mutation (dyad,numWordGroup,word,minSpaceWidth,maxSpaceWidth,wheel,populationSize,fitness,uniqMotif, maxpFactor,maxpMutationRate);
+          mutation(dyad,numWordGroup,word,minSpaceWidth,maxSpaceWidth,wheel,populationSize,fitness,uniqMotif, maxpFactor,maxpMutationRate);
         }
       }
     }
-    
+
     if((numCycle+1)< lengthList)
     {
       compt++;
@@ -808,39 +811,39 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
       startPWMfound=0;
     }
     numCycle++;
-    
-    
+
+
     site=alloc_site_site(numUniq+1,MAX_SITES);
     nsites=alloc_int(numUniq+1);
     pwmnewLen=alloc_int(numUniq+1); // after base extension and trimming	
     seqCn=alloc_int(MAX_NUM_SEQ);
     bseqCn=alloc_int(MAX_NUM_SEQ);
-    
+
       // final step user-specified background model is used
     motifCn2=0; // motifCn per GADEM cycle
     for (ii=0; ii<populationSize; ii++) 
     {
-      
+
       id=fitness[ii].index;
-      if (uniqMotif[ii]=='0')
+      if(uniqMotif[ii]=='0')
       {
         continue;
       }
-      
+
       MarkovOrder=min(pwmLen[id]-1,userMarkovOrder);
-      
+
         // approximate the exact llr distribution using Staden's method
       if(pgf)
       {
-        if(verbose)
-        {
-          printf("\nApproximate the exact pwm llr score distribution using the pgf method.\n");
-        }
+        // if(verbose)
+        // {
+        //   printf("Approximate the exact pwm llr score distribution using the pgf method.\n");
+        // }
         log_ratio_to_int(epwm[id],ipwm,pwmLen[id],bfreq);
-        
+
           // compute score distribution of the (int)PWM using Staden's method 
         llrDim=pwm_score_dist(ipwm,pwmLen[id],llrDist,bfreq);
-        
+
           //printf("Avant ScoreCutoff %d \n",scoreCutoff[id]);
         scoreCutoff[id]=determine_cutoff(llrDist,llrDim,pvalueCutoff);
           //printf("Apres ScoreCutoff %d \n",scoreCutoff[id]);
@@ -861,7 +864,7 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
           // this generates N*(L-w+1)*numBackgSets w-mers compared to N*(L-w+1) in input data
         if(verbose)
         {
-          printf("\nUse an empirical approach to approximate the llr score distribution\n");
+          printf("Use an empirical approach to approximate the llr score distribution\n");
         }
         numTopWmerInB=0; empDim=0;
         for (i=0; i<numBackgSets; i++)
@@ -880,7 +883,7 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
         }
         sort_double(empDist,numTopWmerInB);      // truncated null dist.
         /* -----------------end the null distribtion------------------------------------*/
-        
+
         llrCutoff=empDist[(int)(pvalueCutoff*empDim)];
           // print_null(empDist,numTopWmerInB,empDim);
         if (fullScan)
@@ -925,7 +928,7 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
         { 
           pwmnewLen[motifCn2]=pwmLen[id];
         } 
-        
+
         if (fullScan)
         {
           align_sites_count(site[motifCn2],oseq,orseq,nsites[motifCn2],pwmnewLen[motifCn2],opwm2);
@@ -936,7 +939,7 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
         }
         standardize_pwm(opwm2,pwmnewLen[motifCn2]);
         logev=E_value(opwm2,nsites[motifCn2],bfreq,pwmnewLen[motifCn2],numSeq,seqLen);
-        
+
         if (logev<=E_valueCutoff)
         {
           consensus_pwm(opwm2,pwmnewLen[motifCn2],pwmConsensus[id]);
@@ -953,16 +956,16 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
             increment++;
             print_motif(site[motifCn2],nsites[motifCn2],seq,rseq,seqLen,pwmnewLen[motifCn2],motifCn+1,opwm2);
           }
-          
+
           mask_sites(nsites[motifCn2],seq,rseq,seqLen,site[motifCn2],pwmnewLen[motifCn2]);
-          
+
           /* ----------------------compute the average number of sites in background sequences ----------------------*/
           avebnsites=0; avebnsiteSeq=0;
           for (i=0; i<numBackgSets; i++)
           {
             simulate_background_seq(bfreq,numSeq,seqLen,pseq);
             reverse_seq(pseq,rpseq,numSeq,seqLen);
-            
+
             if (pgf)
             {
               nsites[motifCn2]=scan_llr_pgf(llrDist,llrDim,site[motifCn2],numSeq,pseq,rpseq,seqLen,ipwm,pwmLen[id],scoreCutoff[id],bfreq);
@@ -985,6 +988,7 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
               if (bseqCn[j]==2) bcn[2]++;
               if (bseqCn[j]>2)  bcn[3]++;
             }
+              //fprintf(fq,"background set[%2d] Seqs with 0,1,2,>2 sites: %d %d %d %d\n",i+1,bcn[0],bcn[1],bcn[2],bcn[3]);
             avebnsites+=nsites[motifCn2]; avebnsiteSeq+=(numSeq-bcn[0]);
           } 
           avebnsites/=numBackgSets; avebnsiteSeq/=numBackgSets;
@@ -1004,10 +1008,10 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
       free(site[0]);
       site[0]=NULL;
     }
-    if (site)      
+    if (site)
     {
-      free(site);      
-      site=NULL;    
+      free(site);
+      site=NULL;
     }
     if (nsites)
     {
@@ -1026,7 +1030,9 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
       noMotifFound=1;
   }while (!noMotifFound);
   
-   /*if (!startPWMfound) {  
+  
+    // fclose(fp);
+  /*if (!startPWMfound) {  
    if (dyad[0])      { free(dyad[0]);         dyad[0]=NULL;    }
    if (dyad)         { free(dyad);            dyad=NULL;       }
    }*/
@@ -1201,19 +1207,23 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
     pwmConsensus=NULL;
   }
     //if (!startPWMfound && word) destroy_word(word,numWordGroup);
-  
-  PutRNGstate(); 
+
+  PutRNGstate();
   UNPROTECT(1);
   return(ResultsGadem);
 }
 
 void print_ptable(Pgfs *llrDist,int llrDim) {
   
- 
+  FILE *fp;
+  int i;
+  
 }
 
 void print_empirical(double *empDist,int totalKmer) {
   
+  FILE *fp;
+  int i;
   
 }
 
@@ -1286,7 +1296,9 @@ void select_high_scoring_seq_for_EM (double *ChIPScore,int numSeq,int numSeqEM,c
 
 void print_null(double *empDist,int numTopWmerInB,int empDim)
 {
- 
+  
+  FILE *fp;
+  int i;
 }
 
 
@@ -1303,9 +1315,9 @@ void populationCalculation(int maxSeqLen, int numEM, Fitness *fitness, int start
   Pgfs *llrDist;
 
   llrDist=alloc_distr(MAX_DIMENSION);
-  ipwm  =alloc_int_int(MAX_PWM_LENGTH,4);
+  ipwm=alloc_int_int(MAX_PWM_LENGTH,4);
   logpwm=alloc_double_double(MAX_PWM_LENGTH,4);
-  score =alloc_double_double(numSeq,maxSeqLen);
+  score=alloc_double_double(numSeq,maxSeqLen);
   rscore=alloc_double_double(numSeq,maxSeqLen);
   siteEM=alloc_site(MAX_SITES);
 
@@ -1397,17 +1409,17 @@ void populationCalculation(int maxSeqLen, int numEM, Fitness *fitness, int start
   (*fitness).index=ii;
 
 
-  if (llrDist)   
+  if (llrDist)
   { 
     free(llrDist);
     llrDist=NULL;
   }  
-  if (siteEM)   
+  if (siteEM)
   { 
     free(siteEM);
     siteEM=NULL;
   }  
-  if (t1pwm[0])        
+  if (t1pwm[0])
   {
     free(t1pwm[0]);
     t1pwm[0]=NULL;
@@ -1417,27 +1429,27 @@ void populationCalculation(int maxSeqLen, int numEM, Fitness *fitness, int start
     free(t1pwm);
     t1pwm=NULL;
   }
-  if (t2pwm[0])        
-  { free(t2pwm[0]);       
-    t2pwm[0]=NULL;  
+  if (t2pwm[0])
+  { free(t2pwm[0]);
+    t2pwm[0]=NULL;
   }
   if (t2pwm)  
-  { free(t2pwm);    
-    t2pwm=NULL;     
+  { free(t2pwm);
+    t2pwm=NULL;
   }
   if (logpwm[0])
-  { free(logpwm[0]);    
-    logpwm[0]=NULL; 
+  { free(logpwm[0]);
+    logpwm[0]=NULL;
   }
-  if (logpwm) 
+  if (logpwm)
   { 
-    free(logpwm); 
-    logpwm=NULL;   
+    free(logpwm);
+    logpwm=NULL;
   }
   if(ipwm[0])
-  { 
-    free(ipwm[0]);     
-    ipwm[0]=NULL;  
+  {
+    free(ipwm[0]);
+    ipwm[0]=NULL;
   }
   if (ipwm)
   {
@@ -1446,31 +1458,31 @@ void populationCalculation(int maxSeqLen, int numEM, Fitness *fitness, int start
   }
   if (score[0])
   {
-    free(score[0]); 
+    free(score[0]);
     score[0]=NULL;
   }
-  if (score)    
+  if (score)
   { 
-    free(score);   
-    score=NULL; 
+    free(score);
+    score=NULL;
   }
   if (rscore[0])
   { 
-    free(rscore[0]);   
+    free(rscore[0]);
     rscore[0]=NULL;
   }
-  if (rscore)       
+  if (rscore)
   { 
-    free(rscore);    
-    rscore=NULL;  
-  }  
+    free(rscore);
+    rscore=NULL;
+  }
 }
 
 void populationCalculationSequential(int maxSeqLen, int numEM, Fitness *fitness, int startPWMfound, int minminSites, double *maxpFactor, int numSeq, int numSeqEM, char **seq, char **rseq, int *seqLen, char *Iseq, double *bfreq, double ** posWeight, int weightType, Pgfs *llrDist, int llrDim, double pvalueCutoff, int* emSeqLen, double ***pwm, int *pwmLen, double ***epwm, double ***opwm,char **pwmConsensus, int *scoreCutoff,char **sdyad, double **t1pwm, double **t2pwm, Sites *siteEM, double **logpwm, double** score, double** rscore, int **ipwm, int ii, int verbose, int jjj, int numCycle, int maxSpaceWidth)
 {
   int maxp=0, nsitesEM=0;
   double pwmDiff=0;
-  int jj=0,j=0;
+  int jj=0,j=0,i=0,l=0,m=0;
     // to see from which spaced dyad a motif is derived
     // for (int kkk=0;kkk<10;kkk++)//{		
     //printf("Longeur %d \n",pwmLen[20]);//}
@@ -1488,7 +1500,7 @@ void populationCalculationSequential(int maxSeqLen, int numEM, Fitness *fitness,
   maxp=(int)(maxpFactor[ii]*numSeqEM);
 
     //Check if the user wants to interrupt
-  R_CheckUserInterrupt();
+  // R_CheckUserInterrupt();
 
   for (jj=0; jj<numEM; jj++)
   {
@@ -1531,7 +1543,6 @@ void populationCalculationSequential(int maxSeqLen, int numEM, Fitness *fitness,
     standardize_pwm(opwm[ii],pwmLen[ii]);
     consensus_pwm(opwm[ii],pwmLen[ii],pwmConsensus[ii]);
       // compute E-value of the relative entroy score of each motif, use it as fitness
-
     fitness[ii].value=E_value(opwm[ii],nsitesEM,bfreq,pwmLen[ii],numSeqEM,emSeqLen);
   }
   else 
@@ -1543,12 +1554,30 @@ void populationCalculationSequential(int maxSeqLen, int numEM, Fitness *fitness,
     fitness[ii].value=DUMMY_FITNESS;
   }
   fitness[ii].index=ii;
-//  if(verbose) 
-//  { 
-//    printf("cyc.[%3d] gen.[%3d] pop.[%3d] spacedDyad: %s ",numCycle+1,jjj+1,ii+1,sdyad[ii]);
-//    for (j=strlen(sdyad[ii]); j<maxSpaceWidth+10; j++) printf(" ");
-//    printf(" motifConsensus: %s",pwmConsensus[ii]);
-//    for (j=strlen(sdyad[ii]); j<maxSpaceWidth+10; j++) printf(" ");
-//    printf(" maxpf: %3.2f fitness: %7.2f nsitesEM: %d\n",maxpFactor[ii],fitness[ii].value,nsitesEM);
-//  }
+  
+  /** Re-set all variables **/
+  for(i=0;i<numSeq;i++)
+  {
+    for(j=0;j<maxSeqLen;j++)
+    {
+      score[i][j]=0;
+      rscore[i][j]=0;
+    }
+  }
+  for (l=0; l<MAX_PWM_LENGTH; l++)
+  {
+    for (m=0; m<4; m++) 
+    { 
+      t1pwm[l][m]=0;
+      t1pwm[l][m]=0;
+      ipwm[l][m]=0;
+      logpwm[l][m]=0;
+    }
+  }
+  for (l=0; l<MAX_DIMENSION; l++)
+  {
+    llrDist[l].score=0;
+    llrDist[l].prob=0;
+  }
+  //I do not reinitialize the sites (siteEM)
 }
