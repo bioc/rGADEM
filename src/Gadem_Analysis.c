@@ -101,6 +101,7 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
   int maxSeqLen,*seqLen;          // sequence info
   double aveSeqLen;                      // sequence info
   char **seq,**rseq;
+	const char **geneID;            // sequence info
   char **oseq,**orseq;                   // copy of the original sequences
   char **pseq,**rpseq;                   // permuted seqs.
   double *bfreq;                         // base frequencies
@@ -272,7 +273,8 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
   
   ChIPScore=alloc_double(MAX_NUM_SEQ);
   seqLen=alloc_int(MAX_NUM_SEQ); 
-  
+  geneID=alloc_char_char(MAX_NUM_SEQ,500);
+
 //  seq=sequences;
   
 //  numSeq=size;
@@ -281,6 +283,7 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
   for (i=0; i<numSeq; i++) {
     len=strlen(seq[i]); 
     seqLen[i]=len;
+	geneID[i]=CHAR(STRING_ELT(accession,i));
   }
 
   aveSeqLen=0; for (i=0; i<numSeq; i++) aveSeqLen +=seqLen[i]; aveSeqLen /=(double)numSeq;
@@ -945,14 +948,14 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
           consensus_pwm(opwm2,pwmnewLen[motifCn2],pwmConsensus[id]);
           if (fullScan)
           {
-            SET_VECTOR_ELT(ResultsGadem,increment,print_result_2(site[motifCn2],nsites[motifCn2],numSeq,oseq,orseq,seqLen,logev,opwm2,pwmnewLen[motifCn2],motifCn+1,sdyad[id],pwmConsensus[id],numCycle,pvalueCutoff,maxpFactor[id]));
+            SET_VECTOR_ELT(ResultsGadem,increment,print_result_2(site[motifCn2],nsites[motifCn2],numSeq,oseq,orseq,seqLen,logev,opwm2,pwmnewLen[motifCn2],motifCn+1,sdyad[id],pwmConsensus[id],numCycle,pvalueCutoff,maxpFactor[id],geneID));
             increment++;           
             print_motif(site[motifCn2],nsites[motifCn2],oseq,orseq,seqLen,pwmnewLen[motifCn2],motifCn+1,opwm2);
           }
           else
           {
             SET_VECTOR_ELT(ResultsGadem,increment,print_result_2(site[motifCn2],nsites[motifCn2],numSeq,seq,rseq,seqLen,logev,opwm2,pwmnewLen[motifCn2],
-                                                                 motifCn+1,sdyad[id],pwmConsensus[id],numCycle,pvalueCutoff,maxpFactor[id]));
+                                                                 motifCn+1,sdyad[id],pwmConsensus[id],numCycle,pvalueCutoff,maxpFactor[id],geneID));
             increment++;
             print_motif(site[motifCn2],nsites[motifCn2],seq,rseq,seqLen,pwmnewLen[motifCn2],motifCn+1,opwm2);
           }
