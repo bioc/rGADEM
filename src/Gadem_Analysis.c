@@ -65,7 +65,7 @@ void populationCalculation(int maxSeqLen, int numEM, Fitness *fitness, int start
 void populationCalculationSequential(int maxSeqLen, int numEM, Fitness *fitness, int startPWMfound, int minminSites, double *maxpFactor, int numSeq, int numSeqEM, char **seq, char **rseq, int *seqLen, char *Iseq, double *bfreq, double ** posWeight, int weightType, Pgfs *llrDist, int llrDim, double pvalueCutoff, int* emSeqLen, double ***pwm, int *pwmLen, double ***epwm, double ***opwm,char **pwmConsensus, int *scoreCutoff,char **sdyad, double **t1pwm, double **t2pwm, Sites *siteEM, double **logpwm, double** score, double** rscore, int **ipwm, int ii, int verbose, int jjj, int numCycle, int maxSpaceWidth);
 
 
-SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SEXP RnumWordGroup,SEXP RnumTop3mer,SEXP RnumTop4mer,SEXP RnumTop5mer,SEXP RnumGeneration,SEXP RpopulationSize, SEXP RpValue,SEXP ReValue,SEXP RextTrim,SEXP RminSpaceWidth,SEXP RmaxSpaceWidth,SEXP RuseChIPscore,SEXP RnumEM,SEXP RfEM, SEXP RwidthWt,SEXP RfullScan,SEXP RuserBackgModel, SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SEXP RnumBackgSets,SEXP RweightType,SEXP Rpgf,SEXP RstartPWMfound,SEXP RbOrder,SEXP RbFileName,SEXP RListPWM) 
+SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SEXP RnumWordGroup,SEXP RnumTop3mer,SEXP RnumTop4mer,SEXP RnumTop5mer,SEXP RnumGeneration,SEXP RpopulationSize, SEXP RpValue,SEXP ReValue,SEXP RextTrim,SEXP RminSpaceWidth,SEXP RmaxSpaceWidth,SEXP RuseChIPscore,SEXP RnumEM,SEXP RfEM, SEXP RwidthWt,SEXP RfullScan,SEXP RuserBackgModel, SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SEXP RnumBackgSets,SEXP RweightType,SEXP Rpgf,SEXP RstartPWMfound,SEXP RbOrder,SEXP RbFileName,SEXP RListPWM,SEXP RminSites) 
 {
   double startTime, endTime, elapsed;
   int jjj,ii,jj,i,j,k;
@@ -214,7 +214,7 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
   pwmFileName=alloc_char(500);   pwmFileName[0]='\0';
   bFileName=alloc_char(500);     bFileName[0]='\0';
   seq=NULL; aveSeqLen=0; maxSeqLen=0; 
-  minsites=-1; 
+  //minsites=-1; 
   
     
   maxSeqLen=0;
@@ -237,6 +237,7 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
   
   verbose=LOGICAL_VALUE(Rverbose);
   numWordGroup=INTEGER_VALUE(RnumWordGroup);
+  minsites=INTEGER_VALUE(RminSites);
   numTop3mer=INTEGER_VALUE(RnumTop3mer);
   numTop4mer=INTEGER_VALUE(RnumTop4mer);
   numTop5mer=INTEGER_VALUE(RnumTop5mer);
