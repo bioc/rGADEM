@@ -136,6 +136,7 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
   int numEM;                             // number of EM steps
   double E_valueCutoff;                  // log E-value cutoff
   int nsitesEM;                          // number of binding sites in sequences subjected to EM
+  int minsitesEM;                        // minimal number of sites in a motif in EM sequences
   Sites *siteEM;                         // binding sites in EM sequences
   int *nsites;                           // number of binding sites in full data
   int minsites;                          // minimal number of sites in a motif in full data
@@ -1294,7 +1295,7 @@ void select_high_scoring_seq_for_EM (double *ChIPScore,int numSeq,int numSeqEM,c
 
 void print_null(double *empDist,int numTopWmerInB,int empDim)
 {
-
+  
 }
 
 
