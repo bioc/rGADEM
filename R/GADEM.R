@@ -72,7 +72,7 @@ GADEM<- function (Sequences,seed=1,genome=NULL,verbose=FALSE,numWordGroup=3,numT
 		parameter[[1]]<-new("parameters",numWordGroup=numWordGroup,numTop3mer=numTop3mer,verbose=as.numeric(verbose),numTop4mer=numTop4mer,numTop5mer=numTop5mer,numGeneration=numGeneration,
 		populationSize=populationSize,pValue=pValue,eValue=eValue,extTrim=extTrim,minSpaceWidth=minSpaceWidth,maxSpaceWidth=maxSpaceWidth,useChIPscore=useChIPscore,
 		numEM=numEM,fEM=fEM,widthWt=widthWt,fullScan=fullScan,userBackgModel=userBackgModel,slideWinPWM=slideWinPWM,stopCriterion=stopCriterion,MarkovOrder=MarkovOrder,
-		userMarkovOrder=userMarkovOrder,numBackgSets=numBackgSets,weightType=weightType,pgf=pgf,startPWMfound=startPWMfound,bOrder=bOrder,bFileName=bFileName)
+		userMarkovOrder=userMarkovOrder,numBackgSets=numBackgSets,weightType=weightType,pgf=pgf,startPWMfound=startPWMfound,bOrder=bOrder,bFileName=bFileName,nSequences=Lengthfasta)
 		
 		list2=list()
 

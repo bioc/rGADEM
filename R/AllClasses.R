@@ -27,7 +27,8 @@ pgf="numeric",
 startPWMfound="numeric",
 bOrder="numeric",
 bFileName="character",
-fpwm0="character"
+fpwm0="character",
+nSequences="numeric"
 ))
 	
 setClass("align", representation(
