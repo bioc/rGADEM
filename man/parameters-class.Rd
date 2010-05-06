@@ -41,7 +41,7 @@ Objects can be created by calls of the form \code{new("motif_gadem", ...)}.
 	\item{bOrder}{:The order of the background Markov model for computing llr scores: 0 - 0th 1 - 1st 2 - 2nd 8 - 8th}
 	\item{bFileName}{:Reading user-specified background models.}
 	\item{fpwm0}{:File name for the seed PWM, when a seeded approach is used.}
-	
+	\item{nSequences}{:number of input sequences.}
 	
   }
 }
