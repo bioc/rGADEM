@@ -123,7 +123,7 @@ return(pwm)
 setMethod("getPWM",
 "gadem",
 function(x){
-  pwm<-sapply(x@motifList,"getPWM")
+  pwm<-lapply(x@motifList,"getPWM")
   names(pwm)<-names(x)
 return(pwm)
 })
