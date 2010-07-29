@@ -96,7 +96,7 @@ We also describe two important parameters :
 \item{E-Value cutoff: The E-Value cutoff controls the number of motifs to be identified. By default, the E-value cutoff is : 0.0}
 \end{itemize}
 
-<<rGADEM analysis>>=
+<<rGADEM analysis,eval=FALSE>>=
 gadem<-GADEM(Sequences,verbose=1,genome=Hsapiens)
 @
 
