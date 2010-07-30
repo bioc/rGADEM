@@ -12,7 +12,7 @@ GADEM<- function (Sequences,seed=1,genome=NULL,verbose=FALSE,numWordGroup=3,numT
 
     if(is(Sequences,"RangedData"))
     {
-      spSeq<-space(Sequences)
+      spSeq<-as.vector(space(Sequences))
       stSeq<-start(Sequences)
       edSeq<-end(Sequences)
       if(verbose)
