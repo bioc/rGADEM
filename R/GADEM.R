@@ -40,13 +40,9 @@ GADEM<- function (Sequences,seed=1,genome=NULL,verbose=FALSE,numWordGroup=3,numT
     }
 
 		FastaSequence<-DNAStringSet(FastaXstring)
-		.myXStringSetToFASTArecords <- function(x)
-		{
-		  lapply(seq_len(length(x)),
-		         function(i)
-		             list(desc=names(x)[i], seq=as.character(x[[i]])))
-		}
-		fastarecords<-.myXStringSetToFASTArecords(FastaSequence)
+		#fastarecords<-XStringSetToFASTArecords(FastaSequence)
+		fastaSeqChar<-as.character(FastaSequence)
+		fastarecords<-lapply(seq_len(length(fastaSeqChar)), function(i) list(desc=names(fastaSeqChar)[i], seq=fastaSeqChar[[i]]))
 		sequenceFasta<-sapply(fastarecords,"tolower")
 		accession<-as.integer(1:length(FastaSequence))	
 
