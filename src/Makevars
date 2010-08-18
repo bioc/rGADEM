@@ -1,1 +1,2 @@
-PKG_LIBS =  -lgsl -lgslcblas -lm
+PKG_CFLAGS = 
+PKG_LIBS = 

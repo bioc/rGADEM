@@ -1,30 +1,29 @@
-/* src/config.h.  Generated from config.h.in by configure.  */
 #ifndef CONFIG_H
 #define CONFIG_H
 
 /* Define to the address where bug reports for this package should be sent. */
-#define PACKAGE_BUGREPORT "http://www.rglab.org"
+#undef PACKAGE_BUGREPORT
 
 /* Define to the full name of this package. */
-#define PACKAGE_NAME "rGADEM"
+#undef PACKAGE_NAME
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "rGADEM 1.1.1"
+#undef PACKAGE_STRING
 
 /* Define to the one symbol short name of this package. */
-#define PACKAGE_TARNAME "rgadem"
+#undef PACKAGE_TARNAME
 
 /* Define to the home page for this package. */
-#define PACKAGE_URL ""
+#undef PACKAGE_URL
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "1.1.1"
+#undef PACKAGE_VERSION
 
 /* Define to 1 if you have the <dispatch/dispatch.h> header file. */
-#define HAVE_DISPATCH_DISPATCH_H 1
+#undef HAVE_DISPATCH_DISPATCH_H
 
 /* Define to 1 if you have the <omp.h> header file. */
-/* #undef HAVE_OMP_H */
+#undef HAVE_OMP_H
 
 #ifdef HAVE_DISPATCH_DISPATCH_H
   #include <dispatch/dispatch.h>
