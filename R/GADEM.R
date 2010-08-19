@@ -32,6 +32,7 @@ GADEM<- function (Sequences,seed=1,genome=NULL,verbose=FALSE,numWordGroup=3,numT
     }
     else if(is(Sequences,"DNAStringSet"))
     {
+	  FastaXstring<-XStringViews(Sequences,subjectClass="DNAString")
       FastaXstring<-Sequences	
     }
     else

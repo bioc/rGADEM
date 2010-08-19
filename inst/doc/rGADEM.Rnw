@@ -37,6 +37,9 @@ for publication.
 Genome-wide analyses of protein binding sites generate large amounts of data; a ChIP data-set might contain 10,000 sites. Unbiased motif discovery in such datasets is not generally feasible using current methods that employ probabilistic models. We propose an efficient method, rGADEM, which combines spaced dyads and an expectation-maximization (EM) algorithm. Candidate words (four to six nucleotides) for constructing spaced dyads are prioritized by their degree of overrepresentation in the input sequence data. Spaced dyads are converted into starting position weight matrices (PWMs). rGADEM then employs a genetic algorithm (GA), with an embedded EM algorithm to improve starting PWMs, to guide the evolution of a population of spaced dyads toward one whose entropy scores are more statistically significant. Spaced dyads whose entropy scores reach a pre-specified significance threshold are declared motifs. 
 \newline
 To use rGADEM, the user provide a set of coordinate include in the BED file or set of sequences in the FASTA format. The BED file contains location on chromosome, start and end position on the chromosome. For each line on the BED file, we convert coordinate on a FASTA sequence. rGADEM has been developed in order to facilitate the discover and analysis of transcriptor factors and it is designed to works with the identification of motif package : MotIV. Thus, you can use the object returns by the rGADEM package to use MotIV (see MotIV package in Bioconductor for more detail).
+\newline
+
+The C code in rGADEM makes use of Grand Central Dispatch on Mac OS X 10.6 (Apple Inc) and openMP (openMP.org), with no user configuration, which greatly facilitates parallel processing and improve computing time on multicore machines (i.e. most modern computers). This implementation can actually reduce the computing time by a factor of 10, from several hours to a few minutes (depending on the number of input sequences).
 
 \part{Step-by-step Guide}
 
@@ -79,9 +82,9 @@ In the case you have a FASTA file, you can load the data as follow :
 <<Create the RD Files,eval=FALSE>>=
 
 pwd<-"" #INPUT FILES- BedFiles, FASTA, etc.
-path<- system.file("extdata/Test_100.bed",package="rGADEM")
+path<- system.file("extdata/Test_100.fasta",package="rGADEM")
 FastaFile<-paste(pwd,path,sep="")
-Sequences <- read.XStringViews(FastaFile,"fasta",subjectClass="DNAString")
+Sequences <- read.DNAStringSet(FastaFile, "fasta")
 @
 
 
@@ -109,12 +112,20 @@ First step is to prepare a text file with your PWM. It could be a general databa
 
 <<prepare PWM,eval=FALSE>>=
 path<- system.file("extdata/jaspar2009.txt",package="rGADEM")
-seededPwm<-readTransfacFile(path)
+seededPwm<-readPWMfile(path)
 grep("STAT1",names(seededPwm))
 STAT1.PWM=seededPwm[103]
 @
 
-We are ready to start seeded analysis \newline
+At this step, we have two choice : \newline
+
+Only seeded analysis : 
+<<rGADEM seeded analysis,eval=FALSE>>=
+gadem<-GADEM(Sequences,verbose=1,genome=Hsapiens,Spwm=STAT1.PWM, fixSeeded=TRUE)
+@
+
+or seeded analysis following by unseeded analysis :
+ 
 <<rGADEM seeded analysis,eval=FALSE>>=
 gadem<-GADEM(Sequences,verbose=1,genome=Hsapiens,Spwm=STAT1.PWM)
 @
@@ -133,11 +144,11 @@ For more details, please see the RD files for each object.\newline
 \subsection{Acces to pwm}
 To view all PWM  \newline
 <<pwm>>=
-viewPWM(gadem)
+nOccurrences(gadem)
 @
 To view pwm for the motif 1 : \newline
 <<pwm>>=
-viewPWM(gadem)[1]
+nOccurrences(gadem)[1]
 @
 \subsection{Acces to sequence consensus}
 To view all sequences consensus : \newline

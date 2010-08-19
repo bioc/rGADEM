@@ -47,12 +47,6 @@ setMethod("[[","gadem",
       x@motifList[[i]]
 })
 
-setMethod("length",
-"gadem",
-function(x){
-  .Deprecated("nMotifs", package="rGADEM")
-length(x@motifList)
-})
 
 setMethod("dim",
 "gadem",
@@ -96,21 +90,6 @@ function(x){
 x@parameters
 })
 
-setGeneric("viewPWM",function(x) standardGeneric("viewPWM"))
-setMethod("viewPWM",
-"gadem",
-function(x){
-  .Deprecated("nOccurrences", package="rGADEM")
-  	ListPWM <- list()
-    for (i in seq(length(x)))
-    {
-	 ListPWM[[i]]=x@motifList[[i]]@pwm
-	names(ListPWM)[i]=names(x)[i]      
-     }        
-   
-    return(ListPWM)
-
-})
 
 setGeneric("getPWM",function(x) standardGeneric("getPWM"))
 setMethod("getPWM",

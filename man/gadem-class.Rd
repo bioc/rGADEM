@@ -16,8 +16,6 @@
 \alias{getPWM}
 \alias{getPWM,gadem-method}
 \alias{length,gadem-method}
-\alias{viewPWM}
-\alias{viewPWM,gadem-method}
 \alias{startPos}
 \alias{endPos}
 \alias{summary,list-method}

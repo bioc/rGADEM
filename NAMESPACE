@@ -7,6 +7,6 @@ import(methods)
 importFrom(graphics, plot)
 importFrom(seqLogo, plot)
 
-export(GADEM)
+export(GADEM, readPWMfile)
 exportClasses(parameters, align, gadem, motif)
-exportMethods(length, dim, names, consensus, parameters,viewPWM,startPos,endPos,nOccurrences,nMotifs,plot,getPWM)
+exportMethods(dim, names, consensus, parameters,startPos,endPos,nOccurrences,nMotifs,plot,getPWM)
