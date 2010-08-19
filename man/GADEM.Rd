@@ -7,7 +7,7 @@
 \usage{
 
 gadem<-GADEM(Sequences,seed=1,genome=NULL,verbose=TRUE,numWordGroup=3,numTop3mer=20,numTop4mer=40,numTop5mer=60,numGeneration=5,
-	populationSize=100,pValue=0.0002,eValue=0.0,extTrim=1,minSpaceWidth=0,maxSpaceWidth=10,useChIPscore=0,numEM=40,fEM=0.5,widthWt=80,fullScan=0,userBackgModel=0,slideWinPWM=6,stopCriterion="NUM_NO_MOTIF",MarkovOrder=0,userMarkovOrder=0,numBackgSets=10,weightType=0,pgf=1,startPWMfound=0,bOrder=-1,bFileName="NULL",Spwm="NULL")}
+	populationSize=100,pValue=0.0002,eValue=0.0,extTrim=1,minSpaceWidth=0,maxSpaceWidth=10,useChIPscore=0,numEM=40,fEM=0.5,widthWt=80,fullScan=0,userBackgModel=0,slideWinPWM=6,stopCriterion="NUM_NO_MOTIF",MarkovOrder=0,userMarkovOrder=0,numBackgSets=10,weightType=0,pgf=1,startPWMfound=0,bOrder=-1,bFileName="NULL",Spwm="NULL", fixSeeded=FALSE)}
 
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -43,6 +43,7 @@ gadem<-GADEM(Sequences,seed=1,genome=NULL,verbose=TRUE,numWordGroup=3,numTop3mer
 	\item{bOrder}{The order of the background Markov model for computing llr scores: 0 - 0th 1 - 1st 2 - 2nd 8 - 8th}
 	\item{bFileName}{Reading user-specified background models.}
 	\item{Spwm}{File name for the seed PWM, when a seeded approach is used. can be used as the starting PWM for the EM algorithm. This will help find an expected motif and is much faster than unseeded de novo discovery.Also, when a seed PWM is specified, the run results are deterministic, so only a single run is needed (repeat runs with the same settings will give identical results). In contrast, unseeded runs are stochastic, and we recommend comparingresults from several repeat runs.}
+	\item{fixSeeded}{Limit to a seeded analysis.}
  }
 
 \author{Arnaud Droit \email{arnaud.droit@ircm.qc.ca}}

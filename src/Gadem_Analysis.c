@@ -64,7 +64,7 @@ void populationCalculation(int maxSeqLen, int numEM,
 
 
 
-SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SEXP RnumWordGroup,SEXP RnumTop3mer,SEXP RnumTop4mer,SEXP RnumTop5mer,SEXP RnumGeneration,SEXP RpopulationSize, SEXP RpValue,SEXP ReValue,SEXP RextTrim,SEXP RminSpaceWidth,SEXP RmaxSpaceWidth,SEXP RuseChIPscore,SEXP RnumEM,SEXP RfEM, SEXP RwidthWt,SEXP RfullScan,SEXP RuserBackgModel, SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SEXP RnumBackgSets,SEXP RweightType,SEXP Rpgf,SEXP RstartPWMfound,SEXP RbOrder,SEXP RbFileName,SEXP RListPWM,SEXP RminSites) 
+SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SEXP RnumWordGroup,SEXP RnumTop3mer,SEXP RnumTop4mer,SEXP RnumTop5mer,SEXP RnumGeneration,SEXP RpopulationSize, SEXP RpValue,SEXP ReValue,SEXP RextTrim,SEXP RminSpaceWidth,SEXP RmaxSpaceWidth,SEXP RuseChIPscore,SEXP RnumEM,SEXP RfEM, SEXP RwidthWt,SEXP RfullScan,SEXP RuserBackgModel, SEXP RslideWinPWM,SEXP RstopCriterion,SEXP RMarkovOrder,SEXP RuserMarkovOrder,SEXP RnumBackgSets,SEXP RweightType,SEXP Rpgf,SEXP RstartPWMfound,SEXP RbOrder,SEXP RbFileName,SEXP RListPWM,SEXP RminSites,SEXP RfixSeeded) 
 {
   char *bFileName;
   
@@ -183,6 +183,7 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
   time_t start;
   int cn[4],bcn[4],*seqCn,*bseqCn,avebnsites,avebnsiteSeq,totalSitesInput;
   
+	bool fixSeeded;
   
   GetRNGstate();
   
@@ -243,7 +244,8 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
   bOrder=INTEGER_VALUE(RbOrder);
   const char *tempRbFileName[1];
   tempRbFileName[0]=CHAR(STRING_ELT(RbFileName,0));
-    
+  fixSeeded = LOGICAL_VALUE(RfixSeeded);
+  
   if(numSeq>MAX_NUM_SEQ)
   {
     error("Error: maximal number of seqences reached!\nPlease reset MAX_NUM_SEQ in gadem.h and rebuild (see installation)\n");
@@ -953,7 +955,16 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
           } 
           avebnsites/=numBackgSets; avebnsiteSeq/=numBackgSets;
           /* -----------------end compute the average number of sites in background sequences ----------------------*/
-          motifCn++; motifCn2++; numCycleNoMotif=0;
+          motifCn++; motifCn2++; 
+
+			if((numCycle+1) > lengthList & fixSeeded)
+				{	
+				  numCycleNoMotif=1;
+					startPWMfound=1;
+					} else {
+					numCycleNoMotif=0;
+				}
+
         }
       }
     }
