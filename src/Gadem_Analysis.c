@@ -17,7 +17,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include "gadem.h"
-
+#include <stdbool.h>
 #include "defines.h"
 #include "evalue_meme.h"
 #include <Rdefines.h>
