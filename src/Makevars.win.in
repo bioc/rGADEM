@@ -1,0 +1,10 @@
+PKG_LIBS+=-lws2_32 @OMP_LIBS@
+
+PKG_CPPFLAGS=\
+-Ifusion_sdk\
+ -D_USE_MEM_MAPPING_\
+ -D_MSC_VER\
+ @OMP_CFLAGS@\
+ -I$(RHOME)/src/include 
+
+
