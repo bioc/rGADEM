@@ -66,7 +66,7 @@ GADEM<- function (Sequences,seed=1,genome=NULL,verbose=FALSE,numWordGroup=3,numT
 		# Calling C code with .Call
 		obj<-.Call("GADEM_Analysis",sequenceFasta,Lengthfasta,accession,as.logical(verbose),numWordGroup,numTop3mer,numTop4mer,numTop5mer,numGeneration,populationSize,
 		pValue,eValue,extTrim,minSpaceWidth,maxSpaceWidth,useChIPscore,numEM,fEM,widthWt,fullScan,userBackgModel,slideWinPWM,stopCriterion,
-		MarkovOrder,userMarkovOrder,numBackgSets,weightType,pgf,startPWMfound,bOrder,bFileName,Spwm,minSites)
+		MarkovOrder,userMarkovOrder,numBackgSets,weightType,pgf,startPWMfound,bOrder,bFileName,Spwm,minSites,fixSeeded)
 
 		i<-1
 		j<-1
