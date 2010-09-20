@@ -957,13 +957,13 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
           /* -----------------end compute the average number of sites in background sequences ----------------------*/
           motifCn++; motifCn2++; 
 
-			if((numCycle+1) > lengthList & fixSeeded)
-				{	
-				  numCycleNoMotif=1;
-					startPWMfound=1;
-					} else {
+			//if((numCycle+1) > lengthList & fixSeeded)
+			//	{	
+			//	  numCycleNoMotif=1;
+			//		startPWMfound=1;
+			//		} else {
 					numCycleNoMotif=0;
-				}
+			//	}
 
         }
       }
