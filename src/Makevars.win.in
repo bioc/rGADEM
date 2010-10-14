@@ -1,4 +1,4 @@
-PKG_LIBS+=-lws2_32 @OMP_LIBS@
+PKG_LIBS+=-lws2_32 @OMP_CFLAGS@ @OMP_LIBS@
 
 PKG_CPPFLAGS=\
 -Ifusion_sdk\

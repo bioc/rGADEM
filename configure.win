@@ -9,23 +9,23 @@
 echo "  configure.win..."
 
 # Change to 'no' to disable using OpenMP
-use_omp=yes
+use_omp=no
 
 if [ "${use_omp}" = "yes" ]; then
   OMP_CFLAGS="-fopenmp"
   OMP_LIBS="-lgomp"
-  DEFINE_HAVE_OMP_H='#define HAVE_OMP_H 1'
+  DEFINE_HAVE_OPENMP='#define HAVE_OPENMP 1'
 else
   OMP_CFLAGS=""
   OMP_LIBS=""
-  DEFINE_HAVE_OMP_H='/* #undef HAVE_OMP_H */'
+  DEFINE_HAVE_OPENMP='/* #undef HAVE_OPENMP */'
 fi
 
 ### Create config.h from the config.h.in template
-###  - define HAVE_OMP_H if 'use_omp'
+###  - define HAVE_OPENMP if 'use_omp'
 ###  - comment out all undefs
 sed \
--e "s%^#undef HAVE_OMP_H%${DEFINE_HAVE_OMP_H}%" \
+-e "s%^#undef HAVE_OPENMP%${DEFINE_HAVE_OPENMP}%" \
 -e "s%^\\(#undef .*\\)%/\\* \\1 \\*/%" \
 src/config.h.in > src/config.h
 
