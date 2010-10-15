@@ -52,7 +52,7 @@ gadem<-GADEM(Sequences,seed=1,genome=NULL,verbose=TRUE,numWordGroup=3,numTop3mer
 
 	library(BSgenome.Hsapiens.UCSC.hg18)
 	pwd<-"" #INPUT FILES- BedFiles, FASTA, etc.
-	path<- system.file("extdata/Test_100.bed",package="rGADEM")
+	path<- system.file("extdata","Test_100.bed",package="rGADEM")
 	BedFile<-paste(pwd,path,sep="")
 	BED<-read.table(BedFile,header=FALSE,sep="\t")
 	BED<-data.frame(chr=as.factor(BED[,1]),start=as.numeric(BED[,2]),end=as.numeric(BED[,3]))

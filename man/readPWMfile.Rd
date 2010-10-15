@@ -17,8 +17,8 @@ This function is use to read standard Transfac type file.}
 \value{A list of matrix.}
 \examples{
 #####Database and Scores#####
-path <- system.file("extdata/",package="rGADEM")
-jaspar <- readPWMfile(paste(path,"jaspar2009.txt",sep=""))
+path <- system.file("extdata","jaspar2009.txt",package="rGADEM")
+jaspar <- readPWMfile(path)
 
 }
 \keyword{misc}
