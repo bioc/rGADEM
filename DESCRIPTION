@@ -1,7 +1,7 @@
 Package: rGADEM
 Type: Package
 Title: de novo motif discovery
-Version: 1.1.8
+Version: 1.2.0
 Date: 2010-02-01
 Author: Arnaud Droit, Raphael Gottardo, Gordon Robertson and Leiping Li
 Maintainer: Arnaud Droit <arnaud.droit@ircm.qc.ca>
