@@ -1,10 +1,9 @@
 
 GADEM<- function (Sequences,seed=1,genome=NULL,verbose=FALSE,numWordGroup=3,numTop3mer=20,numTop4mer=40,numTop5mer=60,numGeneration=5,
 	populationSize=100,pValue=0.0002,eValue=0.0,extTrim=1,minSpaceWidth=0,maxSpaceWidth=10,useChIPscore=0,numEM=40,fEM=0.5,widthWt=80,
-	fullScan=0,userBackgModel=0,slideWinPWM=6,stopCriterion="NUM_NO_MOTIF",MarkovOrder=0,userMarkovOrder=0,numBackgSets=10,weightType=0,pgf=1,startPWMfound=0,bOrder=-1,
-	bFileName="NULL",Spwm=NULL,minSites=-1,fixSeeded = FALSE) 
+	fullScan=0,slideWinPWM=6,stopCriterion=1,numBackgSets=10,weightType=0,bFileName="NULL",Spwm=NULL,minSites=-1,maskR=0,nmotifs=25) 
 	{
-		
+
     if(is(Sequences,"RangedData") & is.null(genome))
     {
       stop("You have specified a RangedData object but no genome is specified")
@@ -19,7 +18,7 @@ GADEM<- function (Sequences,seed=1,genome=NULL,verbose=FALSE,numWordGroup=3,numT
       {
         cat("Retrieving sequences... ")
       }
-      FastaSeq<-getSeq(genome,spSeq,start=stSeq,end=edSeq)
+      FastaSeq<-getSeq(genome,spSeq,start=stSeq,end=edSeq,as.character=TRUE)
       FastaXstring<-XStringViews(FastaSeq,subjectClass="DNAString")
       if(verbose)
       {
@@ -65,8 +64,8 @@ GADEM<- function (Sequences,seed=1,genome=NULL,verbose=FALSE,numWordGroup=3,numT
     }
 		# Calling C code with .Call
 		obj<-.Call("GADEM_Analysis",sequenceFasta,Lengthfasta,accession,as.logical(verbose),numWordGroup,numTop3mer,numTop4mer,numTop5mer,numGeneration,populationSize,
-		pValue,eValue,extTrim,minSpaceWidth,maxSpaceWidth,useChIPscore,numEM,fEM,widthWt,fullScan,userBackgModel,slideWinPWM,stopCriterion,
-		MarkovOrder,userMarkovOrder,numBackgSets,weightType,pgf,startPWMfound,bOrder,bFileName,Spwm,minSites,fixSeeded)
+		pValue,eValue,extTrim,minSpaceWidth,maxSpaceWidth,useChIPscore,numEM,fEM,widthWt,fullScan,slideWinPWM,stopCriterion,
+		numBackgSets,weightType,bFileName,Spwm,minSites,maskR,nmotifs)
 
 		i<-1
 		j<-1
@@ -74,8 +73,8 @@ GADEM<- function (Sequences,seed=1,genome=NULL,verbose=FALSE,numWordGroup=3,numT
 		parameter=list()
 		parameter[[1]]<-new("parameters",numWordGroup=numWordGroup,numTop3mer=numTop3mer,verbose=as.numeric(verbose),numTop4mer=numTop4mer,numTop5mer=numTop5mer,numGeneration=numGeneration,
 		populationSize=populationSize,pValue=pValue,eValue=eValue,extTrim=extTrim,minSpaceWidth=minSpaceWidth,maxSpaceWidth=maxSpaceWidth,useChIPscore=useChIPscore,
-		numEM=numEM,fEM=fEM,widthWt=widthWt,fullScan=fullScan,userBackgModel=userBackgModel,slideWinPWM=slideWinPWM,stopCriterion=stopCriterion,MarkovOrder=MarkovOrder,
-		userMarkovOrder=userMarkovOrder,numBackgSets=numBackgSets,weightType=weightType,pgf=pgf,startPWMfound=startPWMfound,bOrder=bOrder,bFileName=bFileName,nSequences=Lengthfasta)
+		numEM=numEM,fEM=fEM,widthWt=widthWt,fullScan=fullScan,slideWinPWM=slideWinPWM,stopCriterion=stopCriterion,numBackgSets=numBackgSets,weightType=weightType,bFileName=bFileName,
+		nSequences=Lengthfasta,maskR=maskR,nmotifs=nmotifs)
 		
 		list2=list()
 
