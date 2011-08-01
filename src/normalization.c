@@ -29,7 +29,6 @@ void normalize(double **score,double **rscore,int *seqLen,int pwmLen,int numSeq,
       }
    }
 
-
    if (weightType!=0) {
       for (i=0; i<numSeq; i++) {
          for (j=0; j<seqLen[j]; j++) {
@@ -50,7 +49,6 @@ void normalize(double **score,double **rscore,int *seqLen,int pwmLen,int numSeq,
          score[i][j] /=totalOffset; rscore[i][j]/=totalOffset; 
       }
    }
-
 
    // squash as in MEME
    totalSites=maxp;

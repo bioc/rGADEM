@@ -8,6 +8,66 @@
 #include <Rinternals.h>
 #include <Rdefines.h>
 
+void print_bed(Sites *site,int nsites,char **geneID,int *seqLen,int pwmLen,int id) {
+
+   FILE *f1;
+   char *fileName,*s1,*chr;
+   int s,e,e2,len,start;
+   register int i,j,k;
+
+   s1=alloc_char(20);
+   chr=alloc_char(20);
+   fileName=alloc_char(500);
+   sprintf(fileName,"%d.bed",id);
+   f1=fopen(fileName,"w");
+   for (i=0; i<nsites; i++) {
+      len=strlen(geneID[site[i].seq]);
+
+      s=-1; e=-1;
+      for (j=0; j<len-3; j++) {
+         if (geneID[site[i].seq][j]=='c' && geneID[site[i].seq][j+1]=='h' && geneID[site[i].seq][j+2]=='r') {
+            s=j; break;
+         }
+      }
+      for (j=s; j<len; j++) {
+         if (geneID[site[i].seq][j]==':') {
+            e=j; break;
+         }
+      }
+      if (s!=-1 && e!=-1) {
+         for (k=0,j=s; j<e; j++,k++)  chr[k]=geneID[site[i].seq][j];
+         chr[k]='\0';
+      }
+      else {
+         printf("%s chr not found! %d %d\n",geneID[site[i].seq],s,e); exit(0);
+      }
+      e2=-1;
+      for (j=e+1; j<len; j++) {
+         if (geneID[site[i].seq][j]=='-') {
+            e2=j; break;
+         }
+      }
+      if (e2!=-1) {
+         for (k=0,j=e+1; j<e2; j++,k++)  s1[k]=geneID[site[i].seq][j];
+         s1[k]='\0';
+         start=atoi(s1);
+      }
+      else {
+         printf("start not found!\n"); exit(0);
+      }
+
+      if (site[i].rev=='0') {
+         if (site[i].pos>=0) fprintf(f1,"%s\t%d\t%d\n",chr,site[i].pos+start,site[i].pos+pwmLen+start-1);
+      }
+      else {
+         if (site[i].pos>=0) fprintf(f1,"%s\t%d\t%d\n",chr,seqLen[site[i].seq]-site[i].pos-pwmLen+start,seqLen[site[i].seq]-site[i].pos+start-1);
+      }
+   }
+   fclose(f1);
+   if (fileName) { free(fileName); fileName=NULL; }
+   if (s1)       { free(s1);       s1=NULL;       }
+}
+
 void print_motif(Sites *site,int nsites,char **seq,char **rseq,int *seqLen,int pwmLen,int id,double **opwm) {
 
    //FILE *f1;
@@ -103,7 +163,7 @@ void print_motif(Sites *site,int nsites,char **seq,char **rseq,int *seqLen,int p
    -----------------------------------------------------------------------*/
 }
 
-SEXP print_result_2(Sites *site,int nsites,int numSeq,char **seq,char **rseq,int *seqLen,
+SEXP print_result_R(Sites *site,int nsites,int numSeq,char **seq,char **rseq,int *seqLen,
    double logev,double **opwm,int pwmLen,int id,char *sdyad,char *pwmConsensus,int numCycle,
    double pvalueCutoff,double maxpFactor,int *geneID) {
 
@@ -285,4 +345,6 @@ for (int aa=0;aa<pwmLen;aa++)
 	return (returnData);
 
 }
+
+
 

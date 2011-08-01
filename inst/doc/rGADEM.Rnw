@@ -11,7 +11,7 @@
 \newcommand{\scscst}{\scriptscriptstyle}
 \newcommand{\scst}{\scriptstyle}
 
-\author{Arnaud Droit \footnote{arnaud.droit@ircm.qc.ca} and Raphael Gottardo \footnote{raphael.gottardo@ircm.qc.ca}}
+\author{Arnaud Droit \footnote{arnaud.droit@crchuq.ulaval.ca} and Raphael Gottardo \footnote{rgottard@fhcrc.org>}}
 
 \begin{document}
 \title{Discovering and analyzing DNA sequence motifs\\ The rGADEM package.}
@@ -179,45 +179,6 @@ And finaly, if you want to show parameters for this analysis : \newline
 <<parameters,eval=FALSE>>=
 gadem@parameters
 @
-
-\section{Background model}
-
-\subsection{Description}
-It is convenient to assume that the background model is independent and identically distributed, as the exact distribution of the log likelihood ratio (llr) score can be efficiently approximated using the probability generating function method. However, when a higher order background model is used, analytic determination of the null distribution of the llr score is nontrivial, and rGADEM generates a large number of subsequences with the same length as the motif, then approximates the null distribution from their llr scores. It generates the subsequences using the [A,C,G,T] frequencies in the input sequences, which preserves the marginal nucleotide probabilities in both the input and background datasets. \newline
-
-When the background model is assumed to be independent between positions, it is computationally efficient to approximate the exact distribution of the llr score using the probability generating function (pgf) method of Staden (1989). However, for a higher-order Markov background model, obtaining the null distribution of the llr score analytically is not trivial, and we adopt an empirical approach. rGADEM first generates many null background subsequences of length w by simulating them from the 0th-order Markov model estimated by GADEM from the input data.  
-
-\subsection{Example of background model}
-The background Markov model can be estimated from the input data by GADEM or read from a file using the -fbm argument. We recommend -bOrder 0 when -fbm is not used. Otherwise, a higher order (e.g., -bOrder 3 or 4) may be reasonable.\newline
-
-                       Up to 8th order (octamer + 1nt = nonamer) is allowed. \newline\newline
-                       monomer frequency\newline
-                       a       0.20850000001660\newline
-                       c       0.29149999998340\newline
-                       g       0.29149999998340\newline
-                       t       0.20850000001660\newline\newline
-                       dimer frequency\newline
-                       aa      0.04800960194357\newline
-                       ac      0.05151030207800\newline
-                       ag      0.08171634323790\newline
-                       at      0.02720544114470\newline
-                                    ....\newline
-                       ta      0.03460692142891\newline
-                       tc      0.05361072215865\newline
-                       tg      0.07231446287687\newline
-                       tt      0.04800960194357\newline\newline
-                       trimer frequency\newline
-                       aaa     0.01200480194395\newline
-                       aac     0.01550620248175\newline
-                       aag     0.01420568228200\newline
-                       aat     0.00630252106809\newline
-                                    ....\newline
-                       tta     0.01190476192858\newline
-                       ttc     0.01180472191322\newline
-                       ttg     0.01230492199004\newline
-                       ttt     0.01200480194395\newline
-
-The GADEM package includes pre-computed genome-wide frequencies data for human, mouse and Drosophila, and source code for generating such files.\newline
 
 \end{document}
 

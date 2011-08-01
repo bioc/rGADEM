@@ -10,6 +10,10 @@
 #endif
 
 #include "defines.h"
+#include "random.h"
+
+#include <Rmath.h>
+#include <R.h>
 
 char *alloc_char(int );
 char **alloc_char_char(int, int);
@@ -145,4 +149,39 @@ char **read_seq(int *numSeq,int *seqLen,char **geneID,int maxNumSeq,int maxSeqLe
 
    return (seq);
 }
+
+void simulate_background_seq(double *bfreq,int numSeq,int *seqLen,char **bseq) {
+
+   register int i,j,k;
+   double rand,sum;
+   // FILE *fp;
+
+   for (i=0; i<numSeq; i++) {
+      for (j=0; j<seqLen[i]; j++) {
+         rand=runif(0,1);
+         sum=0;
+         for (k=0; k<4; k++) {
+            sum+=bfreq[k];
+            if (rand>sum-bfreq[k] && rand<=sum) {
+               switch (k) {
+                  case 0: bseq[i][j]='a'; break;
+                  case 1: bseq[i][j]='c'; break;
+                  case 2: bseq[i][j]='g'; break;
+                  case 3: bseq[i][j]='t'; break;
+                  default: break;
+               }
+            }
+         }
+      }
+      bseq[i][j]='\0';
+   }
+   /*-------------------------------------------------
+   fp=fopen("simulated_0th.seq","w");
+   for (i=0; i<numSeq; i++) {
+      fprintf(fp,">test\n");
+      fprintf(fp,"%s\n",bseq[i]); 
+   } fclose(fp);
+   -------------------------------------------------*/
+}
+
 

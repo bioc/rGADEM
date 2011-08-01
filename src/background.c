@@ -1251,31 +1251,31 @@ void nonACGT(BACKGROUND_Model *back) {
    back->transition8[262144]= log(0.25);
 }
 
-void simulate_background_seq(double *bfreq,int numSeq,int *seqLen,char **bseq) {
+//void simulate_background_seq(double *bfreq,int numSeq,int *seqLen,char **bseq) {
 
-   register int i,j,k;
-   double rand,sum;
+  // register int i,j,k;
+   //double rand,sum;
    // FILE *fp;
 
-   for (i=0; i<numSeq; i++) {
-      for (j=0; j<seqLen[i]; j++) { 
-         rand=runif(0,1);
-         sum=0;
-         for (k=0; k<4; k++) {
-            sum+=bfreq[k];
-            if (rand>sum-bfreq[k] && rand<=sum) { 
-               switch (k) {
-                  case 0: bseq[i][j]='a'; break; 
-                  case 1: bseq[i][j]='c'; break; 
-                  case 2: bseq[i][j]='g'; break; 
-                  case 3: bseq[i][j]='t'; break; 
-                  default: break; 
-               } 
-            } 
-         }
-      } 
-      bseq[i][j]='\0';
-   }
+   //for (i=0; i<numSeq; i++) {
+     // for (j=0; j<seqLen[i]; j++) { 
+       //  rand=runif(0,1);
+         //sum=0;
+        // for (k=0; k<4; k++) {
+          //  sum+=bfreq[k];
+            //if (rand>sum-bfreq[k] && rand<=sum) { 
+              // switch (k) {
+                //  case 0: bseq[i][j]='a'; break; 
+                 // case 1: bseq[i][j]='c'; break; 
+                 // case 2: bseq[i][j]='g'; break; 
+                 // case 3: bseq[i][j]='t'; break; 
+                 // default: break; 
+             // } 
+           // } 
+        // }
+     // } 
+     // bseq[i][j]='\0';
+  // }
    /*-------------------------------------------------
    fp=fopen("simulated_0th.seq","w");
    for (i=0; i<numSeq; i++) {
@@ -1283,7 +1283,7 @@ void simulate_background_seq(double *bfreq,int numSeq,int *seqLen,char **bseq) {
       fprintf(fp,"%s\n",bseq[i]); 
    } fclose(fp);
    -------------------------------------------------*/
-}
+//}
 
 void simulate_backg_seq_bmodel(BACKGROUND_Model *back,int MarkovOrder,int numSeq,int *seqLen,char **bseq) {
 

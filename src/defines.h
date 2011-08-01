@@ -27,7 +27,6 @@
 
 #define DUMMY_FITNESS		999999.0 // dummy fitness score for motifs that do not meet minimal requirements
 
-#define NUM_NO_MOTIF		1        // GADEM stops when the number of GADEM cycles produces no motifs
 #define SIMILARITY_ALPHA	0.30     // PWM similarity goodness-of-fit alpha level
                                          // a very value (e.g., 0.0001) will let GADEM to report all motifs found regardless of
                                          // similarity. This may be useful for a seeded analysis

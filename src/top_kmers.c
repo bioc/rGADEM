@@ -15,7 +15,9 @@ int word_for_dyad(Words *word,char **seq,char **rseq,int numSeq,int *seqLen,doub
    int *numTop3mer,int *numTop4mer,int *numTop5mer) {
 
    int numTrimer,numTetramer,numPentamer;
-   int numGroup,numAvailableTopKmer;
+   int numGroup;
+   int numAvailableTopKmer = 0;
+
    int *trimerCn,*tetramerCn,*pentamerCn;
    char **trimer, **tetramer,**pentamer;
    Ktuples *kp3,*kp4,*kp5;
@@ -77,18 +79,18 @@ int word_for_dyad(Words *word,char **seq,char **rseq,int numSeq,int *seqLen,doub
       }
       else *numTop5mer=0;
    }
-   // printf("top 3  4, 5-mers: %d %d %d\n",*numTop3mer,*numTop4mer,*numTop5mer);
+   printf("top 3  4, 5-mers: %d %d %d\n",*numTop3mer,*numTop4mer,*numTop5mer);
 
 #ifdef DEBUG
    fp=fopen("kmer.debug","w");
    for (i=0; i<numTrimer; i++) {
-      //fprintf(fp,"%s\t%d\t%5.1f\t%5.3f\n",kp3[i].seq,kp3[i].count,kp3[i].z,kp3[i].p);
+      fprintf(fp,"%s\t%d\t%5.1f\t%5.3f\n",kp3[i].seq,kp3[i].count,kp3[i].z,kp3[i].p);
    }
    for (i=0; i<numTetramer; i++) {
-      //fprintf(fp,"%s\t%d\t%5.1f\t%5.3f\n",kp4[i].seq,kp4[i].count,kp4[i].z,kp4[i].p);
+      fprintf(fp,"%s\t%d\t%5.1f\t%5.3f\n",kp4[i].seq,kp4[i].count,kp4[i].z,kp4[i].p);
    }
    for (i=0; i<numPentamer; i++) {
-      //fprintf(fp,"%s\t%d\t%5.1f\t%5.3f\n",kp5[i].seq,kp5[i].count,kp5[i].z,kp5[i].p);
+      fprintf(fp,"%s\t%d\t%5.1f\t%5.3f\n",kp5[i].seq,kp5[i].count,kp5[i].z,kp5[i].p);
    }
    fclose(fp);
 #endif
@@ -96,8 +98,8 @@ int word_for_dyad(Words *word,char **seq,char **rseq,int numSeq,int *seqLen,doub
 #ifdef DEBUG
    fp=fopen("topWords.debug","w");
    for (i=0; i<numGroup; i++) {
-      //fprintf(fp,"%d\n",word[i].count);
-     // for (j=0; j<word[i].count; j++) fprintf(fp,"%s\t%8.6f\t%8.6f\n",word[i].s1[j],word[i].prob_sta[j],word[i].prob_end[j]);
+      fprintf(fp,"%d\n",word[i].count);
+      for (j=0; j<word[i].count; j++) fprintf(fp,"%s\t%8.6f\t%8.6f\n",word[i].s1[j],word[i].prob_sta[j],word[i].prob_end[j]);
    }
    fclose(fp);
 #endif
@@ -151,7 +153,7 @@ void score_kmers(Ktuples *kp,double *baseFreq,int numKmer,int *kmerCn,char **kme
 int top_kmer(Words *word,Ktuples *kp,int *numSpecifiedTopKmer,int kmerLen) {
 
    register int i;
-   int numAvailableTopKmer;
+   int numAvailableTopKmer=0;
    double sum;
 
    // standardize z scores for top-ranked tetramers
@@ -391,17 +393,9 @@ double *base_frequency(int numSeq,char **seq,int *seqLen) {
    }
 
    sum=0; for (j=0; j<4; j++) sum +=bcount[j];
+   for (j=0; j<4; j++) freq[j]=(double)bcount[j]/(double)sum;   
 
-   if (bcount[0]<PSEUDO_COUNT || bcount[1]<PSEUDO_COUNT || bcount[2]<PSEUDO_COUNT || bcount[3]<PSEUDO_COUNT) {
-      for (j=0; j<4; j++) {
-         freq[j]=((double)bcount[j]+PSEUDO_COUNT)/((double)sum+PSEUDO_COUNT*4.0);   
-      }   
-   }
-   else {
-      for (j=0; j<4; j++) {
-         freq[j]=(double)bcount[j]/(double)sum;   
-      }   
-   }
+   for (j=0; j<4; j++) freq[j]=(freq[j]+PSEUDO_COUNT)/(1.0+PSEUDO_COUNT*4.0);   
 
    freq[0]=(freq[0]+freq[3])/2.0; freq[3]=freq[0];
    freq[1]=(freq[1]+freq[2])/2.0; freq[2]=freq[1];

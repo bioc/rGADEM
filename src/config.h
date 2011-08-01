@@ -23,8 +23,8 @@
 /* Define to 1 if you have the <dispatch/dispatch.h> header file. */
 #define HAVE_DISPATCH_DISPATCH_H 1
 
-/* Define to 1 if you have the <omp.h> header file. */
-/* #undef HAVE_OMP_H */
+/* Define to 1 if you have the OpenMP support. */
+/* #undef HAVE_OPENMP */
 
 #ifdef HAVE_DISPATCH_DISPATCH_H
   #include <dispatch/dispatch.h>
@@ -35,7 +35,7 @@
                    ^(size_t counter_name) { task; });
   
 #else // not HAVE_DISPATCH_DISPATCH_H
-  #ifdef HAVE_OMP_H
+  #ifdef HAVE_OPENMP
     #include <omp.h>
     #define DO_APPLY(task, n_times, counter_name) \
       R_CheckUserInterrupt(); \
@@ -43,13 +43,13 @@
       for (int counter_name = 0; counter_name < n_times; ++counter_name) { \
         task; \
       }
-  #else // not HAVE_OMP_H
+  #else // not HAVE_OPENMP
     #define DO_APPLY(task, n_times, counter_name) \
       for (int counter_name = 0; counter_name < n_times; ++counter_name) { \
         R_CheckUserInterrupt(); \
         task; \
       }
-  #endif // HAVE_OMP_H
+  #endif // HAVE_OPENMP
 #endif // HAVE_DISPATCH_DISPATCH_H
 
 #endif

@@ -134,7 +134,7 @@ void enumerate_kmers(char **,char **,char **);
 int word_for_dyad(Words *,char **,char **,int ,int *,double *,int *,int *,int *);
 void sample_without_replacement(char *,int ,int );
 void sample_without_replacement2(int *,int ,int );
-SEXP print_result_2(Sites *,int ,int ,char **,char **,int *,double ,double **,int ,int ,char *,char *,int ,double ,double,int *);
+SEXP print_result_R(Sites *,int ,int ,char **,char **,int *,double ,double **,int ,int ,char *,char *,int ,double ,double,int *);
 void print_motif(Sites *,int ,char **,char **,int *,int ,int ,double **);
 void pwm_profile(double **,int ,char *);
 void consensus_pwm(double **,int ,char *);
@@ -164,6 +164,9 @@ void transition_7th(double *,double *);
 void transition_8th(double *,double *);
 void compute_freq(int *,int ,double *);
 void numerate_monomer_to_pentamer(BACKGROUND_Model *);
+void mask_repetitive(int *,char **,int ,int *,char *);
+void print_bed(Sites *site,int nsites,char **geneID,int *,int pwmLen,int id);
+void read_background(char *filename,double *freq);
 
 double *alloc_double(int );
 double **alloc_double_double(int ,int );

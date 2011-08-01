@@ -24,7 +24,8 @@ void ll_score_motif_model(int numSeq,char **seq,char **rseq,int *seqLen,double *
 
    // weighted average for nucleotide 'n'
    for (m=0; m<pwmLen; m++) {
-      colAve[m]=0; for (i=0; i<4; i++) { colAve[m] +=(pwm[m][i]*bfreq[i]); }
+      colAve[m]=0; for (i=0; i<4; i++) {
+	   colAve[m] +=(pwm[m][i]*bfreq[i]); }
    }
 
    for (ii=0;  ii<numSeq; ii++) {
@@ -35,24 +36,15 @@ void ll_score_motif_model(int numSeq,char **seq,char **rseq,int *seqLen,double *
          plusScore=0;
          for (m=0; m<pwmLen;m++) {
             switch(seq[ii][i+m]) {
-				case 'a': plusScore +=pwm[m][0];break;
-				case 'c': plusScore +=pwm[m][1];break;
-				case 'g': plusScore +=pwm[m][2];break;
-				case 't': plusScore +=pwm[m][3];break;
-				default:  plusScore +=colAve[m];break;
-	
-			/*	case 'a': plusScore +=pwm[m][0];printf("a %f\n",pwm[m][0]);break;
-				case 'c': plusScore +=pwm[m][1];printf("c %f\n",pwm[m][1]); break;
-				case 'g': plusScore +=pwm[m][2];printf("g %f\n",pwm[m][2]);break;
-				case 't': plusScore +=pwm[m][3];printf("t %f\n",pwm[m][3]);break;
-				default:  plusScore +=colAve[m];printf("de %f\n",colAve[m]);break;*/
+               case 'a': plusScore +=pwm[m][0]; break;
+               case 'c': plusScore +=pwm[m][1]; break;
+               case 'g': plusScore +=pwm[m][2]; break;
+               case 't': plusScore +=pwm[m][3]; break;
+               default:  plusScore +=colAve[m]; break;
             }
          }
          score[ii][i]=plusScore;
-		//printf("***************Calcul PLusscore %f \n",plusScore);
-		//printf("*********************************************");
-		}
- 
+      }
       // minus strand
       for(i=0; i<seqLen[ii]-pwmLen+1; i++){
          posOnPlus=seqLen[ii]-i-pwmLen;
@@ -67,9 +59,7 @@ void ll_score_motif_model(int numSeq,char **seq,char **rseq,int *seqLen,double *
             }
          }
          rscore[ii][posOnPlus]=minusScore;
-
       }
-
    }
 
    if (colAve) { free(colAve); colAve=NULL; }
