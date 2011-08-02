@@ -16,19 +16,15 @@ numEM="numeric",
 fEM="numeric",
 widthWt="numeric",
 fullScan="numeric",
-userBackgModel="numeric",
 slideWinPWM="numeric",
-stopCriterion="character",
-MarkovOrder="numeric",
-userMarkovOrder="numeric",
+stopCriterion="numeric",
 numBackgSets="numeric",
 weightType="numeric",
-pgf="numeric",
-startPWMfound="numeric",
-bOrder="numeric",
 bFileName="character",
-fpwm0="character",
-nSequences="numeric"
+Spwm="character",
+nSequences="numeric",
+maskR="numeric",
+nmotifs="numeric"
 ))
 	
 setClass("align", representation(
