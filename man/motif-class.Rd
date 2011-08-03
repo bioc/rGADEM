@@ -21,7 +21,7 @@ Objects can be created by calls of the form \code{new("motif_gadem", ...)}.
   }
 }
 
-\author{Arnaud Droit \email{arnaud.droit@ircm.qc.ca}}
+\author{Arnaud Droit \email{arnaud.droit@crchuq.ulaval.ca}}
 
 \seealso{
 	 \code{\linkS4class{gadem}} , \code{\linkS4class{align}}, \code{\linkS4class{parameters}}
