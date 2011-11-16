@@ -18,8 +18,7 @@ GADEM<- function (Sequences,seed=1,genome=NULL,verbose=FALSE,numWordGroup=3,numT
       {
         cat("Retrieving sequences... ")
       }
-      FastaSeq<-getSeq(genome,spSeq,start=stSeq,end=edSeq,as.character=TRUE)
-      FastaXstring<-XStringViews(FastaSeq,subjectClass="DNAString")
+      FastaXstring<-getSeq(genome,spSeq,start=stSeq,end=edSeq,as.character=FALSE)
       if(verbose)
       {
         cat("Done.\n")
@@ -27,11 +26,10 @@ GADEM<- function (Sequences,seed=1,genome=NULL,verbose=FALSE,numWordGroup=3,numT
     }
     else if(is(Sequences,"XStringViews"))
     {
-      FastaXstring<-Sequences
+      FastaXstring<-DNAStringSet(Sequences)
     }
     else if(is(Sequences,"DNAStringSet"))
     {
-	  FastaXstring<-XStringViews(Sequences,subjectClass="DNAString")
       FastaXstring<-Sequences	
     }
     else
@@ -39,14 +37,12 @@ GADEM<- function (Sequences,seed=1,genome=NULL,verbose=FALSE,numWordGroup=3,numT
       stop("Object 'Sequences' should be of type 'XStringViews', 'DNAStringSet' or 'RangedData'")
     }
 
-		FastaSequence<-DNAStringSet(FastaXstring)
-		#fastarecords<-XStringSetToFASTArecords(FastaSequence)
-		fastaSeqChar<-as.character(FastaSequence)
+		fastaSeqChar<-as.character(FastaXstring)
 		fastarecords<-lapply(seq_len(length(fastaSeqChar)), function(i) list(desc=names(fastaSeqChar)[i], seq=fastaSeqChar[[i]]))
 		sequenceFasta<-sapply(fastarecords,"tolower")
-		accession<-as.integer(1:length(FastaSequence))	
+		accession<-as.integer(1:length(FastaXstring))	
 
-		Lengthfasta<-length(FastaSequence)
+		Lengthfasta<-length(FastaXstring)
 
     if(verbose)
     {
