@@ -984,8 +984,8 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
     free(pwmLen);    
     pwmLen=NULL; 
   }
-  if (seq[0])          { free(seq[0]);          seq[0]=NULL;     }
-  if (seq)             { free(seq);             seq=NULL;        }
+  //if (seq[0])          { free(seq[0]);          seq[0]=NULL;     }
+  //if (seq)             { free(seq);             seq=NULL;        }
     //  if (rseq[0])         { free(rseq[0]);         rseq[0]=NULL;    }
     // if (rseq)            { free(rseq);            rseq=NULL;       }
     // if (oseq[0])         { free(oseq[0]);         oseq[0]=NULL;    }
