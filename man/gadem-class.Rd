@@ -42,12 +42,13 @@ Objects can be created by calls of the form \code{new("gadem", ...)}.
 \section{Methods}{
   \describe{
     \item{[}{\code{signature(x = "gadem")}: subset gadem object.}
-	\item{[[]}{\code{signature(x = "gadem")}: subset gadem object.}
+	\item{[[}{\code{signature(x = "gadem")}: subset gadem object.}
 	\item{nMotifs}{\code{signature(x = "gadem")}: Number of motifs identified}
 	\item{names}{\code{signature(x = "gadem")}: Assign motifs names.}
 	\item{dim}{\code{signature(x = "gadem")}: Number of sequences identified for each motifs.}
 	\item{consensus}{\code{signature(x = "gadem")}:Sequence of consensus motifs.}
 	\item{nOccurrences}{\code{signature(x = "gadem")}:View of PWMs.}
+	\item{plot}{\code{signature(x = "gadem")}:Plot.}
 	\item{startPos}{\code{signature(x = "gadem")}:Start position for each sequences.}
 	\item{endPos}{\code{signature(x = "gadem")}:End position for each sequences.}
 	\item{getPWM}{\code{signature(x = "gadem")}:End position for each sequences.}
