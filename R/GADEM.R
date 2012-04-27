@@ -88,9 +88,9 @@ GADEM<- function (Sequences,seed=1,genome=NULL,verbose=FALSE,numWordGroup=3,numT
 					list[[j]]<-new("align",seq=obj[[i]][[4]][[1]][[j]],strand=obj[[i]][[4]][[2]][[j]],pos=obj[[i]][[4]][[3]][[j]],pval=obj[[i]][[4]][[4]][[j]],chr=spSeq[ind],start=stSeq[ind],end=edSeq[ind],seqID=obj[[i]][[4]][[6]][[j]],fastaHeader=obj[[i]][[4]][[5]][[j]])
 				}
 
-				else if(is(Sequences,"XStringViews"))
+				else # if(is(Sequences,"XStringViews"))
 				{
-					list[[j]]<-new("align",seq=obj[[i]][[4]][[1]][[j]],strand=obj[[i]][[4]][[2]][[j]],pos=obj[[i]][[4]][[3]][[j]],pval=obj[[i]][[4]][[4]][[j]],seqID=obj[[i]][[4]][[6]][[j]],fastaHeader=obj[[i]][[4]][[5]][[j]])			
+					list[[j]]<-new("align",seq=obj[[i]][[4]][[1]][[j]],strand=obj[[i]][[4]][[2]][[j]],pos=obj[[i]][[4]][[3]][[j]],pval=obj[[i]][[4]][[4]][[j]],chr="chr",start=0,end=0,seqID=obj[[i]][[4]][[6]][[j]],fastaHeader=obj[[i]][[4]][[5]][[j]])
 				}
 
 			}

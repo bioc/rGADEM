@@ -28,10 +28,9 @@ function(x, i, j=ANY, ..., exact=TRUE, drop=FALSE){
     return(res)    
 })
 
-setMethod("[[","gadem",
-    function(x, i, j, ..., exact = TRUE)
-
-    {
+setMethod("[[",
+"gadem",
+function(x, i, j, ..., exact = TRUE){
       if(length(i) != 1)
       {
         stop("subscript out of bounds (index must have length 1)")
