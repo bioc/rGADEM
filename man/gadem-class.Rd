@@ -5,6 +5,7 @@
 \alias{gadem-class}
 \alias{[,gadem-method}
 \alias{[[,gadem-method}
+\alias{[[,gadem,ANY,ANY-method}
 \alias{dim,gadem-method}
 \alias{consensus,gadem-method}
 \alias{startPos,gadem-method}
@@ -22,9 +23,9 @@
 \alias{nMotifs,gadem-method}
 \alias{names,gadem-method}
 \alias{names<-,gadem-method}
-\alias{plot}
 \alias{plot,gadem-method}
-\alias{plot,motif-method}
+\alias{plot,gadem,ANY-method}
+\alias{plot,motif,ANY-method}
 \alias{getPWM,motif-method}
 
 \title{Class "gadem" }
@@ -38,7 +39,6 @@ Objects can be created by calls of the form \code{new("gadem", ...)}.
 	\item{parameters}{List of rGADEM parameters. }
   }
 }
-
 \section{Methods}{
   \describe{
     \item{[}{\code{signature(x = "gadem")}: subset gadem object.}
@@ -48,7 +48,7 @@ Objects can be created by calls of the form \code{new("gadem", ...)}.
 	\item{dim}{\code{signature(x = "gadem")}: Number of sequences identified for each motifs.}
 	\item{consensus}{\code{signature(x = "gadem")}:Sequence of consensus motifs.}
 	\item{nOccurrences}{\code{signature(x = "gadem")}:View of PWMs.}
-	\item{plot}{\code{signature(x = "gadem")}:Plot.}
+	\item{plot, gadem-method}{\code{signature(x = "gadem")}:Plot.}
 	\item{startPos}{\code{signature(x = "gadem")}:Start position for each sequences.}
 	\item{endPos}{\code{signature(x = "gadem")}:End position for each sequences.}
 	\item{getPWM}{\code{signature(x = "gadem")}:End position for each sequences.}
