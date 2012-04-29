@@ -12,5 +12,5 @@ Description: rGADEM is an efficient de novo motif discovery tool for
              large-scale genomic sequence data. It is an open-source R
 	     package, which is based on the GADEM software. 
 License: Artistic-2.0
-biocViews: Microarray, ChIPchip, Sequencing, ChIPSeq, GenomicSequence, MotifDiscovery
+biocViews: Microarray, ChIPchip, Sequencing, ChIPseq, GenomicSequence, MotifDiscovery
 Packaged: 2011-04-14 17:22:07 UTC; biocbuild
