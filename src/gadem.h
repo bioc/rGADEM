@@ -1,8 +1,12 @@
+#ifndef __GADEM_H__
+#define __GADEM_H__
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 #include <Rinternals.h>
 #include <Rdefines.h>
+#include <R.h>
 
 // top-ranked k-mers
 typedef struct ktuples_info Ktuples;
@@ -190,3 +194,4 @@ Ktuples *alloc_ktuples(int ,int );
 Pgfs *alloc_distr(int size);
 BACKGROUND_Model *alloc_background(void);
 
+#endif

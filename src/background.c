@@ -15,7 +15,6 @@
 #include "gadem.h"
 #include "defines.h"
 #include <Rmath.h>
-#include <R.h>
 
 void nonACGT(BACKGROUND_Model *back);
 
@@ -28,7 +27,10 @@ int read_userBackgModel(char *fileName,BACKGROUND_Model *back) {
    double freq,*sum;
 
    fp=fopen(fileName,"r");
-   if (!fp) { perror(fileName); exit(0); }
+   if (!fp) {
+      error(fileName);
+      /*perror(fileName); exit(0); */
+   }
 
    maxAllowedOligomer=MAX_ORDER+1;
    buffer=alloc_char(256);
@@ -74,7 +76,10 @@ int read_userBackgModel(char *fileName,BACKGROUND_Model *back) {
             else {
                tok=strtok(buffer," ");
                len2=strlen(tok);
-               if (len2>10) { printf("Error: up to 9th order is allowed!\n"); exit(0); }
+               if (len2>10) {
+                  error("Error: up to 9th order is allowed!\n");
+                  /*printf("Error: up to 9th order is allowed!\n"); exit(0); */
+               }
                tok=strtok(0," ");
                freq=atof(tok);
                switch (len2) {
@@ -111,7 +116,10 @@ int read_userBackgModel(char *fileName,BACKGROUND_Model *back) {
    for (i=0; i<maxOligomer; i++) {
       if (fabs(sum[i]-1.0)>0.001) printf("sum of marginal %d: %8.6f\n",i+1,sum[i]); 
    }
-   if (maxOligomer==0) { printf("Error: no frequencies in %s\n",fileName); exit(0); }
+   if (maxOligomer==0) {
+      error("Error: no frequencies in %s\n",fileName);
+      /*printf("Error: no frequencies in %s\n",fileName); exit(0); */
+   }
 
    order=0;
    for (ii=0; ii<maxOligomer; ii++) {
@@ -379,7 +387,8 @@ void generate_background(int numSeq,char **seq,char **rseq,int *seqLen,BACKGROUN
       for (i=0; i<262144; i++) back->transition8[i]=log(back->transition8[i]);
    }
    else if (MarkovOrder>8) { 
-      printf("\nError: max Markov order: 8\n"); exit(0); 
+      error("\nError: max Markov order: 8\n");
+      /*printf("\nError: max Markov order: 8\n"); exit(0); */
    }
    else { }
 
@@ -1077,7 +1086,8 @@ void marginal_prob(int *count,int numKmer,double *freq) {
    sum=0; for (i=0; i<numKmer; i++) sum +=(double)count[i];
 
    if (sum<=PSEUDO_FREQ) {
-      printf("Error: data contains no [a,c,g,t].\n");  exit(0);
+      error("Error: data contains no [a,c,g,t].\n");
+      /*printf("Error: data contains no [a,c,g,t].\n");  exit(0);*/
    }
    else {
       for (i=0; i<numKmer; i++) {
@@ -1757,7 +1767,10 @@ void simulate_backg_seq_bmodel(BACKGROUND_Model *back,int MarkovOrder,int numSeq
          } bseq[i][seqLen[i]]='\0';
       }
    }
-   else { printf("Error: max order: 8\n"); exit(0); }
+   else {
+      error("Error: max order: 8\n");
+      /*printf("Error: max order: 8\n"); exit(0); */
+   }
 
    /*-------------------------------------------------
    fp=fopen("simulated_0th.seq","w");

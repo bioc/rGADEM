@@ -51,7 +51,7 @@ library(rGADEM)
 In the case of your data provide from Homo Sapiens : 
 
 <<loading BSgenome package>>=
-library(BSgenome.Hsapiens.UCSC.hg18)
+library(BSgenome.Hsapiens.UCSC.hg19)
 @
 
 \section{Loading in the data}

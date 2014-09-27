@@ -5,8 +5,6 @@
 #include <math.h>
 #include "defines.h"
 #include "gadem.h"
-#include <Rinternals.h>
-#include <Rdefines.h>
 
 void print_bed(Sites *site,int nsites,char **geneID,int *seqLen,int pwmLen,int id) {
 
@@ -39,7 +37,8 @@ void print_bed(Sites *site,int nsites,char **geneID,int *seqLen,int pwmLen,int i
          chr[k]='\0';
       }
       else {
-         printf("%s chr not found! %d %d\n",geneID[site[i].seq],s,e); exit(0);
+         error("%s chr not found! %d %d\n",geneID[site[i].seq],s,e);
+         /*printf("%s chr not found! %d %d\n",geneID[site[i].seq],s,e); exit(0);*/
       }
       e2=-1;
       for (j=e+1; j<len; j++) {
@@ -53,7 +52,8 @@ void print_bed(Sites *site,int nsites,char **geneID,int *seqLen,int pwmLen,int i
          start=atoi(s1);
       }
       else {
-         printf("start not found!\n"); exit(0);
+         error("start not found!\n");
+         /*printf("start not found!\n"); exit(0);*/
       }
 
       if (site[i].rev=='0') {

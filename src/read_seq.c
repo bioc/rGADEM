@@ -27,7 +27,8 @@ char **read_seq(int *numSeq,int *seqLen,char **geneID,int maxNumSeq,int maxSeqLe
    char  **seq,*buffer,*tok,*sscore;
 
    fp=fopen(fileName,"r");
-   if (!fp) { perror(fileName); exit(0); }
+   if (!fp) { error(fileName);}
+   /*if (!fp) { perror(fileName); exit(0); }*/
 
    maxBufferLen=MAX_BUFFER_LENGTH;
    seq=alloc_char_char(maxNumSeq,maxSeqLen+1);
@@ -106,7 +107,9 @@ char **read_seq(int *numSeq,int *seqLen,char **geneID,int maxNumSeq,int maxSeqLe
                if (i>=maxNumSeq) { 
                   printf("\n\nErro: maximal number of seqences reached!\n"); 
                   printf("Please reset MAX_NUM_SEQ in gadem.h and rebuild (see installation)\n\n");
-                  exit(0); 
+                  /*printf("\n\nErro: maximal number of seqences reached!\n"); */
+                  /*printf("Please reset MAX_NUM_SEQ in gadem.h and rebuild (see installation)\n\n");*/
+                  /*exit(0); */
                }
             }
          }

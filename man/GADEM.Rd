@@ -50,7 +50,7 @@ GADEM(Sequences,seed=1,genome=NULL,verbose=FALSE,numWordGroup=3,numTop3mer=20,
 
 \examples{
 
-	library(BSgenome.Hsapiens.UCSC.hg18)
+	library(BSgenome.Hsapiens.UCSC.hg19)
 	pwd<-"" #INPUT FILES- BedFiles, FASTA, etc.
 	path<- system.file("extdata","Test_100.bed",package="rGADEM")
 	BedFile<-paste(pwd,path,sep="")

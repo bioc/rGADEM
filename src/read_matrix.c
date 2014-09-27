@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "gadem.h"
 
 #ifdef HAVE_MALLOC_H
 #include <malloc.h>
@@ -23,18 +24,24 @@ double **read_initial_pwm(int *matrixLen,char *fileName) {
    pwm=alloc_double_double(MAX_MATRIX_LENGTH,4);
 
    fp=fopen(fileName,"r");
-   if (!fp) { perror(fileName); exit(0); }
+   if (!fp) { error(fileName);}
+   /*if (!fp) { perror(fileName); exit(0); }*/
 
    checkfscanf = fscanf(fp,"%d %d",&numRow,&numCol);
-   if (numRow !=4) { printf("\n\nError: please check documentation for input format.\n"); exit(0); }
+   if (numRow !=4) {
+      error("\n\nError: please check documentation for input format.\n");
+      /*printf("\n\nError: please check documentation for input format.\n"); exit(0); */
+   }
+   /*if (numRow !=4) { printf("\n\nError: please check documentation for input format.\n"); exit(0); }*/
    if (numCol<5)  printf("\n\nWarning: motif length is %d SHORT\n",numCol); 
 
    for (m=0; m<4; m++) {
       for (n=0; n<numCol; n++) {
          checkfscanf = fscanf(fp,"%lf",&pwm[n][m]);
          if (pwm[n][m]<0) { 
-            printf("\n\nError: elements in PWM must be positive. Please see examples on gapwm website\n"); 
-            exit(0); 
+            error("\n\nError: elements in PWM must be positive. Please see examples on gapwm website\n"); 
+            /*printf("\n\nError: elements in PWM must be positive. Please see examples on gapwm website\n"); */
+            /*exit(0); */
          } 
       }
    }

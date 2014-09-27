@@ -67,9 +67,10 @@ int scan_em_seq_ptable(Pgfs *scoreDist,int pDimension,Sites *site,int numSeq,cha
                //site[siteCn].pvalue=find_pvalue(plusScore,scoreDist,pDimension);
                siteCn++;
                if (siteCn==MAX_SITES) {
-                  printf("Error: max sites %d reached!\n",MAX_SITES); 
-                  printf(" set <MAX_SITES> in defines.h accordingly\n");
-                  exit(0); 
+                  error("Error: max sites %d reached!\n set <MAX_SITES> in defines.h accordingly\n", MAX_SITES);
+                  /*printf("Error: max sites %d reached!\n",MAX_SITES); */
+                  /*printf(" set <MAX_SITES> in defines.h accordingly\n");*/
+                  /*exit(0); */
                }
             }
          }
@@ -83,9 +84,10 @@ int scan_em_seq_ptable(Pgfs *scoreDist,int pDimension,Sites *site,int numSeq,cha
                //site[siteCn].pvalue=find_pvalue(minusScore,scoreDist,pDimension);
                siteCn++;
                if (siteCn==MAX_SITES) {
-                  printf("Error: max sites %d reached!\n",MAX_SITES); 
-                  printf(" set <MAX_SITES> in defines.h accordingly\n");
-                  exit(0); 
+                  error("Error: max sites %d reached!\n set <MAX_SITES> in defines.h accordingly\n", MAX_SITES);
+                  /*printf("Error: max sites %d reached!\n",MAX_SITES); */
+                  /*printf(" set <MAX_SITES> in defines.h accordingly\n");*/
+                  /*exit(0); */
                }
             }
          }
@@ -195,9 +197,10 @@ int scan_llr_pgf(Pgfs *scoreDist,int pDimension,Sites *site,int numSeq,char **se
                //site[siteCn].pvalue=find_pvalue(plusScore,scoreDist,pDimension);
                siteCn++;
                if (siteCn==MAX_SITES) {
-                  printf("Error: max sites %d reached!\n",MAX_SITES); 
-                  printf(" set <MAX_SITES> in defines.h accordingly\n");
-                  exit(0); 
+                  error("Error: max sites %d reached!\n set <MAX_SITES> in defines.h accordingly\n", MAX_SITES);
+                  /*printf("Error: max sites %d reached!\n",MAX_SITES); */
+                  /*printf(" set <MAX_SITES> in defines.h accordingly\n");*/
+                  /*exit(0); */
                }
             }
          }
@@ -211,9 +214,10 @@ int scan_llr_pgf(Pgfs *scoreDist,int pDimension,Sites *site,int numSeq,char **se
                //site[siteCn].pvalue=find_pvalue(minusScore,scoreDist,pDimension);
                siteCn++;
                if (siteCn==MAX_SITES) {
-                  printf("Error: max sites %d reached!\n",MAX_SITES); 
-                  printf(" set <MAX_SITES> in defines.h accordingly\n");
-                  exit(0); 
+                  error("Error: max sites %d reached!\n set <MAX_SITES> in defines.h accordingly\n", MAX_SITES);
+                  /*printf("Error: max sites %d reached!\n",MAX_SITES); */
+                  /*printf(" set <MAX_SITES> in defines.h accordingly\n");*/
+                  /*exit(0); */
                }
             }
          }

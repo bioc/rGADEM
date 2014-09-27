@@ -21,7 +21,10 @@ void roulett_wheel_weight(Fitness *fitness,int populationSize,Wheel *wheel) {
 
    totalWeight=0; for (i=0; i<populationSize; i++) totalWeight += fitness[i].value;
  
-   if (totalWeight==0) { printf("Error: \n"); exit(0); }
+   if (totalWeight==0) {
+      error("Error: \n");
+      /*printf("Error: \n"); exit(0); */
+   }
 
    wheel[0].start=0.0;
    wheel[0].end  =(double)populationSize*fitness[0].value/totalWeight;

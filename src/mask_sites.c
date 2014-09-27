@@ -49,6 +49,7 @@ void mask_repetitive(int *geneID,char **seq,int numSeq,int *seqLen,char *fileNam
 
    // mask=(MASK *)calloc(numSeq*5,sizeof(MASK));
    // if (!mask) { printf("calloc for mask failed!\n"); exit(0); }
+   /*if (!mask) { error("calloc for mask failed!\n");}*/
 
    maskedFileName=alloc_char(500);
    id=-1;

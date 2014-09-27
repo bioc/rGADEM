@@ -1372,7 +1372,10 @@ void read_background(char *filename,double *bfreq) {
             else if (letter[0]=='T' || letter[0]=='t') {
                if (bfreq[3]==-1)  bfreq[3]=atof(tok); 
             }
-            else  { printf("Error reading %s: non-[A,C,G,T]\n",filename); exit(0); } 
+            else  { 
+               error("Error reading %s: non-[A,C,G,T]\n",filename);
+               /*printf("Error reading %s: non-[A,C,G,T]\n",filename); exit(0);*/
+            } 
          }
          else {
             tok=strtok(buffer," ");
@@ -1391,7 +1394,10 @@ void read_background(char *filename,double *bfreq) {
             else if (letter[0]=='T' || letter[0]=='t') {
                if (bfreq[3]==-1)  bfreq[3]=atof(tok); 
             }
-            else  { printf("Error reading %s: non-[A,C,G,T]\n",filename); exit(0); } 
+            else  {
+               error("Error reading %s: non-[A,C,G,T]\n",filename);
+               /*printf("Error reading %s: non-[A,C,G,T]\n",filename); exit(0);*/
+            }
          }
       }
    }
@@ -1406,14 +1412,16 @@ void read_background(char *filename,double *bfreq) {
             case 3: printf("freq. for 't' not found in %s\n",filename); break;
             default: break;
          }
-         exit(0);
+         error("");
+         /*exit(0);*/
       }
    }
    sum=0; for (i=0; i<4; i++) sum +=bfreq[i];
    if (fabs(sum-1.0)>0.001) {
-      printf("Warning: frequenices do not add to 1.0\n");
-      printf("Please check %s\n",filename);
-      exit(0);
+      error("Warning: frequenices do not add to 1.0\nPlease check %s\n",filename);
+      /*printf("Warning: frequenices do not add to 1.0\n");*/
+      /*printf("Please check %s\n",filename);*/
+      /*exit(0);*/
    }
    if (buffer) { free(buffer); buffer=NULL; }
 }

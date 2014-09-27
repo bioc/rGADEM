@@ -16,10 +16,16 @@ double **alloc_double_double(int size1,int size2) {
    register int i;
 
    tmp=(double **)calloc(size1,sizeof(double *));
-   if (!tmp)   { printf("tmp calloc failed!\n"); exit(1); }
+   if (!tmp)   {
+      error("tmp calloc failed!\n");
+      /*printf("tmp calloc failed!\n"); exit(1); */
+   }
 
    tmp[0]=(double *)calloc(size1*size2,sizeof(double));
-   if (tmp[0]==0) { printf("bit calloc failed!\n"); exit(1); }
+   if (tmp[0]==0) {
+      error("bit calloc failed!\n");
+      /*printf("bit calloc failed!\n"); exit(1); */
+   }
 
    /* set up vector pointers */
    for (i=1; i<size1; i++) tmp[i]=tmp[0]+(size2 * i);
@@ -33,10 +39,16 @@ char **alloc_char_char(int size1,int size2) {
    register int i;
 
    tmp=(char **)calloc(size1,sizeof(char *));
-   if (!tmp)   { printf("tmp calloc failed!\n"); exit(1); }
+   if (!tmp)   {
+      error("tmp calloc failed!\n");
+      /*printf("tmp calloc failed!\n"); exit(1); */
+   }
 
    tmp[0]=(char *)calloc(size1*size2,sizeof(char));
-   if (tmp[0]==0) { printf("bit calloc failed!\n"); exit(1); }
+   if (tmp[0]==0) {
+      error("bit calloc failed!\n");
+      /*printf("bit calloc failed!\n"); exit(1); */
+   }
 
    /* set up vector pointers */
    for (i=1; i<size1; i++)  tmp[i]=tmp[0]+(size2 * i);
@@ -50,10 +62,16 @@ int **alloc_int_int(int size1,int size2) {
    register int i;
 
    tmp=(int **)calloc(size1,sizeof(int *));
-   if (!tmp)   { printf("tmp calloc failed!\n"); exit(1); }
+   if (!tmp)   {
+      error("tmp calloc failed!\n");
+      /*printf("tmp calloc failed!\n"); exit(1); */
+   }
 
    tmp[0]=(int *)calloc(size1*size2,sizeof(int));
-   if (tmp[0]==0) { printf("bit calloc failed!\n"); exit(1); }
+   if (tmp[0]==0) {
+      error("bit calloc failed!\n");
+      /*printf("bit calloc failed!\n"); exit(1); */
+   }
 
    /* set up vector pointers */
    for (i=1; i<size1; i++)  tmp[i]=tmp[0]+(size2 * i);
@@ -65,7 +83,10 @@ char *alloc_char(int size1) {
 
    char *tmp=NULL;
    tmp=(char *)calloc(size1,sizeof(char));
-   if (!tmp)   { printf("tmp calloc failed!\n"); exit(1); }
+   if (!tmp)   {
+      error("tmp calloc failed!\n");
+      /*printf("tmp calloc failed!\n"); exit(1); */
+   }
    return (tmp);
 }
 
@@ -73,7 +94,10 @@ int *alloc_int(int size1) {
 
    int *tmp=NULL;
    tmp=(int *)calloc(size1,sizeof(int));
-   if (!tmp)   { printf("tmp calloc failed!\n"); exit(1); }
+   if (!tmp)   {
+      error("tmp calloc failed!\n");
+      /*printf("tmp calloc failed!\n"); exit(1); */
+   }
    return (tmp);
 }
 
@@ -81,7 +105,10 @@ double *alloc_double(int size1) {
 
    double *tmp=NULL;
    tmp=(double *)calloc(size1,sizeof(double));
-   if (!tmp)   { printf("tmp calloc failed!\n"); exit(1); }
+   if (!tmp)   {
+      error("tmp calloc failed!\n");
+      /*printf("tmp calloc failed!\n"); exit(1); */
+   }
    return (tmp);
 }
 
@@ -130,7 +157,10 @@ Fitness *alloc_fitness(int size1) {
    Fitness *tmp=NULL;
 
    tmp=(Fitness *)calloc(size1,sizeof(Fitness));
-   if (!tmp) { printf("calloc for fitness failed!\n"); exit(0); }
+   if (!tmp) {
+      error("calloc for fitness failed!\n");
+      /*printf("calloc for fitness failed!\n"); exit(0); */
+   }
    return (tmp);
 }
 
@@ -139,7 +169,10 @@ Wheel *alloc_wheel(int size1) {
    Wheel *tmp=NULL;
 
    tmp=(Wheel *)calloc(size1,sizeof(Wheel));
-   if (!tmp) { printf("calloc for wheel failed!\n"); exit(0); }
+   if (!tmp) {
+      error("calloc for wheel failed!\n");
+      /*printf("calloc for wheel failed!\n"); exit(0); */
+   }
    return (tmp);
 }
 
@@ -148,7 +181,10 @@ Sites *alloc_site(int size1) {
    Sites *tmp=NULL;
 
    tmp=(Sites *)calloc(size1,sizeof(Sites));
-   if (!tmp) { printf("calloc for wheel failed!\n"); exit(0); }
+   if (!tmp) {
+      error("calloc for wheel failed!\n");
+      /*printf("calloc for wheel failed!\n"); exit(0); */
+   }
    return (tmp);
 }
 
@@ -158,10 +194,16 @@ Sites **alloc_site_site(int size1,int size2) {
    register int i;
 
    tmp=(Sites **)calloc(size1,sizeof(Sites *));
-   if (!tmp)   { printf("tmp calloc failed!\n"); exit(1); }
+   if (!tmp)   {
+      error("tmp calloc failed!\n");
+      /*printf("tmp calloc failed!\n"); exit(1); */
+   }
 
    tmp[0]=(Sites *)calloc(size1*size2,sizeof(Sites));
-   if (tmp[0]==0) { printf("bit calloc failed!\n"); exit(1); }
+   if (tmp[0]==0) {
+      error("bit calloc failed!\n");
+      /*printf("bit calloc failed!\n"); exit(1); */
+   }
 
    /* set up vector pointers */
    for (i=1; i<size1; i++)  tmp[i]=tmp[0]+(size2 * i);
@@ -175,10 +217,16 @@ Chrs **alloc_chrs(int size1,int size2) {
    register int i;
 
    tmp=(Chrs **)calloc(size1,sizeof(Chrs *));
-   if (!tmp)   { printf("tmp calloc failed!\n"); exit(1); }
+   if (!tmp)   {
+      error("tmp calloc failed!\n");
+      /*printf("tmp calloc failed!\n"); exit(1); */
+   }
 
    tmp[0]=(Chrs *)calloc(size1*size2,sizeof(Chrs));
-   if (tmp[0]==0) { printf("bit calloc failed!\n"); exit(1); }
+   if (tmp[0]==0) {
+      error("bit calloc failed!\n");
+      /*printf("bit calloc failed!\n"); exit(1); */
+   }
 
    /* set up vector pointers */
    for (i=1; i<size1; i++)  tmp[i]=tmp[0]+(size2 * i);
@@ -192,7 +240,10 @@ Words *alloc_word(int numCategory,int maxSize) {
    Words *tmp=NULL;
    
    tmp=(Words *)calloc(numCategory,sizeof(Words));
-   if (!tmp) { printf("calloc failed for Words.\n"); exit(0); }
+   if (!tmp) {
+      error("calloc failed for Words.\n");
+      /*printf("calloc failed for Words.\n"); exit(0); */
+   }
 
    for (i=0; i<numCategory; i++) {
       tmp[i].s1=alloc_char_char(maxSize,10); 
@@ -230,7 +281,10 @@ Pgfs *alloc_distr(int size) {
 
    Pgfs *llDist=NULL;
    llDist=(Pgfs *)calloc(size,sizeof(Pgfs));
-   if (!llDist) { printf("calloc failed for llDist\n"); exit(0); }
+   if (!llDist) {
+      error("calloc failed for llDist\n");
+      /*printf("calloc failed for llDist\n"); exit(0); */
+   }
    return (llDist);
 }
 

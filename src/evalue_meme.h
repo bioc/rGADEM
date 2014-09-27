@@ -50,6 +50,7 @@
 #define _EVALUE_MEME_H_
 
 #include <math.h>
+#include "gadem.h"
 
 /* ---------------------------------------------------------------------- */
 /* From MEME: user.h                                                      */
@@ -149,7 +150,8 @@ typedef int BOOLEAN;
     fprintf(stderr, "Resize(" #P ", " #N ", " #T ") failed!\n");	\
     fprintf(stderr, #N" = %ld\n", (long)_n_);				\
     /*Crash*/; 								\
-    exit(1);								\
+    error("");								\
+    /*exit(1);*/							\
   } 									\
   (P) = (T *) new_P; 							\
 }
@@ -164,14 +166,16 @@ typedef int BOOLEAN;
   /*fprintf(stderr, */							\
   /*  "create_2array(" #v ", " #typ ", " #r "(%d), " #c ")\n", r);*/	\
   dbmalloc((v), _ir,  typ *);						\
-  if (!(v)) {fprintf(stderr, "malloc failed 1\n"); exit(1);}		\
+  if (!(v)) { error("malloc failed 1\n"); }			\
+      /*printf(stderr, "malloc failed 1\n"); exit(1);}		*/	\
   for (_i=0; _i<_ir; _i++) {						\
     typ *tmp;								\
     (v)[_i] = 0;							\
     dbmalloc(tmp, _ic, typ);						\
     (v)[_i] = tmp;							\
     if (!(v)[_i]) {printf("malloc failed 2\n");}			\
-    if (!(v)[_i]) {fprintf(stderr, "malloc failed 2\n"); exit(1);}	\
+    if (!(v)[_i]) {error("malloc failed 2\n");}		\
+    /*if (!(v)[_i]) {fprintf(stderr, "malloc failed 2\n"); exit(1);}*/	\
   }									\
 }
 
