@@ -201,7 +201,7 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
   { 
     if (length(STRING_ELT(sequence,(incr)))>maxSeqLen) maxSeqLen=length(STRING_ELT(sequence,(incr))); 
   }
-//  printf("maxLength=%d",maxSeqLen);
+//  Rprintf("maxLength=%d",maxSeqLen);
 //  exit(0);
   seq=alloc_char_char(numSeq,maxSeqLen+1);
   for(incr=1;incr<longueur;incr=incr+2)
@@ -442,28 +442,28 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
   time(&start);
   
     // if (weightType==1 || weightType==3) 
-    //fprintf(fp,"window width of sequence centered on the nucleotides having large weights for PWM optimization: %d\n",widthWt);
-    //fprintf(fp,"pwm score p-value cutoff for declaring binding site:\t%e\n",pvalueCutoff);
+    //Rprintf("window width of sequence centered on the nucleotides having large weights for PWM optimization: %d\n",widthWt);
+    //Rprintf("pwm score p-value cutoff for declaring binding site:\t%e\n",pvalueCutoff);
   
   if(verbose)
   {
-    printf("==============================================================================================\n");
-    printf("input sequence file:  %s\n",mFileName);
-    printf("number of sequences and average length:\t\t\t\t%d %5.1f\n",numSeq,aveSeqLen);
+    Rprintf("==============================================================================================\n");
+    Rprintf("input sequence file:  %s\n",mFileName);
+    Rprintf("number of sequences and average length:\t\t\t\t%d %5.1f\n",numSeq,aveSeqLen);
     
-    printf("Use pgf method to approximate llr null distribution\n");
-    printf("parameters estimated from sequences in:  %s\n\n",mFileName);
+    Rprintf("Use pgf method to approximate llr null distribution\n");
+    Rprintf("parameters estimated from sequences in:  %s\n\n",mFileName);
 
     if (weightType!=0) 
-      printf("non-uniform weight applies to each sequence - type:\t\t%d\n",weightType);
-    printf("number of GA generations & population size:\t\t\t%d %d\n\n",numGeneration,populationSize);
-    printf("PWM score p-value cutoff for binding site declaration:\t\t%e\n",pvalueCutoff);
-    printf("ln(E-value) cutoff for motif declaration:\t\t\t%f\n\n",E_valueCutoff);
-//    printf("number (percentage) of sequences selected for EM:\t\t%d(%4.1f\%)\n",numSeqEM,100.0*(double)numSeqEM/(double)numSeq);
-    printf("number of EM steps:\t\t\t\t\t\t%d\n",numEM);
-    printf("minimal no. sites considered for a motif:\t\t\t%d\n\n",minsites);
-    printf("[a,c,g,t] frequencies in input data:\t\t\t\t%f %f %f %f\n",bfreq1[0],bfreq1[1],bfreq1[2],bfreq1[3]);
-    printf("==============================================================================================\n");
+      Rprintf("non-uniform weight applies to each sequence - type:\t\t%d\n",weightType);
+    Rprintf("number of GA generations & population size:\t\t\t%d %d\n\n",numGeneration,populationSize);
+    Rprintf("PWM score p-value cutoff for binding site declaration:\t\t%e\n",pvalueCutoff);
+    Rprintf("ln(E-value) cutoff for motif declaration:\t\t\t%f\n\n",E_valueCutoff);
+//    Rprintf("number (percentage) of sequences selected for EM:\t\t%d(%4.1f\%)\n",numSeqEM,100.0*(double)numSeqEM/(double)numSeq);
+    Rprintf("number of EM steps:\t\t\t\t\t\t%d\n",numEM);
+    Rprintf("minimal no. sites considered for a motif:\t\t\t%d\n\n",minsites);
+    Rprintf("[a,c,g,t] frequencies in input data:\t\t\t\t%f %f %f %f\n",bfreq1[0],bfreq1[1],bfreq1[2],bfreq1[3]);
+    Rprintf("==============================================================================================\n");
   }
   
   // if (pgf) 
@@ -493,8 +493,8 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
   else
   {
     error("Motif prior probability type not found - please choose: 0, 1, or 2\n");
-    // printf("Consider: -posWt 1 for strong central enrichment as in ChIP-seq\n");
-    // printf("          -posWt 0 for others\n\n");
+    // Rprintf("Consider: -posWt 1 for strong central enrichment as in ChIP-seq\n");
+    // Rprintf("          -posWt 0 for others\n\n");
     // exit(0);
   }
   /*    if (startPWMfound) minminSites=minsites;
@@ -511,12 +511,12 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
       
       if(verbose)
       {
-        printf("*** Running an unseeded analysis ***\n");
-        // printf("\n|------------------------------------------------------------------|\n");
-        // printf("|                                                                  |\n");
-        // printf("|              *** Running an unseeded analysis ***                |\n");
-        // printf("|                                                                  |\n");
-        // printf("|------------------------------------------------------------------|\n\n");
+        Rprintf("*** Running an unseeded analysis ***\n");
+        // Rprintf("\n|------------------------------------------------------------------|\n");
+        // Rprintf("|                                                                  |\n");
+        // Rprintf("|              *** Running an unseeded analysis ***                |\n");
+        // Rprintf("|                                                                  |\n");
+        // Rprintf("|------------------------------------------------------------------|\n\n");
       }
       populationSize=INTEGER_VALUE(RpopulationSize);
       numGeneration=INTEGER_VALUE(RnumGeneration);
@@ -536,32 +536,32 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
 
         // identify top-ranked k-mers (k=3,4,5) for spaced dyads
       if(verbose)
-        printf("GADEM cycle %2d: enumerate and count k-mers... ",numCycle+1);
+        Rprintf("GADEM cycle %2d: enumerate and count k-mers... ",numCycle+1);
         
       numWordGroup=word_for_dyad(word,seq,rseq,numSeq,seqLen,bfreq1,&numTop3mer,&numTop4mer,&numTop5mer);
       
       if(verbose)
-        printf("Done.\n");
+        Rprintf("Done.\n");
       
         // generating a "population" of spaced dyads
       if(verbose)
-        printf("Initializing GA... ");
+        Rprintf("Initializing GA... ");
 
       initialisation(dyad,populationSize,numWordGroup,word,minSpaceWidth,maxSpaceWidth,maxpFactor);
       if(verbose)
-        printf("Done.\n");
+        Rprintf("Done.\n");
       
     }
     else
     {
       if(verbose)
       {
-        printf("*** Running an seeded analysis ***\n");
-        // printf("\n|------------------------------------------------------------------|\n");
-        // printf("|                                                                  |\n");
-        // printf("|               *** Running a seeded analysis ***                  |\n");
-        // printf("|                                                                  |\n");
-        // printf("|------------------------------------------------------------------|\n\n");
+        Rprintf("*** Running an seeded analysis ***\n");
+        // Rprintf("\n|------------------------------------------------------------------|\n");
+        // Rprintf("|                                                                  |\n");
+        // Rprintf("|               *** Running a seeded analysis ***                  |\n");
+        // Rprintf("|                                                                  |\n");
+        // Rprintf("|------------------------------------------------------------------|\n\n");
       }
       populationSize=FIXED_POPULATION; 
       dyad  =alloc_chrs(populationSize,4);
@@ -629,27 +629,27 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
 
       // for (i=0; i<5; i++)
       // {
-      //   printf("fitness.value=%lf\n",fitness[i].value);
-      //   printf("fitness.index=%d\n",fitness[i].index);
-      //   printf("maxpfactor=%lf\n",maxpFactor[i]);
-      //   printf("scoreCutoff=%d\n",scoreCutoff[i]);
-      //   printf("   spacedDyad: %s\n",sdyad[i]);
+      //   Rprintf("fitness.value=%lf\n",fitness[i].value);
+      //   Rprintf("fitness.index=%d\n",fitness[i].index);
+      //   Rprintf("maxpfactor=%lf\n",maxpFactor[i]);
+      //   Rprintf("scoreCutoff=%d\n",scoreCutoff[i]);
+      //   Rprintf("   spacedDyad: %s\n",sdyad[i]);
       //   
       //   for (l=0; l<pwmLen[i]; l++)
       //   {
       //     for (m=0; m<4; m++) 
       //     { 
-      //       printf("opwm[%d][%d][%d]=%lf ",i,l,m,opwm[i][l][m]);
-      //       printf("epwm[%d][%d][%d]=%lf ",i,l,m,epwm[i][l][m]);
-      //       printf("pwm[%d][%d][%d]=%lf ",i,l,m,pwm[i][l][m]);
+      //       Rprintf("opwm[%d][%d][%d]=%lf ",i,l,m,opwm[i][l][m]);
+      //       Rprintf("epwm[%d][%d][%d]=%lf ",i,l,m,epwm[i][l][m]);
+      //       Rprintf("pwm[%d][%d][%d]=%lf ",i,l,m,pwm[i][l][m]);
       //     }
-      //     printf("\n");
+      //     Rprintf("\n");
       //   }
-      //   printf("\n");
+      //   Rprintf("\n");
       // }
       // 
       // testrand=runif(0,1);
-      // printf("testrand1=%lf\n",testrand);
+      // Rprintf("testrand1=%lf\n",testrand);
       
       if (populationSize>1)
       {
@@ -660,8 +660,8 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
 
       // for (i=0; i<5; i++)
       // {
-      //   printf("fitness.value=%lf\n",fitness[i].value);
-      //   printf("fitness.index=%d\n",fitness[i].index);
+      //   Rprintf("fitness.value=%lf\n",fitness[i].value);
+      //   Rprintf("fitness.index=%d\n",fitness[i].index);
       // }
       numUniq=check_pwm_uniqueness_dist(opwm, pwmLen,
                                         populationSize, fitness,
@@ -671,38 +671,38 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
 
       // for (i=0; i<5; i++)
       // {
-      //   printf("fitness.value=%lf\n",fitness[i].value);
-      //   printf("fitness.index=%d\n",fitness[i].index);
-      //   printf("maxpfactor=%lf\n",maxpFactor[i]);
-      //   printf("scoreCutoff=%d\n",scoreCutoff[i]);
-      //   printf("   spacedDyad: %s\n",sdyad[i]);
+      //   Rprintf("fitness.value=%lf\n",fitness[i].value);
+      //   Rprintf("fitness.index=%d\n",fitness[i].index);
+      //   Rprintf("maxpfactor=%lf\n",maxpFactor[i]);
+      //   Rprintf("scoreCutoff=%d\n",scoreCutoff[i]);
+      //   Rprintf("   spacedDyad: %s\n",sdyad[i]);
       //   
       //   for (l=0; l<pwmLen[i]; l++)
       //   {
       //     for (m=0; m<4; m++) 
       //     { 
-      //       printf("opwm[%d][%d][%d]=%lf",i,l,m,opwm[i][l][m]); 
+      //       Rprintf("opwm[%d][%d][%d]=%lf",i,l,m,opwm[i][l][m]); 
       //     }
-      //     printf("\n");
+      //     Rprintf("\n");
       //   }
-      //   printf("\n");
+      //   Rprintf("\n");
       // }
       
       if(verbose)
       {
-        printf("GADEM cycle[%3d] generation[%3d] number of unique motif: %d\n",numCycle+1,jjj+1,numUniq);
+        Rprintf("GADEM cycle[%3d] generation[%3d] number of unique motif: %d\n",numCycle+1,jjj+1,numUniq);
         for (i=0; i<populationSize; i++)
         {
           if (uniqMotif[i]=='1')
           {
-            printf("   spacedDyad: %s ",sdyad[fitness[i].index]);
-            for (int j=strlen(sdyad[fitness[i].index]); j<maxSpaceWidth+10; j++) printf(" ");
-            printf("motifConsensus: %s ",pwmConsensus[fitness[i].index]);
-            for (int j=strlen(sdyad[fitness[i].index]); j<maxSpaceWidth+10; j++) printf(" ");
-            printf(" %3.2f fitness: %7.2f\n",maxpFactor[fitness[i].index],fitness[i].value);
+            Rprintf("   spacedDyad: %s ",sdyad[fitness[i].index]);
+            for (int j=strlen(sdyad[fitness[i].index]); j<maxSpaceWidth+10; j++) Rprintf(" ");
+            Rprintf("motifConsensus: %s ",pwmConsensus[fitness[i].index]);
+            for (int j=strlen(sdyad[fitness[i].index]); j<maxSpaceWidth+10; j++) Rprintf(" ");
+            Rprintf(" %3.2f fitness: %7.2f\n",maxpFactor[fitness[i].index],fitness[i].value);
           }
         }
-        printf("\n");
+        Rprintf("\n");
       }
 
 
@@ -763,16 +763,16 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
       // approximate the exact llr distribution using Staden's method
       // if(verbose)
       // {
-      //   printf("Approximate the exact pwm llr score distribution using the pgf method.\n");
+      //   Rprintf("Approximate the exact pwm llr score distribution using the pgf method.\n");
       // }
       log_ratio_to_int(epwm[id],ipwm,pwmLen[id],bfreq0);
 
         // compute score distribution of the (int)PWM using Staden's method
       llrDim=pwm_score_dist(ipwm,pwmLen[id],llrDist,bfreq0);
 
-        //printf("Avant ScoreCutoff %d \n",scoreCutoff[id]);
+        //Rprintf("Avant ScoreCutoff %d \n",scoreCutoff[id]);
       scoreCutoff[id]=determine_cutoff(llrDist,llrDim,pvalueCutoff);
-        //printf("Apres ScoreCutoff %d \n",scoreCutoff[id]);
+        //Rprintf("Apres ScoreCutoff %d \n",scoreCutoff[id]);
         
       if(fullScan)
       {
@@ -862,7 +862,7 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
               if (bseqCn[j]==2) bcn[2]++;
               if (bseqCn[j]>2)  bcn[3]++;
             }
-              //fprintf(fq,"background set[%2d] Seqs with 0,1,2,>2 sites: %d %d %d %d\n",i+1,bcn[0],bcn[1],bcn[2],bcn[3]);
+              //Rprintf("background set[%2d] Seqs with 0,1,2,>2 sites: %d %d %d %d\n",i+1,bcn[0],bcn[1],bcn[2],bcn[3]);
             avebnsites+=nsites[motifCn2]; avebnsiteSeq+=(numSeq-bcn[0]);
           } 
           avebnsites/=numBackgSets; avebnsiteSeq/=numBackgSets;
@@ -911,7 +911,7 @@ SEXP GADEM_Analysis(SEXP sequence,SEXP sizeSeq, SEXP accession, SEXP Rverbose,SE
       numCycleNoMotif++;   
     if (motifCn==nmotifs)
       {
-	printf("Maximal number of motifs (%d) reached\n",nmotifs);
+	Rprintf("Maximal number of motifs (%d) reached\n",nmotifs);
 	break;
       }
     if (numCycleNoMotif==stopCriterion)
@@ -1374,7 +1374,7 @@ void read_background(char *filename,double *bfreq) {
             }
             else  { 
                error("Error reading %s: non-[A,C,G,T]\n",filename);
-               /*printf("Error reading %s: non-[A,C,G,T]\n",filename); exit(0);*/
+               /*Rprintf("Error reading %s: non-[A,C,G,T]\n",filename); exit(0);*/
             } 
          }
          else {
@@ -1396,7 +1396,7 @@ void read_background(char *filename,double *bfreq) {
             }
             else  {
                error("Error reading %s: non-[A,C,G,T]\n",filename);
-               /*printf("Error reading %s: non-[A,C,G,T]\n",filename); exit(0);*/
+               /*Rprintf("Error reading %s: non-[A,C,G,T]\n",filename); exit(0);*/
             }
          }
       }
@@ -1406,10 +1406,10 @@ void read_background(char *filename,double *bfreq) {
    for (i=0; i<4; i++) {
       if (bfreq[i]==-1) {
          switch (i) {
-            case 0: printf("freq. for 'a' not found in %s\n",filename); break;
-            case 1: printf("freq. for 'c' not found in %s\n",filename); break;
-            case 2: printf("freq. for 'g' not found in %s\n",filename); break;
-            case 3: printf("freq. for 't' not found in %s\n",filename); break;
+            case 0: Rprintf("freq. for 'a' not found in %s\n",filename); break;
+            case 1: Rprintf("freq. for 'c' not found in %s\n",filename); break;
+            case 2: Rprintf("freq. for 'g' not found in %s\n",filename); break;
+            case 3: Rprintf("freq. for 't' not found in %s\n",filename); break;
             default: break;
          }
          error("");
@@ -1419,8 +1419,8 @@ void read_background(char *filename,double *bfreq) {
    sum=0; for (i=0; i<4; i++) sum +=bfreq[i];
    if (fabs(sum-1.0)>0.001) {
       error("Warning: frequenices do not add to 1.0\nPlease check %s\n",filename);
-      /*printf("Warning: frequenices do not add to 1.0\n");*/
-      /*printf("Please check %s\n",filename);*/
+      /*Rprintf("Warning: frequenices do not add to 1.0\n");*/
+      /*Rprintf("Please check %s\n",filename);*/
       /*exit(0);*/
    }
    if (buffer) { free(buffer); buffer=NULL; }

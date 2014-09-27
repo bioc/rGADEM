@@ -105,10 +105,10 @@ char **read_seq(int *numSeq,int *seqLen,char **geneID,int maxNumSeq,int maxSeqLe
             if (cn>1) {
                i++; 
                if (i>=maxNumSeq) { 
-                  printf("\n\nErro: maximal number of seqences reached!\n"); 
-                  printf("Please reset MAX_NUM_SEQ in gadem.h and rebuild (see installation)\n\n");
-                  /*printf("\n\nErro: maximal number of seqences reached!\n"); */
-                  /*printf("Please reset MAX_NUM_SEQ in gadem.h and rebuild (see installation)\n\n");*/
+                  Rprintf("\n\nErro: maximal number of seqences reached!\n"); 
+                  Rprintf("Please reset MAX_NUM_SEQ in gadem.h and rebuild (see installation)\n\n");
+                  /*Rprintf("\n\nErro: maximal number of seqences reached!\n"); */
+                  /*Rprintf("Please reset MAX_NUM_SEQ in gadem.h and rebuild (see installation)\n\n");*/
                   /*exit(0); */
                }
             }
@@ -137,16 +137,16 @@ char **read_seq(int *numSeq,int *seqLen,char **geneID,int maxNumSeq,int maxSeqLe
       }
    }
    *numSeq=num_seq;
-   //for (i=0; i<num_seq; i++) printf("seq[%4d] chipScore: %5.2f\n",i+1,chipScore[i]);
-   //for (i=0; i<2; i++) printf("seq[%4d] length: %5d\n",i+1,seqLen[i]);
+   //for (i=0; i<num_seq; i++) Rprintf("seq[%4d] chipScore: %5.2f\n",i+1,chipScore[i]);
+   //for (i=0; i<2; i++) Rprintf("seq[%4d] length: %5d\n",i+1,seqLen[i]);
    /*------------------------------------------------------------------------
    fp=fopen("debug.seq","w");
    for (i=0; i<num_seq; i++) {
-      fprintf(fp,"%s\n",geneID[i]);
-      fprintf(fp,"%s\n",seq[i]);
+      Rprintf("%s\n",geneID[i]);
+      Rprintf("%s\n",seq[i]);
    }
    fclose(fp);
-   for (i=0; i<num_seq; i++) printf("seq[%4d] length: %5d\n",i+1,seqLen[i]);
+   for (i=0; i<num_seq; i++) Rprintf("seq[%4d] length: %5d\n",i+1,seqLen[i]);
    ------------------------------------------------------------------------*/
    if (sscore) { free(sscore); sscore=NULL; }
 
@@ -181,8 +181,8 @@ void simulate_background_seq(double *bfreq,int numSeq,int *seqLen,char **bseq) {
    /*-------------------------------------------------
    fp=fopen("simulated_0th.seq","w");
    for (i=0; i<numSeq; i++) {
-      fprintf(fp,">test\n");
-      fprintf(fp,"%s\n",bseq[i]); 
+      Rprintf(">test\n");
+      Rprintf("%s\n",bseq[i]); 
    } fclose(fp);
    -------------------------------------------------*/
 }

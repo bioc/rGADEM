@@ -42,7 +42,7 @@ void mutation(Chrs **dyad,int numWordGroup,Words *word,int minSpaceWidth,int max
          popuCn++;
       }
    }
-   // printf("popuCn=%d\n",popuCn);
+   // Rprintf("popuCn=%d\n",popuCn);
 
    while (popuCn<populationSize) {
 

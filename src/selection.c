@@ -23,7 +23,7 @@ void roulett_wheel_weight(Fitness *fitness,int populationSize,Wheel *wheel) {
  
    if (totalWeight==0) {
       error("Error: \n");
-      /*printf("Error: \n"); exit(0); */
+      /*Rprintf("Error: \n"); exit(0); */
    }
 
    wheel[0].start=0.0;
@@ -36,7 +36,7 @@ void roulett_wheel_weight(Fitness *fitness,int populationSize,Wheel *wheel) {
       wheel[i].index=fitness[i].index;
    }
    // for (i=0; i<populationSize; i++) { 
-   //    printf("%4d\t%5.3f\t%3d\t%5.3f\t%5.3f\n",
+   //    Rprintf("%4d\t%5.3f\t%3d\t%5.3f\t%5.3f\n",
    //       fitness[i].index,fitness[i].value,wheel[i].index,wheel[i].start,wheel[i].end);
    // }
 }
@@ -53,12 +53,12 @@ void roulett_wheel_fitness(Fitness *fitness,int populationSize,Wheel *wheel) {
    worstScore=fitness[populationSize-1].value;
    range=worstScore-fitness[0].value;
 
-   // for (i=0; i<populationSize; i++) printf("%d\t%5.3f\n",fitness[i].index,fitness[i].value);
+   // for (i=0; i<populationSize; i++) Rprintf("%d\t%5.3f\n",fitness[i].index,fitness[i].value);
 
    if ((range<0.0001) || 
        fitness[1].value==DUMMY_FITNESS || 
        fabs(fitness[1].value-fitness[populationSize-1].value)<0.0001) {
-      // printf("GA converged ...\n");
+      // Rprintf("GA converged ...\n");
       for (i=0; i<populationSize; i++) {
          wheel[i].index=fitness[i].index;
          wheel[i].start=i;
@@ -77,7 +77,7 @@ void roulett_wheel_fitness(Fitness *fitness,int populationSize,Wheel *wheel) {
       }
       for (i=0; i<populationSize; i++) scaledScore[i] /= totalScore;
 
-      //for (i=0; i<populationSize; i++) printf("%6.5f\n",scaledScore[i]); exit(0);
+      //for (i=0; i<populationSize; i++) Rprintf("%6.5f\n",scaledScore[i]); exit(0);
 
       wheel[0].start=0;
       wheel[0].end  =(double)populationSize*scaledScore[0];
@@ -95,7 +95,7 @@ void roulett_wheel_fitness(Fitness *fitness,int populationSize,Wheel *wheel) {
       if (scaledScore) { free(scaledScore); scaledScore = NULL; }
    }
    //for (i=0; i<populationSize; i++) 
-   //  printf("%4d\t%5.3f\t%3d\t%c\t%5.3f\t%5.3f\n",
+   //  Rprintf("%4d\t%5.3f\t%3d\t%c\t%5.3f\t%5.3f\n",
    //  fitness[i].index,fitness[i].value,wheel[i].index,wheel[i].I_evalue,wheel[i].start,wheel[i].end);
 }
 
@@ -120,7 +120,7 @@ void roulett_wheel_rank(Fitness *fitness,int populationSize,Wheel *wheel) {
       wheel[i].index=fitness[i].index;
    }
    //for (i=0; i<populationSize; i++) { 
-   //   printf("%4d\t%8.3f\t%3d\t%8.6f\t%8.6f\n",
+   //   Rprintf("%4d\t%8.3f\t%3d\t%8.6f\t%8.6f\n",
    //      fitness[i].index,fitness[i].value,wheel[i].index,wheel[i].start,wheel[i].end);
    //}
    if (weight) { free(weight); weight=NULL; }

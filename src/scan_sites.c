@@ -68,8 +68,8 @@ int scan_em_seq_ptable(Pgfs *scoreDist,int pDimension,Sites *site,int numSeq,cha
                siteCn++;
                if (siteCn==MAX_SITES) {
                   error("Error: max sites %d reached!\n set <MAX_SITES> in defines.h accordingly\n", MAX_SITES);
-                  /*printf("Error: max sites %d reached!\n",MAX_SITES); */
-                  /*printf(" set <MAX_SITES> in defines.h accordingly\n");*/
+                  /*Rprintf("Error: max sites %d reached!\n",MAX_SITES); */
+                  /*Rprintf(" set <MAX_SITES> in defines.h accordingly\n");*/
                   /*exit(0); */
                }
             }
@@ -85,8 +85,8 @@ int scan_em_seq_ptable(Pgfs *scoreDist,int pDimension,Sites *site,int numSeq,cha
                siteCn++;
                if (siteCn==MAX_SITES) {
                   error("Error: max sites %d reached!\n set <MAX_SITES> in defines.h accordingly\n", MAX_SITES);
-                  /*printf("Error: max sites %d reached!\n",MAX_SITES); */
-                  /*printf(" set <MAX_SITES> in defines.h accordingly\n");*/
+                  /*Rprintf("Error: max sites %d reached!\n",MAX_SITES); */
+                  /*Rprintf(" set <MAX_SITES> in defines.h accordingly\n");*/
                   /*exit(0); */
                }
             }
@@ -94,7 +94,7 @@ int scan_em_seq_ptable(Pgfs *scoreDist,int pDimension,Sites *site,int numSeq,cha
       }
    }
    if (colAve) { free(colAve); colAve=NULL; }
-   // printf("number of sites:%d\n",siteCn);
+   // Rprintf("number of sites:%d\n",siteCn);
 
    sort_sites_score(site,siteCn);
 
@@ -130,7 +130,7 @@ int scan_em_seq_ptable(Pgfs *scoreDist,int pDimension,Sites *site,int numSeq,cha
       site[m].rev   =uniq[m].rev;
       site[m].pvalue=uniq[m].pvalue;
    }
-   // printf("uniq sites: %d\n",numUniq);
+   // Rprintf("uniq sites: %d\n",numUniq);
 
    if (uniq)   { free(uniq);   uniq=NULL;   }
    if (colAve) { free(colAve); colAve=NULL; }
@@ -198,8 +198,8 @@ int scan_llr_pgf(Pgfs *scoreDist,int pDimension,Sites *site,int numSeq,char **se
                siteCn++;
                if (siteCn==MAX_SITES) {
                   error("Error: max sites %d reached!\n set <MAX_SITES> in defines.h accordingly\n", MAX_SITES);
-                  /*printf("Error: max sites %d reached!\n",MAX_SITES); */
-                  /*printf(" set <MAX_SITES> in defines.h accordingly\n");*/
+                  /*Rprintf("Error: max sites %d reached!\n",MAX_SITES); */
+                  /*Rprintf(" set <MAX_SITES> in defines.h accordingly\n");*/
                   /*exit(0); */
                }
             }
@@ -215,8 +215,8 @@ int scan_llr_pgf(Pgfs *scoreDist,int pDimension,Sites *site,int numSeq,char **se
                siteCn++;
                if (siteCn==MAX_SITES) {
                   error("Error: max sites %d reached!\n set <MAX_SITES> in defines.h accordingly\n", MAX_SITES);
-                  /*printf("Error: max sites %d reached!\n",MAX_SITES); */
-                  /*printf(" set <MAX_SITES> in defines.h accordingly\n");*/
+                  /*Rprintf("Error: max sites %d reached!\n",MAX_SITES); */
+                  /*Rprintf(" set <MAX_SITES> in defines.h accordingly\n");*/
                   /*exit(0); */
                }
             }
@@ -224,7 +224,7 @@ int scan_llr_pgf(Pgfs *scoreDist,int pDimension,Sites *site,int numSeq,char **se
       }
    }
    if (colAve) { free(colAve); colAve=NULL; }
-   // printf("number of sites:%d\n",siteCn);
+   // Rprintf("number of sites:%d\n",siteCn);
 
    sort_sites_score(site,siteCn);
 

@@ -168,13 +168,13 @@ double *llr_distr(
   max = NINT(-N * log(min_dd));
   for (i=min=0; i<A; i++) min += dd[i]*N*(log(dd[i]) - log(dd[i]));
   min = NINT(min);
-  /*printf("min = %f max = %f\n", min, max);*/
+  /*Rprintf("min = %f max = %f\n", min, max);*/
 
   /* set alpha to achieve the desired range */
   *alpha = desired_range/((max-min));
   /* *alpha = NINT(((int)desired_range)/((max-min)));
   if (*alpha < 1) *alpha = 1;*/
-  /*fprintf(stderr, "range %d max %f min %f alpha = %f\n",desired_range, max, min, *alpha);*/
+  /*Rprintf("range %d max %f min %f alpha = %f\n",desired_range, max, min, *alpha);*/
 
   /* compute I', P, minI and maxI */ 
   for (n=0; n<=N; n++) minI[n] = maxI[n] = 0;
@@ -194,7 +194,7 @@ double *llr_distr(
 
   /* get overall minI and maxI */
   for (n=1; n<=N; n++) {
-    /*printf("minI[%d] %d maxI[%d] %d\n", n, minI[n], n, maxI[n]);*/
+    /*Rprintf("minI[%d] %d maxI[%d] %d\n", n, minI[n], n, maxI[n]);*/
     minI[0] = MIN(minI[0], minI[n]);		/* min for intermediates */
     maxI[0] = MAX(maxI[0], maxI[n]);		/* max for intermediates */
     minI[n] = LOGZEROI;
@@ -202,7 +202,7 @@ double *llr_distr(
   }
   Irange = maxI[0] - minI[0] + 2;
   *offset = minI[0] - 1;			/* I offset: I=-1 is array 0 */
-  /*printf("minI %d maxI %d Irange %d\n", minI[0], maxI[0], Irange);*/
+  /*Rprintf("minI %d maxI %d Irange %d\n", minI[0], maxI[0], Irange);*/
   minI[0] = LOGZEROI;
   maxI[0] = 0;
 
@@ -225,10 +225,10 @@ double *llr_distr(
       for (k=1; k<=n; k++) {		/* index over samples of new letter */
         int min = minI[n-k];
         int max = MAX(min, maxI[n-k] - (1-frac)*(maxI[n-k]-minI[n-k]+1));
-        /*printf("min %d maxI %d max %d\n", min, maxI[n-k], max);*/
+        /*Rprintf("min %d maxI %d max %d\n", min, maxI[n-k], max);*/
         for (I=min; I<=max; I++) {	/* index over I */
           if (logSP[n-k][I] > LOGZERO) {
-	    /*printf("i %d old: %d %d new: %d %d\n", i, n-k, I, n,I+IP[i][k]);*/
+	    /*Rprintf("i %d old: %d %d new: %d %d\n", i, n-k, I, n,I+IP[i][k]);*/
             logSP[n][I+IP[i][k]] = 
               LOGL_SUM(logSP[n][I+IP[i][k]], logP[i][k] + logSP[n-k][I]);
           }
@@ -242,14 +242,14 @@ double *llr_distr(
   }
 
   /* compute range */
-  /*printf("minI[N] %d maxI[N] %d\n", minI[N], maxI[N]);*/
+  /*Rprintf("minI[N] %d maxI[N] %d\n", minI[N], maxI[N]);*/
   *range = maxI[N] - minI[N]; 
 
   /* move to probability array with prob(offset) in position 0 */
   *offset += minI[N];			/* prob[0] = prob(offset) */
   Resize(prob, *range+2, double);
   for (I=minI[N]; I<=maxI[N]; I++) prob[I-minI[N]] = logSP[N][I];
-  /*fprintf(stderr, "N= %d range= %d offset= %d alpha= %f\n", N, *range, 
+  /*Rprintf("N= %d range= %d offset= %d alpha= %f\n", N, *range, 
     *offset, *alpha);*/
       
   /* free up space */
@@ -426,7 +426,7 @@ double get_llr_pv(
     } /* first time */
 
     /* get the distributions for widths oldw .. maxw */
-    /*fprintf(stderr, "enter cdf N= %d w= %d oldw= %d\n", N, w, distrs[N].w);*/
+    /*Rprintf("enter cdf N= %d w= %d oldw= %d\n", N, w, distrs[N].w);*/
     for (i=distrs[N].w+1; i<=w; i++) {		/* width */
       distrs[N].d[i] = sum_distr(
         distrs[N].d[i-1], 
@@ -438,7 +438,7 @@ double get_llr_pv(
       distrs[N].offset[i] = distrs[N].offset[i-1] + distrs[N].offset[1];
       distrs[N].cdf[i] = cdf(distrs[N].d[i], distrs[N].range[i]);
     } /* width */
-    /*fprintf(stderr, "leave cdf\n");*/
+    /*Rprintf("leave cdf\n");*/
     distrs[N].w = w; 				/* set maximum w */
   } /* new w */
   
@@ -686,9 +686,9 @@ double E_value(double **obs, int numsites, double *back, int motifLen,
   logev = get_log_sig(-log_pop, mtype, w, N, N, invcomp, pal, Numseq, seqLen);
   exp10_logx((logev)/log(10.0), m, e, 1);
   
-  //printf("Num of binding sites=%d\tmotif width=%d\t",N, w);
-  //printf("llr=%.0f\tE-value=%3.1fe%+04.0f\n",totalllr,m, e);
-  //fprintf(fp, "Num of binding sites=%d\tmotif width=%d\tllr=%.0f\tE_value=%3.1fe%+04.0f\n", N, w, totalllr, m, e);
+  //Rprintf("Num of binding sites=%d\tmotif width=%d\t",N, w);
+  //Rprintf("llr=%.0f\tE-value=%3.1fe%+04.0f\n",totalllr,m, e);
+  //Rprintf("Num of binding sites=%d\tmotif width=%d\tllr=%.0f\tE_value=%3.1fe%+04.0f\n", N, w, totalllr, m, e);
 
   if (rentropy) { free(rentropy); rentropy=NULL; }
 

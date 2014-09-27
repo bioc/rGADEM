@@ -63,7 +63,7 @@ void crossover(Chrs **dyad,int numWordGroup,Words *word,int minSpaceWidth,int ma
             id2=(int)(populationSize*runif(0,1));
             if (id2==populationSize) id2--;
          }
-         // printf("id1 id2: %d %d\n",id1,id2);
+         // Rprintf("id1 id2: %d %d\n",id1,id2);
       } while (id1==id2); // do not pick the same "chromosome"
 
       if (runif(0,1)<maxpMutationRate) {
@@ -169,7 +169,7 @@ void crossover(Chrs **dyad,int numWordGroup,Words *word,int minSpaceWidth,int ma
             if (popuCn==populationSize) break;
          }
       }
-      // printf("popuCn: %d\n",popuCn);
+      // Rprintf("popuCn: %d\n",popuCn);
    }
 
    // update the population - both pwm lengths and members

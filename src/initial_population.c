@@ -114,8 +114,8 @@ void dyad_to_pwm(Words *word,int populationSize,Chrs **dyad,double ***pwm,int *p
    /*---------------------------------------------------------------------------
    for (i=0; i<populationSize; i++) {
       for (k=0; k<4; k++) {
-         for (j=0; j<pwmLen[i]; j++) printf("%4.2f ",pwm[i][j][k]); printf("\n");
-      } printf("\n");
+         for (j=0; j<pwmLen[i]; j++) Rprintf("%4.2f ",pwm[i][j][k]); Rprintf("\n");
+      } Rprintf("\n");
    }
    -----------------------------------------------------------------------------*/
 
@@ -140,7 +140,7 @@ void dyad_to_pwm(Words *word,int populationSize,Chrs **dyad,double ***pwm,int *p
    pwm[0][12][1]=1;
 
    for (j=0; j<4; j++) {
-      for (i=0; i<pwmLen[0]; i++) printf("%1.0f ",pwm[0][i][j]); printf("\n");
+      for (i=0; i<pwmLen[0]; i++) Rprintf("%1.0f ",pwm[0][i][j]); Rprintf("\n");
    } 
    -------------------------------------------------------------------------*/
 
@@ -168,7 +168,7 @@ void dyad_to_pwm(Words *word,int populationSize,Chrs **dyad,double ***pwm,int *p
    pwm[0][14][0]=1; pwm[0][14][2]=1;
 
    for (j=0; j<4; j++) {
-      for (i=0; i<pwmLen[0]; i++) printf("%1.0f ",pwm[0][i][j]); printf("\n");
+      for (i=0; i<pwmLen[0]; i++) Rprintf("%1.0f ",pwm[0][i][j]); Rprintf("\n");
    } 
    -------------------------------------------------------------------------*/
 
@@ -200,14 +200,14 @@ void dyad_to_pwm(Words *word,int populationSize,Chrs **dyad,double ***pwm,int *p
    pwm[0][19][1]=1; pwm[0][19][3]=1;
 
    for (j=0; j<4; j++) {
-      for (i=0; i<pwmLen[0]; i++) printf("%1.0f ",pwm[0][i][j]); printf("\n");
+      for (i=0; i<pwmLen[0]; i++) Rprintf("%1.0f ",pwm[0][i][j]); Rprintf("\n");
    } 
    -------------------------------------------------------------------------*/
 
 #ifdef DEBUG
    for (i=0; i<populationSize; i++) {
       for (k=0; k<4; k++) {
-         for (j=0; j<pwmLen[i]; j++) printf("%2d",pwm[i][j][k]); printf("\n");
+         for (j=0; j<pwmLen[i]; j++) Rprintf("%2d",pwm[i][j][k]); Rprintf("\n");
       } 
    }
 #endif

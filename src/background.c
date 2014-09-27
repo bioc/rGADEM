@@ -78,7 +78,7 @@ int read_userBackgModel(char *fileName,BACKGROUND_Model *back) {
                len2=strlen(tok);
                if (len2>10) {
                   error("Error: up to 9th order is allowed!\n");
-                  /*printf("Error: up to 9th order is allowed!\n"); exit(0); */
+                  /*Rprintf("Error: up to 9th order is allowed!\n"); exit(0); */
                }
                tok=strtok(0," ");
                freq=atof(tok);
@@ -101,24 +101,24 @@ int read_userBackgModel(char *fileName,BACKGROUND_Model *back) {
    fclose(fp);
 
    /*---------------------------------------------------------------------------------
-   for (i=0; i<4; i++)      printf("%15.14f\n",back->monomerFreq[i]);  printf("\n");
-   for (i=0; i<16; i++)     printf("%15.14f\n",back->dimerFreq[i]);    printf("\n");
-   for (i=0; i<64; i++)     printf("%15.14f\n",back->trimerFreq[i]);   printf("\n");
-   for (i=0; i<256; i++)    printf("%15.14f\n",back->tetramerFreq[i]); printf("\n");
-   for (i=0; i<1024; i++)   printf("%15.14f\n",back->pentamerFreq[i]); printf("\n");
-   for (i=0; i<4096; i++)   printf("%15.14f\n",back->hexamerFreq[i]);  printf("\n\n");
-   for (i=0; i<16384; i++)  printf("%15.14f\n",back->heptamerFreq[i]); printf("\n\n");
-   for (i=0; i<65536; i++)  printf("%15.14f\n",back->octamerFreq[i]);  printf("\n\n");
-   for (i=0; i<262144; i++) printf("%15.14f\n",back->nonamerFreq[i]);  printf("\n\n");
+   for (i=0; i<4; i++)      Rprintf("%15.14f\n",back->monomerFreq[i]);  Rprintf("\n");
+   for (i=0; i<16; i++)     Rprintf("%15.14f\n",back->dimerFreq[i]);    Rprintf("\n");
+   for (i=0; i<64; i++)     Rprintf("%15.14f\n",back->trimerFreq[i]);   Rprintf("\n");
+   for (i=0; i<256; i++)    Rprintf("%15.14f\n",back->tetramerFreq[i]); Rprintf("\n");
+   for (i=0; i<1024; i++)   Rprintf("%15.14f\n",back->pentamerFreq[i]); Rprintf("\n");
+   for (i=0; i<4096; i++)   Rprintf("%15.14f\n",back->hexamerFreq[i]);  Rprintf("\n\n");
+   for (i=0; i<16384; i++)  Rprintf("%15.14f\n",back->heptamerFreq[i]); Rprintf("\n\n");
+   for (i=0; i<65536; i++)  Rprintf("%15.14f\n",back->octamerFreq[i]);  Rprintf("\n\n");
+   for (i=0; i<262144; i++) Rprintf("%15.14f\n",back->nonamerFreq[i]);  Rprintf("\n\n");
    ---------------------------------------------------------------------------------*/
 
    // check probability sum
    for (i=0; i<maxOligomer; i++) {
-      if (fabs(sum[i]-1.0)>0.001) printf("sum of marginal %d: %8.6f\n",i+1,sum[i]); 
+      if (fabs(sum[i]-1.0)>0.001) Rprintf("sum of marginal %d: %8.6f\n",i+1,sum[i]); 
    }
    if (maxOligomer==0) {
       error("Error: no frequencies in %s\n",fileName);
-      /*printf("Error: no frequencies in %s\n",fileName); exit(0); */
+      /*Rprintf("Error: no frequencies in %s\n",fileName); exit(0); */
    }
 
    order=0;
@@ -194,24 +194,24 @@ int read_userBackgModel(char *fileName,BACKGROUND_Model *back) {
    nonACGT(back);
 
    /*  -------------------------debugging...          ------------------------- 
-   for (i=0; i<4; i++)      printf("%8.5f\n",back->monomerFreq[i]);  printf("\n");
-   for (i=0; i<16; i++)     printf("%8.5f\n",back->dimerFreq[i]);    printf("\n");
-   for (i=0; i<64; i++)     printf("%8.5f\n",back->trimerFreq[i]);   printf("\n");
-   for (i=0; i<256; i++)    printf("%8.5f\n",back->tetramerFreq[i]); printf("\n");
-   for (i=0; i<1024; i++)   printf("%8.5f\n",back->pentamerFreq[i]); printf("\n");
-   for (i=0; i<4096; i++)   printf("%8.5f\n",back->hexamerFreq[i]);  printf("\n\n");
-   for (i=0; i<16384; i++)  printf("%8.5f\n",back->heptamerFreq[i]); printf("\n\n");
-   for (i=0; i<65536; i++)  printf("%8.5f\n",back->octamerFreq[i]);  printf("\n\n");
-   for (i=0; i<262144; i++) printf("%8.5f\n",back->nonamerFreq[i]);  printf("\n\n");
+   for (i=0; i<4; i++)      Rprintf("%8.5f\n",back->monomerFreq[i]);  Rprintf("\n");
+   for (i=0; i<16; i++)     Rprintf("%8.5f\n",back->dimerFreq[i]);    Rprintf("\n");
+   for (i=0; i<64; i++)     Rprintf("%8.5f\n",back->trimerFreq[i]);   Rprintf("\n");
+   for (i=0; i<256; i++)    Rprintf("%8.5f\n",back->tetramerFreq[i]); Rprintf("\n");
+   for (i=0; i<1024; i++)   Rprintf("%8.5f\n",back->pentamerFreq[i]); Rprintf("\n");
+   for (i=0; i<4096; i++)   Rprintf("%8.5f\n",back->hexamerFreq[i]);  Rprintf("\n\n");
+   for (i=0; i<16384; i++)  Rprintf("%8.5f\n",back->heptamerFreq[i]); Rprintf("\n\n");
+   for (i=0; i<65536; i++)  Rprintf("%8.5f\n",back->octamerFreq[i]);  Rprintf("\n\n");
+   for (i=0; i<262144; i++) Rprintf("%8.5f\n",back->nonamerFreq[i]);  Rprintf("\n\n");
   
-   for (i=0; i<16; i++)     printf("%8.5f\n",back->transition1[i]);  printf("\n");
-   for (i=0; i<64; i++)     printf("%8.5f\n",back->transition2[i]);  printf("\n");
-   for (i=0; i<256; i++)    printf("%8.5f\n",back->transition3[i]);  printf("\n");
-   for (i=0; i<1024; i++)   printf("%8.5f\n",back->transition4[i]);  printf("\n");
-   for (i=0; i<4096; i++)   printf("%8.5f\n",back->transition5[i]);  printf("\n\n");
-   for (i=0; i<16384; i++)  printf("%8.5f\n",back->transition6[i]);  printf("\n\n");
-   for (i=0; i<65536; i++)  printf("%8.5f\n",back->transition7[i]);  printf("\n\n");
-   for (i=0; i<262144; i++) printf("%8.5f\n",back->transition8[i]);  printf("\n\n");
+   for (i=0; i<16; i++)     Rprintf("%8.5f\n",back->transition1[i]);  Rprintf("\n");
+   for (i=0; i<64; i++)     Rprintf("%8.5f\n",back->transition2[i]);  Rprintf("\n");
+   for (i=0; i<256; i++)    Rprintf("%8.5f\n",back->transition3[i]);  Rprintf("\n");
+   for (i=0; i<1024; i++)   Rprintf("%8.5f\n",back->transition4[i]);  Rprintf("\n");
+   for (i=0; i<4096; i++)   Rprintf("%8.5f\n",back->transition5[i]);  Rprintf("\n\n");
+   for (i=0; i<16384; i++)  Rprintf("%8.5f\n",back->transition6[i]);  Rprintf("\n\n");
+   for (i=0; i<65536; i++)  Rprintf("%8.5f\n",back->transition7[i]);  Rprintf("\n\n");
+   for (i=0; i<262144; i++) Rprintf("%8.5f\n",back->transition8[i]);  Rprintf("\n\n");
    exit(0); 
    ---------------------------debugging...          -----------------------------*/
 
@@ -388,7 +388,7 @@ void generate_background(int numSeq,char **seq,char **rseq,int *seqLen,BACKGROUN
    }
    else if (MarkovOrder>8) { 
       error("\nError: max Markov order: 8\n");
-      /*printf("\nError: max Markov order: 8\n"); exit(0); */
+      /*Rprintf("\nError: max Markov order: 8\n"); exit(0); */
    }
    else { }
 
@@ -396,36 +396,36 @@ void generate_background(int numSeq,char **seq,char **rseq,int *seqLen,BACKGROUN
 
    /*  ------------------------------debugging... -----------------------------------------------------
    if (MarkovOrder==1) {
-      for (i=0; i<4; i++)      printf("%s\t%10.8f\n",back->monomer[i],back->monomerFreq[i]);  printf("\n");
-      for (i=0; i<16; i++)     printf("%s\t%10.8f\n",back->dimer[i],back->transition1[i]);  printf("\n");
+      for (i=0; i<4; i++)      Rprintf("%s\t%10.8f\n",back->monomer[i],back->monomerFreq[i]);  Rprintf("\n");
+      for (i=0; i<16; i++)     Rprintf("%s\t%10.8f\n",back->dimer[i],back->transition1[i]);  Rprintf("\n");
    }
    else if (MarkovOrder==2) {
-      for (i=0; i<16; i++)     printf("%s\t%10.8f\n",back->dimer[i],back->dimerFreq[i]);    printf("\n");
-      for (i=0; i<64; i++)     printf("%s\t%10.8f\n",back->trimer[i],back->transition2[i]);  printf("\n");
+      for (i=0; i<16; i++)     Rprintf("%s\t%10.8f\n",back->dimer[i],back->dimerFreq[i]);    Rprintf("\n");
+      for (i=0; i<64; i++)     Rprintf("%s\t%10.8f\n",back->trimer[i],back->transition2[i]);  Rprintf("\n");
    }
    else if (MarkovOrder==3) {
-      for (i=0; i<64; i++)     printf("%s\t%10.8f\n",back->trimer[i],back->trimerFreq[i]);   printf("\n");
-      for (i=0; i<256; i++)    printf("%s\t%10.8f\n",back->tetramer[i],back->transition3[i]);  printf("\n");
+      for (i=0; i<64; i++)     Rprintf("%s\t%10.8f\n",back->trimer[i],back->trimerFreq[i]);   Rprintf("\n");
+      for (i=0; i<256; i++)    Rprintf("%s\t%10.8f\n",back->tetramer[i],back->transition3[i]);  Rprintf("\n");
    }
    else if (MarkovOrder==4) {
-      for (i=0; i<256; i++)    printf("%s\t%10.8f\n",back->tetramer[i],back->tetramerFreq[i]); printf("\n");
-      for (i=0; i<1024; i++)   printf("%s\t%10.8f\n",back->pentamer[i],back->transition4[i]);  printf("\n");
+      for (i=0; i<256; i++)    Rprintf("%s\t%10.8f\n",back->tetramer[i],back->tetramerFreq[i]); Rprintf("\n");
+      for (i=0; i<1024; i++)   Rprintf("%s\t%10.8f\n",back->pentamer[i],back->transition4[i]);  Rprintf("\n");
    }
    else if (MarkovOrder==5) {
-      for (i=0; i<1024; i++)   printf("%s\t%10.8f\n",back->pentamer[i],back->pentamerFreq[i]); printf("\n");
-      for (i=0; i<4096; i++)   printf("%s\t%10.8f\n",back->hexamer[i],back->transition5[i]);  printf("\n\n");
+      for (i=0; i<1024; i++)   Rprintf("%s\t%10.8f\n",back->pentamer[i],back->pentamerFreq[i]); Rprintf("\n");
+      for (i=0; i<4096; i++)   Rprintf("%s\t%10.8f\n",back->hexamer[i],back->transition5[i]);  Rprintf("\n\n");
    }
    else if (MarkovOrder==6) {
-      for (i=0; i<4096; i++)   printf("%s\t%10.8f\n",back->hexamer[i],back->hexamerFreq[i]);  printf("\n\n");
-      for (i=0; i<16384; i++)  printf("%s\t%10.8f\n",back->heptamer[i],back->transition6[i]);  printf("\n\n");
+      for (i=0; i<4096; i++)   Rprintf("%s\t%10.8f\n",back->hexamer[i],back->hexamerFreq[i]);  Rprintf("\n\n");
+      for (i=0; i<16384; i++)  Rprintf("%s\t%10.8f\n",back->heptamer[i],back->transition6[i]);  Rprintf("\n\n");
    }
    else if (MarkovOrder==7) {
-      for (i=0; i<16384; i++)  printf("%s\t%10.8f\n",back->heptamer[i],back->heptamerFreq[i]); printf("\n\n");
-      for (i=0; i<65536; i++)  printf("%s\t%10.8f\n",back->octamer[i],back->transition7[i]);  printf("\n\n");
+      for (i=0; i<16384; i++)  Rprintf("%s\t%10.8f\n",back->heptamer[i],back->heptamerFreq[i]); Rprintf("\n\n");
+      for (i=0; i<65536; i++)  Rprintf("%s\t%10.8f\n",back->octamer[i],back->transition7[i]);  Rprintf("\n\n");
    }
    else if (MarkovOrder==8) {
-      for (i=0; i<65536; i++)  printf("%s\t%10.8f\n",back->octamer[i],back->octamerFreq[i]);  
-      for (i=0; i<262144; i++) printf("%s\t%10.8f\n",back->nonamer[i],back->transition8[i]);  printf("\n\n");
+      for (i=0; i<65536; i++)  Rprintf("%s\t%10.8f\n",back->octamer[i],back->octamerFreq[i]);  
+      for (i=0; i<262144; i++) Rprintf("%s\t%10.8f\n",back->nonamer[i],back->transition8[i]);  Rprintf("\n\n");
    } 
    exit(0); 
    ------------------------------debugging... -----------------------------------------------------*/
@@ -1080,14 +1080,14 @@ void marginal_prob(int *count,int numKmer,double *freq) {
    register int i;
    double sum;
 
-   //printf("number of kmer=%d\n",numKmer);
-   //for (i=0; i<numKmer; i++) printf("%d\n",count[i]);
+   //Rprintf("number of kmer=%d\n",numKmer);
+   //for (i=0; i<numKmer; i++) Rprintf("%d\n",count[i]);
 
    sum=0; for (i=0; i<numKmer; i++) sum +=(double)count[i];
 
    if (sum<=PSEUDO_FREQ) {
       error("Error: data contains no [a,c,g,t].\n");
-      /*printf("Error: data contains no [a,c,g,t].\n");  exit(0);*/
+      /*Rprintf("Error: data contains no [a,c,g,t].\n");  exit(0);*/
    }
    else {
       for (i=0; i<numKmer; i++) {
@@ -1289,8 +1289,8 @@ void nonACGT(BACKGROUND_Model *back) {
    /*-------------------------------------------------
    fp=fopen("simulated_0th.seq","w");
    for (i=0; i<numSeq; i++) {
-      fprintf(fp,">test\n");
-      fprintf(fp,"%s\n",bseq[i]); 
+      Rprintf(">test\n");
+      Rprintf("%s\n",bseq[i]); 
    } fclose(fp);
    -------------------------------------------------*/
 //}
@@ -1769,14 +1769,14 @@ void simulate_backg_seq_bmodel(BACKGROUND_Model *back,int MarkovOrder,int numSeq
    }
    else {
       error("Error: max order: 8\n");
-      /*printf("Error: max order: 8\n"); exit(0); */
+      /*Rprintf("Error: max order: 8\n"); exit(0); */
    }
 
    /*-------------------------------------------------
    fp=fopen("simulated_0th.seq","w");
    for (i=0; i<numSeq; i++) {
-      fprintf(fp,">test\n");
-      fprintf(fp,"%s\n",bseq[i]); 
+      Rprintf(">test\n");
+      Rprintf("%s\n",bseq[i]); 
    } fclose(fp);
    -------------------------------------------------*/
 }

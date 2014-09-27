@@ -14,7 +14,7 @@ void align_sites_count(Sites *site,char **seq,char **rseq,int nsites,int pwmLen,
       // plus strand
       if (site[i].rev=='0') {
          for (j=0; j<pwmLen; j++) {
-            //printf("%c",seq[site[i].seq][site[i].pos+j]); 
+            //Rprintf("%c",seq[site[i].seq][site[i].pos+j]); 
             switch (seq[site[i].seq][site[i].pos+j]) {
                case 'a': pwm[j][0] +=1; break;
                case 'c': pwm[j][1] +=1; break;
@@ -23,12 +23,12 @@ void align_sites_count(Sites *site,char **seq,char **rseq,int nsites,int pwmLen,
                default: break;
             }
          }
-         //printf("\n");
+         //Rprintf("\n");
       }
       // reverse strand
       else {
          for (j=0; j<pwmLen; j++) {
-            //printf("%c",rseq[site[i].seq][site[i].pos+j]); 
+            //Rprintf("%c",rseq[site[i].seq][site[i].pos+j]); 
             switch (rseq[site[i].seq][site[i].pos+j]) {
                case 'a': pwm[j][0] +=1; break;
                case 'c': pwm[j][1] +=1; break;
@@ -37,7 +37,7 @@ void align_sites_count(Sites *site,char **seq,char **rseq,int nsites,int pwmLen,
                default: break;
             }
          }
-         //printf("\n");
+         //Rprintf("\n");
       }
    }
 }

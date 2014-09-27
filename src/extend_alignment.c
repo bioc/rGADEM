@@ -118,20 +118,20 @@ void extend_alignment(Sites *site,int numSeq,char **seq,char **rseq,int *seqLen,
    // debugging
    for (i=0; i<nsites; i++) {
       if (site[i].rev=='0') {
-         for (j=0; j<pwmLen; j++) printf("%c",seq[site[i].seq][site[i].pos+j]); 
-            printf("\t(+)\t%d\t%d\n",site[i].seq+1,site[i].pos); 
+         for (j=0; j<pwmLen; j++) Rprintf("%c",seq[site[i].seq][site[i].pos+j]); 
+            Rprintf("\t(+)\t%d\t%d\n",site[i].seq+1,site[i].pos); 
       }
       else {
-         for (j=0; j<pwmLen; j++) printf("%c",rseq[site[i].seq][site[i].pos+j]);
-            printf("\t(-)\t%d\t%d\n",site[i].seq+1,site[i].pos); 
+         for (j=0; j<pwmLen; j++) Rprintf("%c",rseq[site[i].seq][site[i].pos+j]);
+            Rprintf("\t(-)\t%d\t%d\n",site[i].seq+1,site[i].pos); 
       }
    }
-   printf("\n");
+   Rprintf("\n");
 
-   for (i=0; i<pwmLen+lshift+rshift; i++) printf("%4.2f ",info[i]);  printf("\n");
+   for (i=0; i<pwmLen+lshift+rshift; i++) Rprintf("%4.2f ",info[i]);  Rprintf("\n");
    --------------------------------------------------------------------------------*/
    // cutoffs are relative to a maximal information of 2 bits
-   // for (i=0; i<pwmLen+lshift+rshift; i++) printf("%4.2f ",info[i]);  printf("\n");
+   // for (i=0; i<pwmLen+lshift+rshift; i++) Rprintf("%4.2f ",info[i]);  Rprintf("\n");
    start=0;
    for (i=0; i<lshift+rshift+pwmLen-2; i++) {
       if ((info[i]>=  MIN_BITS1 && info[i+1]>=MIN_BITS1 && info[i+2]>=MIN_BITS1) ||
@@ -142,7 +142,7 @@ void extend_alignment(Sites *site,int numSeq,char **seq,char **rseq,int *seqLen,
          start=i; break; 
       }
    }
-   // printf("start: %d\n",start);
+   // Rprintf("start: %d\n",start);
 
    end=0;
    for (i=rshift+lshift+pwmLen-1; i>1; i--) {
@@ -150,11 +150,11 @@ void extend_alignment(Sites *site,int numSeq,char **seq,char **rseq,int *seqLen,
           (info[i-1]>=MIN_BITS2 && info[i-2]>=MIN_BITS2) ||
           (info[i]>=  MIN_BITS2 && info[i-1]>=MIN_BITS2) ||
           (info[i]>=  MIN_BITS3) ) { 
-         // printf("to right %d\n",i);
+         // Rprintf("to right %d\n",i);
          end=i; break; 
       }
    }
-   // printf("end: %d\n",end);
+   // Rprintf("end: %d\n",end);
    // new motif length
    if (end-start+1>0) *pwmnewLen=end-start+1;
    else *pwmnewLen=0;

@@ -48,7 +48,7 @@ void mask_repetitive(int *geneID,char **seq,int numSeq,int *seqLen,char *fileNam
    strcpy(kmer[4],"tatatata");
 
    // mask=(MASK *)calloc(numSeq*5,sizeof(MASK));
-   // if (!mask) { printf("calloc for mask failed!\n"); exit(0); }
+   // if (!mask) { Rprintf("calloc for mask failed!\n"); exit(0); }
    /*if (!mask) { error("calloc for mask failed!\n");}*/
 
    maskedFileName=alloc_char(500);
@@ -82,8 +82,8 @@ void mask_repetitive(int *geneID,char **seq,int numSeq,int *seqLen,char *fileNam
                for (k=0; k<klen; k++) s1[k]=seq[i][j+k+pos]; s1[k]='\0';
             };
             if (pos!=0) {
-              // fprintf(fp,"%d:%d-%d\t",geneID[i],j+1,j+pos+klen-1);
-              // for (k=0; k<pos+klen-1; k++) fprintf(fp,"%c",seq[i][j+k]); fprintf(fp,"\n");
+              // Rprintf("%d:%d-%d\t",geneID[i],j+1,j+pos+klen-1);
+              // for (k=0; k<pos+klen-1; k++) Rprintf("%c",seq[i][j+k]); Rprintf("\n");
                for (k=0; k<pos+klen-1; k++) seq[i][j+k]='n';
             }
          }
@@ -125,8 +125,8 @@ void mask_repetitive(int *geneID,char **seq,int numSeq,int *seqLen,char *fileNam
                for (k=0; k<klen; k++) s1[k]=seq[i][j+k+pos]; s1[k]='\0';
             };
             if (pos!=0) {
-               //fprintf(fp,"%d:%d-%d\t",geneID[i],j+1,j+pos+klen-1);
-               //for (k=0; k<pos+klen-1; k++) fprintf(fp,"%c",seq[i][j+k]); fprintf(fp,"\n");
+               //Rprintf("%d:%d-%d\t",geneID[i],j+1,j+pos+klen-1);
+               //for (k=0; k<pos+klen-1; k++) Rprintf("%c",seq[i][j+k]); Rprintf("\n");
                for (k=0; k<pos+klen-1; k++) seq[i][j+k]='n';
             }
          }
@@ -150,8 +150,8 @@ void mask_repetitive(int *geneID,char **seq,int numSeq,int *seqLen,char *fileNam
                for (k=0; k<klen; k++) s1[k]=seq[i][j+k+pos]; s1[k]='\0';
             };
             if (pos!=0) {
-               //fprintf(fp,"%d:%d-%d\t",geneID[i],j+1,j+pos+klen-1);
-               //for (k=0; k<pos+klen-1; k++) fprintf(fp,"%c",seq[i][j+k]); fprintf(fp,"\n");
+               //Rprintf("%d:%d-%d\t",geneID[i],j+1,j+pos+klen-1);
+               //for (k=0; k<pos+klen-1; k++) Rprintf("%c",seq[i][j+k]); Rprintf("\n");
                for (k=0; k<pos+klen-1; k++) seq[i][j+k]='n';
             }
          }
@@ -196,18 +196,18 @@ void mask_repetitive(int *geneID,char **seq,int numSeq,int *seqLen,char *fileNam
    fp=fopen(maskedFileName,"w");
 
    for (i=0; i<cn; i++) {
-      fprintf(fp,"%s\n",geneID[mask[i].id]);
+      Rprintf("%s\n",geneID[mask[i].id]);
       for (j=mask[i].start; j<mask[i].end; j++) {
-         fprintf(fp,"%c",seq[mask[i].id][j]); 
-      } fprintf(fp,"\n");
+         Rprintf("%c",seq[mask[i].id][j]); 
+      } Rprintf("\n");
    }
    */
    /*-----------------------------------------------
    for (i=0; i<numSeq; i++) {
-      fprintf(fp,"%s\n",geneID[i]);
+      Rprintf("%s\n",geneID[i]);
       for (j=0; j<seqLen[i]; j++) {
-         fprintf(fp,"%c",seq[i][j]);
-         if ((j+1)%50==0) fprintf(fp,"\n"); 
+         Rprintf("%c",seq[i][j]);
+         if ((j+1)%50==0) Rprintf("\n"); 
       }
    }
    ------------------------------------------------*/

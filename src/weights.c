@@ -13,7 +13,7 @@ void assign_weight_uniform(int *seqLen,int numSeq,double **weight) {
 
    for (i=0; i<numSeq; i++) {
       for (j=0; j<seqLen[i]; j++)  weight[i][j]=1.0/(double)(2*seqLen[i]); // proximate 1/2*(L-w+0)
-      // for (j=0; j<seqLen[i]; j++) printf("%8.7f\n",weight[i][j]); exit(0);
+      // for (j=0; j<seqLen[i]; j++) Rprintf("%8.7f\n",weight[i][j]); exit(0);
    }
 }
 
@@ -32,7 +32,7 @@ void assign_weight_normal(int *seqLen,int numSeq,double **weight) {
       } 
       sum=0; for (j=0; j<seqLen[i]; j++) sum +=weight[i][j];
       for (j=0; j<seqLen[i]; j++) weight[i][j] /=(2.0*sum);
-      // for (j=0; j<seqLen[i]; j++) printf("%8.7f\n",weight[i][j]); exit(0);
+      // for (j=0; j<seqLen[i]; j++) Rprintf("%8.7f\n",weight[i][j]); exit(0);
    }
 }
 
@@ -50,7 +50,7 @@ void assign_weight_triangular(int *seqLen,int numSeq,double **weight) {
       } 
       sum=0; for (j=0; j<seqLen[i]; j++) sum +=weight[i][j];
       for (j=0; j<seqLen[i]; j++) weight[i][j]/=(2.0*sum);
-      // for (j=0; j<seqLen[i]; j++) printf("%8.7f\n",weight[i][j]); exit(0);
+      // for (j=0; j<seqLen[i]; j++) Rprintf("%8.7f\n",weight[i][j]); exit(0);
    }
 }
 
@@ -79,7 +79,7 @@ void assign_weight_triangular_uniform(int *seqLen,int numSeq,double **weight,int
       } 
       sum=0; for (j=0; j<seqLen[i]; j++) sum +=weight[i][j];
       for (j=0; j<seqLen[i]; j++) weight[i][j]/=(2.0*sum);
-      // for (j=0; j<seqLen[i]; j++) printf("%8.7f\n",weight[i][j]); exit(0);
+      // for (j=0; j<seqLen[i]; j++) Rprintf("%8.7f\n",weight[i][j]); exit(0);
    }
 }
 
@@ -111,6 +111,6 @@ void assign_weight_rectangle(int *seqLen,int numSeq,double **weight,int coreLen)
       }
       sum=0; for (j=0; j<seqLen[i]; j++) sum+=weight[i][j];
       for (j=0; j<seqLen[i]; j++) weight[i][j]/=(2.0*sum);
-      // for (j=0; j<seqLen[i]; j++) printf("%8.7f\n",weight[i][j]); exit(0);
+      // for (j=0; j<seqLen[i]; j++) Rprintf("%8.7f\n",weight[i][j]); exit(0);
    }
 }

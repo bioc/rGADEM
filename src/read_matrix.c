@@ -30,28 +30,28 @@ double **read_initial_pwm(int *matrixLen,char *fileName) {
    checkfscanf = fscanf(fp,"%d %d",&numRow,&numCol);
    if (numRow !=4) {
       error("\n\nError: please check documentation for input format.\n");
-      /*printf("\n\nError: please check documentation for input format.\n"); exit(0); */
+      /*Rprintf("\n\nError: please check documentation for input format.\n"); exit(0); */
    }
-   /*if (numRow !=4) { printf("\n\nError: please check documentation for input format.\n"); exit(0); }*/
-   if (numCol<5)  printf("\n\nWarning: motif length is %d SHORT\n",numCol); 
+   /*if (numRow !=4) { Rprintf("\n\nError: please check documentation for input format.\n"); exit(0); }*/
+   if (numCol<5)  Rprintf("\n\nWarning: motif length is %d SHORT\n",numCol); 
 
    for (m=0; m<4; m++) {
       for (n=0; n<numCol; n++) {
          checkfscanf = fscanf(fp,"%lf",&pwm[n][m]);
          if (pwm[n][m]<0) { 
             error("\n\nError: elements in PWM must be positive. Please see examples on gapwm website\n"); 
-            /*printf("\n\nError: elements in PWM must be positive. Please see examples on gapwm website\n"); */
+            /*Rprintf("\n\nError: elements in PWM must be positive. Please see examples on gapwm website\n"); */
             /*exit(0); */
          } 
       }
    }
    fclose(fp);
 
-   printf("\nInitial PWM:\n");
+   Rprintf("\nInitial PWM:\n");
    for (m=0; m<4; m++) {
       for (n=0; n<numCol; n++) {
-        if (n<numCol-1) printf("%5.3f\t",pwm[n][m]);
-        else            printf("%5.3f\n",pwm[n][m]); 
+        if (n<numCol-1) Rprintf("%5.3f\t",pwm[n][m]);
+        else            Rprintf("%5.3f\n",pwm[n][m]); 
       }
    }
 

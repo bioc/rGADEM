@@ -79,29 +79,29 @@ int word_for_dyad(Words *word,char **seq,char **rseq,int numSeq,int *seqLen,doub
       }
       else *numTop5mer=0;
    }
-   printf("top 3  4, 5-mers: %d %d %d\n",*numTop3mer,*numTop4mer,*numTop5mer);
+   Rprintf("top 3  4, 5-mers: %d %d %d\n",*numTop3mer,*numTop4mer,*numTop5mer);
 
 #ifdef DEBUG
-   fp=fopen("kmer.debug","w");
+   /*fp=fopen("kmer.debug","w");*/
    for (i=0; i<numTrimer; i++) {
-      fprintf(fp,"%s\t%d\t%5.1f\t%5.3f\n",kp3[i].seq,kp3[i].count,kp3[i].z,kp3[i].p);
+      Rprintf("%s\t%d\t%5.1f\t%5.3f\n",kp3[i].seq,kp3[i].count,kp3[i].z,kp3[i].p);
    }
    for (i=0; i<numTetramer; i++) {
-      fprintf(fp,"%s\t%d\t%5.1f\t%5.3f\n",kp4[i].seq,kp4[i].count,kp4[i].z,kp4[i].p);
+      Rprintf("%s\t%d\t%5.1f\t%5.3f\n",kp4[i].seq,kp4[i].count,kp4[i].z,kp4[i].p);
    }
    for (i=0; i<numPentamer; i++) {
-      fprintf(fp,"%s\t%d\t%5.1f\t%5.3f\n",kp5[i].seq,kp5[i].count,kp5[i].z,kp5[i].p);
+      Rprintf("%s\t%d\t%5.1f\t%5.3f\n",kp5[i].seq,kp5[i].count,kp5[i].z,kp5[i].p);
    }
-   fclose(fp);
+   /*fclose(fp);*/
 #endif
 
 #ifdef DEBUG
-   fp=fopen("topWords.debug","w");
+   /*fp=fopen("topWords.debug","w");*/
    for (i=0; i<numGroup; i++) {
-      fprintf(fp,"%d\n",word[i].count);
-      for (j=0; j<word[i].count; j++) fprintf(fp,"%s\t%8.6f\t%8.6f\n",word[i].s1[j],word[i].prob_sta[j],word[i].prob_end[j]);
+      Rprintf("%d\n",word[i].count);
+      for (j=0; j<word[i].count; j++) Rprintf("%s\t%8.6f\t%8.6f\n",word[i].s1[j],word[i].prob_sta[j],word[i].prob_end[j]);
    }
-   fclose(fp);
+   /*fclose(fp);*/
 #endif
 
    if (trimer[0])   { free(trimer[0]);   trimer[0]=NULL;   }
@@ -197,7 +197,7 @@ int top_kmer(Words *word,Ktuples *kp,int *numSpecifiedTopKmer,int kmerLen) {
    }
   
    // for (i=1; i<numAvailableTopKmer; i++) {
-   //   printf("%s\t%5.3f\t%5.3f\n",word[0].s1[i],word[0].prob_sta[i],word[0].prob_end[i]); 
+   //   Rprintf("%s\t%5.3f\t%5.3f\n",word[0].s1[i],word[0].prob_sta[i],word[0].prob_end[i]); 
    //}
    return (numAvailableTopKmer); 
 }

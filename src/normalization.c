@@ -121,7 +121,7 @@ int range(double score) {
      temp=score*pow(10,i);
      if(temp>=1.0) break;
   }
-  if(i==20) printf("score is smaller than 10e-20\n");
+  if(i==20) Rprintf("score is smaller than 10e-20\n");
   return(i);
 }
 

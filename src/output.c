@@ -16,8 +16,8 @@ void print_bed(Sites *site,int nsites,char **geneID,int *seqLen,int pwmLen,int i
    s1=alloc_char(20);
    chr=alloc_char(20);
    fileName=alloc_char(500);
-   sprintf(fileName,"%d.bed",id);
-   f1=fopen(fileName,"w");
+   sRprintf(fileName,"%d.bed",id);
+   /*f1=fopen(fileName,"w");*/
    for (i=0; i<nsites; i++) {
       len=strlen(geneID[site[i].seq]);
 
@@ -38,7 +38,7 @@ void print_bed(Sites *site,int nsites,char **geneID,int *seqLen,int pwmLen,int i
       }
       else {
          error("%s chr not found! %d %d\n",geneID[site[i].seq],s,e);
-         /*printf("%s chr not found! %d %d\n",geneID[site[i].seq],s,e); exit(0);*/
+         /*Rprintf("%s chr not found! %d %d\n",geneID[site[i].seq],s,e); exit(0);*/
       }
       e2=-1;
       for (j=e+1; j<len; j++) {
@@ -53,17 +53,17 @@ void print_bed(Sites *site,int nsites,char **geneID,int *seqLen,int pwmLen,int i
       }
       else {
          error("start not found!\n");
-         /*printf("start not found!\n"); exit(0);*/
+         /*Rprintf("start not found!\n"); exit(0);*/
       }
 
       if (site[i].rev=='0') {
-         if (site[i].pos>=0) fprintf(f1,"%s\t%d\t%d\n",chr,site[i].pos+start,site[i].pos+pwmLen+start-1);
+         if (site[i].pos>=0) Rprintf("%s\t%d\t%d\n",chr,site[i].pos+start,site[i].pos+pwmLen+start-1);
       }
       else {
-         if (site[i].pos>=0) fprintf(f1,"%s\t%d\t%d\n",chr,seqLen[site[i].seq]-site[i].pos-pwmLen+start,seqLen[site[i].seq]-site[i].pos+start-1);
+         if (site[i].pos>=0) Rprintf("%s\t%d\t%d\n",chr,seqLen[site[i].seq]-site[i].pos-pwmLen+start,seqLen[site[i].seq]-site[i].pos+start-1);
       }
    }
-   fclose(f1);
+   /*fclose(f1);*/
    if (fileName) { free(fileName); fileName=NULL; }
    if (s1)       { free(s1);       s1=NULL;       }
 }
@@ -75,19 +75,19 @@ void print_motif(Sites *site,int nsites,char **seq,char **rseq,int *seqLen,int p
    register int i,j;
 
    fileName=alloc_char(500);
-   sprintf(fileName,"%d.seq",id);
+   sRprintf(fileName,"%d.seq",id);
   //f1=fopen(fileName,"w");
    for (i=0; i<nsites; i++) {
       if (site[i].rev=='0') {
          if (site[i].pos<0) {
-            //for (j=site[i].pos; j<0; j++) fprintf(f1,"x"); 
+            //for (j=site[i].pos; j<0; j++) Rprintf("x"); 
             for (j=0; j<pwmLen+site[i].pos; j++) {
                switch(seq[site[i].seq][j]) {
-                  //case 'a': fprintf(f1,"a"); break;
-                  //case 'c': fprintf(f1,"c"); break;
-                  //case 'g': fprintf(f1,"g"); break;
-                  //case 't': fprintf(f1,"t"); break;
-                  //case 'n': fprintf(f1,"n"); break;
+                  //case 'a': Rprintf("a"); break;
+                  //case 'c': Rprintf("c"); break;
+                  //case 'g': Rprintf("g"); break;
+                  //case 't': Rprintf("t"); break;
+                  //case 'n': Rprintf("n"); break;
                   default: break;
                }
             }
@@ -95,30 +95,30 @@ void print_motif(Sites *site,int nsites,char **seq,char **rseq,int *seqLen,int p
          else {
             for (j=site[i].pos; j<min(seqLen[site[i].seq],site[i].pos+pwmLen); j++) {
                switch(seq[site[i].seq][j]) {
-                  //case 'a': fprintf(f1,"a"); break;
-                  //case 'c': fprintf(f1,"c"); break;
-                  //case 'g': fprintf(f1,"g"); break;
-                  //case 't': fprintf(f1,"t"); break;
-                  //case 'n': fprintf(f1,"n"); break;
+                  //case 'a': Rprintf("a"); break;
+                  //case 'c': Rprintf("c"); break;
+                  //case 'g': Rprintf("g"); break;
+                  //case 't': Rprintf("t"); break;
+                  //case 'n': Rprintf("n"); break;
                   default: break;
                }
             }
          }
          if (site[i].pos+pwmLen-seqLen[site[i].seq]>0) {
-            //for (j=seqLen[site[i].seq]; j<site[i].pos+pwmLen; j++) fprintf(f1,"x"); 
+            //for (j=seqLen[site[i].seq]; j<site[i].pos+pwmLen; j++) Rprintf("x"); 
          }
-         //fprintf(f1,"\n");
+         //Rprintf("\n");
       }
       else {
          if (site[i].pos<0) {
-            //for (j=site[i].pos; j<0; j++) fprintf(f1,"x"); 
+            //for (j=site[i].pos; j<0; j++) Rprintf("x"); 
             for (j=0; j<pwmLen+site[i].pos; j++) {
                switch(rseq[site[i].seq][j]) {
-               //   case 'a': fprintf(f1,"a"); break;
-                //  case 'c': fprintf(f1,"c"); break;
-                //  case 'g': fprintf(f1,"g"); break;
-                //  case 't': fprintf(f1,"t"); break;
-                //  case 'n': fprintf(f1,"n"); break;
+               //   case 'a': Rprintf("a"); break;
+                //  case 'c': Rprintf("c"); break;
+                //  case 'g': Rprintf("g"); break;
+                //  case 't': Rprintf("t"); break;
+                //  case 'n': Rprintf("n"); break;
                   default: break;
                }
             }
@@ -126,19 +126,19 @@ void print_motif(Sites *site,int nsites,char **seq,char **rseq,int *seqLen,int p
          else {
             for (j=site[i].pos; j<min(seqLen[site[i].seq],site[i].pos+pwmLen); j++) {
                switch(rseq[site[i].seq][j]) {
-                 // case 'a': fprintf(f1,"a"); break;
-                //  case 'c': fprintf(f1,"c"); break;
-                //  case 'g': fprintf(f1,"g"); break;
-                //  case 't': fprintf(f1,"t"); break;
-                //  case 'n': fprintf(f1,"n"); break;
+                 // case 'a': Rprintf("a"); break;
+                //  case 'c': Rprintf("c"); break;
+                //  case 'g': Rprintf("g"); break;
+                //  case 't': Rprintf("t"); break;
+                //  case 'n': Rprintf("n"); break;
                   default: break;
                }
             }
          }
          if (site[i].pos+pwmLen-seqLen[site[i].seq]>0) {
-            //for (j=seqLen[site[i].seq]; j<site[i].pos+pwmLen; j++) fprintf(f1,"x"); 
+            //for (j=seqLen[site[i].seq]; j<site[i].pos+pwmLen; j++) Rprintf("x"); 
          }
-         //fprintf(f1,"\n");
+         //Rprintf("\n");
       }
    }
    //fclose(f1);
@@ -147,14 +147,14 @@ void print_motif(Sites *site,int nsites,char **seq,char **rseq,int *seqLen,int p
    // print out individual observed PWM in gadem format
    /*-----------------------------------------------------------------------
       fileName=alloc_char(500);
-      sprintf(fileName,"%d.mx",id);
+      sRprintf(fileName,"%d.mx",id);
       f1=fopen(fileName,"w");
 
-      fprintf(f1,"4\t%d\n",pwmLen);
+      Rprintf("4\t%d\n",pwmLen);
       for (i=0; i<4; i++) {
          for (j=0; j<pwmLen; j++) {
-            if (j<pwmLen-1) fprintf(f1,"%5.4f\t",opwm[j][i]);
-            else fprintf(f1,"%5.4f\n",opwm[j][i]);
+            if (j<pwmLen-1) Rprintf("%5.4f\t",opwm[j][i]);
+            else Rprintf("%5.4f\n",opwm[j][i]);
          }
       }
       fclose(f1);
@@ -266,7 +266,7 @@ int cn[4];//maxHeaderLen;
   
        if (site[i].pos<0) {
 			char sequence_conca[50]="";
-            //for (j=site[i].pos; j<0; j++) fprintf(fq,"X"); 
+            //for (j=site[i].pos; j<0; j++) Rprintf("X"); 
             for (j=0; j<pwmLen+site[i].pos; j++) {
                switch(rseq[site[i].seq][j]) {
                  case 'a': strcat(sequence_conca,"A");break;
@@ -293,7 +293,7 @@ int cn[4];//maxHeaderLen;
 			SET_STRING_ELT(SequencesIdent,increment_sequence,mkChar(sequence_conca));
          }
          if (site[i].pos+pwmLen-seqLen[site[i].seq]>0) {
-            //for (j=seqLen[site[i].seq]; j<site[i].pos+pwmLen; j++) fprintf(fq,"X"); 
+            //for (j=seqLen[site[i].seq]; j<site[i].pos+pwmLen; j++) Rprintf("X"); 
          }
          // print flanking region
          for (j=site[i].pos+pwmLen; j<min(site[i].pos+pwmLen+FLANKING_BASES,seqLen[site[i].seq]); j++) 
@@ -324,7 +324,7 @@ for (int aa=0;aa<pwmLen;aa++)
 		 const char base[] = "m";
 		      char filename [ FILENAME_MAX ];
 		      int number = id;
-		      sprintf(filename, "%s%d", base, number);
+		      sRprintf(filename, "%s%d", base, number);
 
 			SET_STRING_ELT(motifname2,0,mkChar(filename));
 

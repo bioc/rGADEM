@@ -140,15 +140,15 @@ typedef int BOOLEAN;
 #define Resize(P,N,T) { 						\
   void *new_P = NULL; 							\
   int _n_ = (N);			/* avoid side effects */	\
-  /*fprintf(stderr, "Resize(" #P ", " #N "(%ld), " #T ")\n", (long)_n_);*/\
+  /*Rprintf("Resize(" #P ", " #N "(%ld), " #T ")\n", (long)_n_);*/\
   if (P) {								\
     myrealloc(new_P, (P), _n_, T);	 				\
   } else {								\
     dbmalloc(new_P, _n_, T);						\
   }									\
   if (!new_P || _n_<=0) {						\
-    fprintf(stderr, "Resize(" #P ", " #N ", " #T ") failed!\n");	\
-    fprintf(stderr, #N" = %ld\n", (long)_n_);				\
+    Rprintf("Resize(" #P ", " #N ", " #T ") failed!\n");	\
+    Rprintf(#N" = %ld\n", (long)_n_);				\
     /*Crash*/; 								\
     error("");								\
     /*exit(1);*/							\
@@ -163,25 +163,24 @@ typedef int BOOLEAN;
 */
 #define create_2array(v, typ, r, c) {					\
   int _i, _ir=(r), _ic=(c);		/* avoid side effects */	\
-  /*fprintf(stderr, */							\
   /*  "create_2array(" #v ", " #typ ", " #r "(%d), " #c ")\n", r);*/	\
   dbmalloc((v), _ir,  typ *);						\
   if (!(v)) { error("malloc failed 1\n"); }			\
-      /*printf(stderr, "malloc failed 1\n"); exit(1);}		*/	\
+      /*Rprintf(stderr, "malloc failed 1\n"); exit(1);}		*/	\
   for (_i=0; _i<_ir; _i++) {						\
     typ *tmp;								\
     (v)[_i] = 0;							\
     dbmalloc(tmp, _ic, typ);						\
     (v)[_i] = tmp;							\
-    if (!(v)[_i]) {printf("malloc failed 2\n");}			\
+    if (!(v)[_i]) {Rprintf("malloc failed 2\n");}			\
     if (!(v)[_i]) {error("malloc failed 2\n");}		\
-    /*if (!(v)[_i]) {fprintf(stderr, "malloc failed 2\n"); exit(1);}*/	\
+    /*if (!(v)[_i]) {Rprintf("malloc failed 2\n"); exit(1);}*/	\
   }									\
 }
 
 #define free_2array(v, r) {						\
   int _i, _ir=(r);			/* avoid side effects */	\
-  /*fprintf(stderr, "free_2array(" #v ", " #r "(%d))\n", r);	*/	\
+  /*Rprintf("free_2array(" #v ", " #r "(%d))\n", r);	*/	\
   for (_i=0; _i<_ir; _i++) myfree((v)[_i]);				\
   myfree(v);								\
 }

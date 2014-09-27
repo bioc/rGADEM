@@ -77,8 +77,8 @@ int prod_M(Pgfs *llrDist,int dim0,Pgfs *M1,int dim1) {
            total++;
            if (total==MAX_DIMENSION) { 
               error("\nError: max p-table dimension reached\n  reset <MAX_DIMENSION> in defines.h\n");
-              /*printf("\nError: max p-table dimension reached\n");*/
-              /*printf("  reset <MAX_DIMENSION> in defines.h\n");*/
+              /*Rprintf("\nError: max p-table dimension reached\n");*/
+              /*Rprintf("  reset <MAX_DIMENSION> in defines.h\n");*/
               /*exit(0);*/
            }
        }
