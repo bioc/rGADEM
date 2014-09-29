@@ -16,7 +16,7 @@ void print_bed(Sites *site,int nsites,char **geneID,int *seqLen,int pwmLen,int i
    s1=alloc_char(20);
    chr=alloc_char(20);
    fileName=alloc_char(500);
-   sRprintf(fileName,"%d.bed",id);
+   /*Rprintf("%d.bed",id);*/
    /*f1=fopen(fileName,"w");*/
    for (i=0; i<nsites; i++) {
       len=strlen(geneID[site[i].seq]);
@@ -75,7 +75,7 @@ void print_motif(Sites *site,int nsites,char **seq,char **rseq,int *seqLen,int p
    register int i,j;
 
    fileName=alloc_char(500);
-   sRprintf(fileName,"%d.seq",id);
+   /*Rprintf("%d.seq",id);*/
   //f1=fopen(fileName,"w");
    for (i=0; i<nsites; i++) {
       if (site[i].rev=='0') {
@@ -147,7 +147,7 @@ void print_motif(Sites *site,int nsites,char **seq,char **rseq,int *seqLen,int p
    // print out individual observed PWM in gadem format
    /*-----------------------------------------------------------------------
       fileName=alloc_char(500);
-      sRprintf(fileName,"%d.mx",id);
+      Rprintf("%d.mx",id);
       f1=fopen(fileName,"w");
 
       Rprintf("4\t%d\n",pwmLen);
@@ -324,7 +324,7 @@ for (int aa=0;aa<pwmLen;aa++)
 		 const char base[] = "m";
 		      char filename [ FILENAME_MAX ];
 		      int number = id;
-		      sRprintf(filename, "%s%d", base, number);
+		      /*Rprintf("%s%d", base, number);*/
 
 			SET_STRING_ELT(motifname2,0,mkChar(filename));
 

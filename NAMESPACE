@@ -1,5 +1,8 @@
 useDynLib(rGADEM)
 
+import(IRanges)
+import(Biostrings)
+import(BSgenome)
 importClassesFrom(IRanges, RangedData)
 importClassesFrom(Biostrings)
 
