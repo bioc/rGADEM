@@ -1429,7 +1429,7 @@ void read_background(char *filename,double *bfreq) {
 char* convertRString2Char(SEXP rstring)
 {
   char* charArray;
-  int rstringlength=length(rstring);
+  int rstringlength=length(STRING_ELT(rstring, 0));
   //int i=0;
   int lengthcharArray=0;
 
