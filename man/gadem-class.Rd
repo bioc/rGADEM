@@ -5,6 +5,7 @@
 \alias{gadem-class}
 \alias{[,gadem-method}
 \alias{[,gadem,ANY,ANY-method}
+\alias{[,gadem,ANY,ANY,ANY-method}
 \alias{[[,gadem-method}
 \alias{[[,gadem,ANY,ANY-method}
 \alias{dim,gadem-method}
