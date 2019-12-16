@@ -4,14 +4,14 @@ GADEM<- function (Sequences,seed=1,genome=NULL,verbose=FALSE,numWordGroup=3,numT
 	fullScan=0,slideWinPWM=6,stopCriterion=1,numBackgSets=10,weightType=0,bFileName="NULL",Spwm=NULL,minSites=-1,maskR=0,nmotifs=25) 
 	{
 
-    if(is(Sequences,"RangedData") & is.null(genome))
+    if(is(Sequences,"GenomicRanges") & is.null(genome))
     {
-      stop("You have specified a RangedData object but no genome is specified")
+      stop("You have specified a GenomicRanges object but no genome is specified")
     }
 
-    if(is(Sequences,"RangedData"))
+    if(is(Sequences,"GenomicRanges"))
     {
-      spSeq<-as.vector(space(Sequences))
+      spSeq<-as.vector(seqlevels(Sequences))
       stSeq<-start(Sequences)
       edSeq<-end(Sequences)
       if(verbose)
@@ -34,7 +34,7 @@ GADEM<- function (Sequences,seed=1,genome=NULL,verbose=FALSE,numWordGroup=3,numT
     }
     else
     {
-      stop("Object 'Sequences' should be of type 'XStringViews', 'DNAStringSet' or 'RangedData'")
+      stop("Object 'Sequences' should be of type 'XStringViews', 'DNAStringSet' or 'GenomicRanges'")
     }
 
 		fastaSeqChar<-as.character(FastaXstring)
@@ -82,7 +82,7 @@ GADEM<- function (Sequences,seed=1,genome=NULL,verbose=FALSE,numWordGroup=3,numT
 			for(j in 1:length(obj[[i]][[4]][[1]]))
 			{
 
-				if(is(Sequences,"RangedData"))
+				if(is(Sequences,"GenomicRanges"))
 				{	
 					ind<-as.numeric(obj[[i]][[4]][[5]][[j]])
 					list[[j]]<-new("align",seq=obj[[i]][[4]][[1]][[j]],strand=obj[[i]][[4]][[2]][[j]],pos=obj[[i]][[4]][[3]][[j]],pval=obj[[i]][[4]][[4]][[j]],chr=spSeq[ind],start=stSeq[ind],end=edSeq[ind],seqID=obj[[i]][[4]][[6]][[j]],fastaHeader=obj[[i]][[4]][[5]][[j]])

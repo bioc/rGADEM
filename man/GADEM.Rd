@@ -51,17 +51,10 @@ GADEM(Sequences,seed=1,genome=NULL,verbose=FALSE,numWordGroup=3,numTop3mer=20,
 \examples{
 
 	library(BSgenome.Hsapiens.UCSC.hg19)
-	pwd<-"" #INPUT FILES- BedFiles, FASTA, etc.
-	path<- system.file("extdata","Test_100.bed",package="rGADEM")
-	BedFile<-paste(pwd,path,sep="")
-	BED<-read.table(BedFile,header=FALSE,sep="\t")
-	BED<-data.frame(chr=as.factor(BED[,1]),start=as.numeric(BED[,2]),end=as.numeric(BED[,3]))
-	#Create RD files 
-	rgBED<-IRanges(start=BED[,2],end=BED[,3])
-	Sequences<-RangedData(rgBED,space=BED[,1])
-	
-	
-gadem<-GADEM(Sequences,verbose=1,genome=Hsapiens)
+	library(rtracklayer)
+	BedFile<- system.file("extdata","Test_100.bed",package="rGADEM")
+	Sequences<-import(BedFile)
+	gadem<-GADEM(Sequences,verbose=1,genome=Hsapiens)
 }
 \keyword{GADEM}
 \keyword{MOTIFS}

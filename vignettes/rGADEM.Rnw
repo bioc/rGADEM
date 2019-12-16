@@ -54,6 +54,12 @@ In the case of your data provide from Homo Sapiens :
 library(BSgenome.Hsapiens.UCSC.hg19)
 @
 
+To load ranged data, we will use the rtracklayer package:
+
+<<loading BSgenome package>>=
+library(rtracklayer)
+@
+
 \section{Loading in the data}
 The next step is to load data from BED files or FASTA format in the R environment. 
 The sequences are stored in some of the basic containers defined in the \verb@Biostrings@ package (see Biostring's document for more information). So ,the data can be manipulated in a consistent and easy way. \newline The maximum number of sequences allowed is 44 000. But it is possible to change the default parameters by editing the defines.h file and recompiling it.\newline 
@@ -66,15 +72,7 @@ Each line on the BED file contain the location, start and end position on the ch
 pwd<-"" #INPUT FILES- BedFiles, FASTA, etc.
 path<- system.file("extdata/Test_100.bed",package="rGADEM")
 BedFile<-paste(pwd,path,sep="")
-BED<-read.table(BedFile,header=FALSE,sep="\t")
-BED<-data.frame(chr=as.factor(BED[,1]),start=as.numeric(BED[,2]),end=as.numeric(BED[,3]))
-@
-
-Once the data have been read, we can create the list of `RangedData' object (from \verb@IRanges@ package) where each element of the list corresponds to a different chromosome. 
-
-<<Create the RD Files>>=
-rgBED<-IRanges(start=BED[,2],end=BED[,3])
-Sequences<-RangedData(rgBED,space=BED[,1])
+Sequences<-import(BedFile)
 @
 
 \subsection{From a FASTA file}
