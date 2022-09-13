@@ -8,6 +8,8 @@
 #endif
 
 #include "defines.h"
+#include <R.h>
+#include <Rinternals.h>
 
 int range(double score);
 
